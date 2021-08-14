@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="financify_lightest_blue">#3895D3</color>
+    <color name="financify_light_blue">#2975A8</color>
+    <color name="financify_dark_blue">#0A324D</color>
+    <color name="financify_gray">#DFDFDF</color>
+
+
+    <color name="financify_pastel_blue">#A0E7E5</color>
+    <color name="financify_pastel_red">#FFAEBC</color>
+    <color name="financify_pastel_green">#B4F8C8</color>
+    <color name="financify_pastel_yellow">#FBE7C6</color>
 </resources>
