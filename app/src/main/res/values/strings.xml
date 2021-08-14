@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Financify</string>
+    <string name="app_name">financify</string>
+    <string name="navigation_open">Open Navigation Drawer</string>
+    <string name="navigation_close">Close Navigation Drawer</string>
+    <string name="sample_name">Zinnia Launio</string>
+    <string name="menu_portfolio">Portfolio</string>
+    <string name="menu_cash_flow">Cash Flow</string>
+    <string name="menu_reminder_list">Reminder List</string>
+    <string name="menu_settings">Account Settings</string>
+    <string name="menu_logout">Log Out</string>
 </resources>
