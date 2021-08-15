@@ -8,10 +8,11 @@
     <string name="register_label">Create a new account</string>
     <string name="login_btn_label">Log In</string>
     <string name="register_btn_label">Create Account</string>
+    <string name="login_redirect_label"><u>Sign in instead</u></string>
     <string name="register_redirect_label"><u>Create a new account</u></string>
     <string name="firstname_label">First Name</string>
     <string name="lastname_label">Last Name</string>
-    <string name="email_label">Email Address</string>
+    <string name="email_label">E-mail Address</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
 

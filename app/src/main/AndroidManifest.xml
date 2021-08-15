@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Financify">
-
+        <activity android:name=".RegisterActivity"></activity>
         <!-- financify activities -->
         <activity android:name=".BaseActivity" />
         <activity android:name=".LoginActivity">

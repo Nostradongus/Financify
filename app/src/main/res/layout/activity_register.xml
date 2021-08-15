@@ -6,51 +6,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/financify_light_blue"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
-    <!-- guidelines for login form box -->
+    <!-- guidelines for register form box -->
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_top_login"
+        android:id="@+id/gl_top_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.07" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_bottom_login"
+        android:id="@+id/gl_bottom_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.93" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_left_login"
+        android:id="@+id/gl_left_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_right_login"
+        android:id="@+id/gl_right_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
-    <!-- login form box -->
+    <!-- register form box -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_login"
+        android:id="@+id/cl_register"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/bg_form"
-        app:layout_constraintTop_toBottomOf="@id/gl_top_login"
-        app:layout_constraintBottom_toTopOf="@id/gl_bottom_login"
-        app:layout_constraintStart_toEndOf="@id/gl_left_login"
-        app:layout_constraintEnd_toStartOf="@id/gl_right_login">
+        app:layout_constraintTop_toBottomOf="@id/gl_top_register"
+        app:layout_constraintBottom_toTopOf="@id/gl_bottom_register"
+        app:layout_constraintStart_toEndOf="@id/gl_left_register"
+        app:layout_constraintEnd_toStartOf="@id/gl_right_register">
 
         <!-- application title -->
         <TextView
-            android:id="@+id/tv_login_title"
+            android:id="@+id/tv_register_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -62,23 +62,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- login label -->
+        <!-- register label -->
         <TextView
-            android:id="@+id/tv_login_label"
+            android:id="@+id/tv_register_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/login_label"
+            android:text="@string/register_label"
             android:textColor="@color/black"
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_login_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_register_title" />
 
-        <!-- login username input box -->
+        <!-- register firstname input box -->
         <EditText
-            android:id="@+id/et_login_username"
+            android:id="@+id/et_register_firstname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -88,18 +88,78 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:background="@drawable/bg_input"
+            android:hint="@string/firstname_label"
+            android:textColorHint="@android:color/darker_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="20sp"
+            android:textColor="@color/financify_dark_blue"
+            app:layout_constraintTop_toBottomOf="@id/tv_register_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- register lastname input box -->
+        <EditText
+            android:id="@+id/et_register_lastname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/bg_input"
+            android:hint="@string/lastname_label"
+            android:textColorHint="@android:color/darker_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="20sp"
+            android:textColor="@color/financify_dark_blue"
+            android:inputType="textPassword"
+            app:layout_constraintTop_toBottomOf="@id/et_register_firstname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- register email input box -->
+        <EditText
+            android:id="@+id/et_register_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/bg_input"
+            android:hint="@string/email_label"
+            android:textColorHint="@android:color/darker_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="20sp"
+            android:textColor="@color/financify_dark_blue"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@id/et_register_lastname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- register username input box -->
+        <EditText
+            android:id="@+id/et_register_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/bg_input"
             android:hint="@string/username_label"
             android:textColorHint="@android:color/darker_gray"
             android:fontFamily="@font/poppins_medium"
             android:textSize="20sp"
             android:textColor="@color/financify_dark_blue"
-            app:layout_constraintTop_toBottomOf="@id/tv_login_label"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@id/et_register_email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- login password input box -->
+        <!-- register password input box -->
         <EditText
-            android:id="@+id/et_login_password"
+            android:id="@+id/et_register_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -113,13 +173,13 @@
             android:textSize="20sp"
             android:textColor="@color/financify_dark_blue"
             android:inputType="textPassword"
-            app:layout_constraintTop_toBottomOf="@id/et_login_username"
+            app:layout_constraintTop_toBottomOf="@id/et_register_username"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- login button -->
+        <!-- register button -->
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -128,25 +188,25 @@
             android:background="@drawable/btn_ripple"
             app:backgroundTint="@color/financify_light_blue"
             android:fontFamily="@font/poppins_semibold"
-            android:text="@string/login_btn_label"
+            android:text="@string/register_btn_label"
             android:textAllCaps="false"
             android:textSize="18sp"
             android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_login_password"
+            app:layout_constraintTop_toBottomOf="@id/et_register_password"
             android:focusable="true" />
 
-        <!-- register redirect button -->
+        <!-- login redirect button -->
         <Button
-            android:id="@+id/btn_register_redirect"
+            android:id="@+id/btn_login_redirect"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
-            android:text="@string/register_redirect_label"
+            android:text="@string/login_redirect_label"
             android:fontFamily="@font/poppins_semibold"
             android:textColor="@color/financify_light_blue"
             android:textAllCaps="false"
@@ -154,7 +214,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_login" />
+            app:layout_constraintTop_toBottomOf="@id/btn_register" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
