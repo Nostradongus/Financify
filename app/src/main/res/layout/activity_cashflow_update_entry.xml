@@ -4,15 +4,253 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CashflowUpdateEntryActivity">
+    android:background="@color/financify_lightest_blue"
+    tools:context=".CashflowAddAccountActivity">
 
-    <TextView
-        android:id="@+id/textView4"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update a Cash Flow Transaction here :)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/cashflow_bg_form"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline25"
+        app:layout_constraintEnd_toStartOf="@+id/guideline23"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toTopOf="@+id/guideline24"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/btn_cf_update_entry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/financify_pastel_green"
+            android:fontFamily="@font/poppins_bold"
+            android:text="update transaction"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_desc_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_desc_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_desc_label" />
+
+        <Button
+            android:id="@+id/btn_cf_delete_entry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/financify_pastel_red"
+            android:fontFamily="@font/poppins_bold"
+            android:text="delete transaction"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_update_entry"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_update_entry"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_update_entry" />
+
+        <EditText
+            android:id="@+id/et_cf_update_entry_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/edit_text_border"
+            android:ems="10"
+            android:hint="ex: Paid bills"
+            android:inputType="textPersonName"
+            android:maxLength="30"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_account_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_account_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_account_label" />
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_desc_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="transaction description"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/et_cf_update_entry_desc"
+            app:layout_constraintStart_toStartOf="@+id/et_cf_update_entry_desc"
+            app:layout_constraintTop_toBottomOf="@+id/et_cf_update_entry_desc" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cf_update_account"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/search_border"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_type_label"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_type_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_type_label">
+
+            <Spinner
+                android:id="@+id/sp_cf_update_account"
+                android:layout_width="329dp"
+                android:layout_height="35dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_type_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="transaction type"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/cl_cf_update_entry_type"
+            app:layout_constraintStart_toStartOf="@+id/cl_cf_update_entry_type"
+            app:layout_constraintTop_toBottomOf="@+id/cl_cf_update_entry_type" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cf_update_entry_type"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/search_border"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_date_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_date_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_date_label">
+
+            <Spinner
+                android:id="@+id/sp_cf_update_entry_type"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_account_label"
+            android:layout_width="327dp"
+            android:layout_height="30dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="account"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/cl_cf_update_account"
+            app:layout_constraintStart_toStartOf="@+id/cl_cf_update_account"
+            app:layout_constraintTop_toBottomOf="@+id/cl_cf_update_account" />
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="UPDATE A TRANSACTION"
+            android:textAlignment="center"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_cf_update_entry_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/edit_text_border"
+            android:ems="10"
+            android:hint="ex: 500.00"
+            android:inputType="textPersonName"
+            android:maxLength="9"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_label" />
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_amount_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="transaction amount"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/et_cf_update_entry_amount"
+            app:layout_constraintStart_toStartOf="@+id/et_cf_update_entry_amount"
+            app:layout_constraintTop_toBottomOf="@+id/et_cf_update_entry_amount" />
+
+        <TextView
+            android:id="@+id/tv_cf_update_entry_date_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="date of transaction"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_update_entry_date" />
+
+        <Button
+            android:id="@+id/btn_cf_update_entry_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/financify_dark_blue"
+            android:ems="10"
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="date"
+            android:text="JAN 1 2021"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_amount_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_amount_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_amount_label" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

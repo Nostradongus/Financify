@@ -118,17 +118,17 @@ public class CashflowHomeActivity extends AppCompatActivity {
 
     // TODO: temporary, delete when db is implemented
     private void initData () {
-//        this.accounts.add (new Account ("1", "My Physical Wallet", 1000, Account.TYPE_PHYSICAL));
-//        this.accounts.add (new Account ("2", "My BDO Account", 30000, Account.TYPE_BANK));
-//        this.accounts.add (new Account ("3", "My Shopee Wallet", 5040, Account.TYPE_DIGITAL));
-//        this.accounts.add (new Account ("4", "My GCash", 5040, Account.TYPE_DIGITAL));
-//        this.accounts.add (new Account ("5", "My EastWest Account", 30000, Account.TYPE_BANK));
+        this.accounts.add (new Account ("1", "My Physical Wallet", 1000, Account.TYPE_PHYSICAL));
+        this.accounts.add (new Account ("2", "My BDO Account", 30000, Account.TYPE_BANK));
+        this.accounts.add (new Account ("3", "My Shopee Wallet", 5040, Account.TYPE_DIGITAL));
+        this.accounts.add (new Account ("4", "My GCash", 5040, Account.TYPE_DIGITAL));
+        this.accounts.add (new Account ("5", "My EastWest Account", 30000, Account.TYPE_BANK));
 
-        this.accounts.add (new Account ("1", "My Physical Wallet", 999999999, Account.TYPE_PHYSICAL));
-        this.accounts.add (new Account ("2", "My BDO Account", 999999999, Account.TYPE_BANK));
-        this.accounts.add (new Account ("3", "My Shopee Wallet", 999999999, Account.TYPE_DIGITAL));
-        this.accounts.add (new Account ("4", "My GCash", 999999999, Account.TYPE_DIGITAL));
-        this.accounts.add (new Account ("5", "My EastWest Account", 999999999, Account.TYPE_BANK));
+//        this.accounts.add (new Account ("1", "My Physical Wallet", 999999999, Account.TYPE_PHYSICAL));
+//        this.accounts.add (new Account ("2", "My BDO Account", 999999999, Account.TYPE_BANK));
+//        this.accounts.add (new Account ("3", "My Shopee Wallet", 999999999, Account.TYPE_DIGITAL));
+//        this.accounts.add (new Account ("4", "My GCash", 999999999, Account.TYPE_DIGITAL));
+//        this.accounts.add (new Account ("5", "My EastWest Account", 999999999, Account.TYPE_BANK));
     }
 
     /**
@@ -168,5 +168,15 @@ public class CashflowHomeActivity extends AppCompatActivity {
         }
 
         return sum;
+    }
+
+    /**
+     * Hide smaller FloatingActionButtons when leaving this activity.
+     */
+    @Override
+    protected void onPause () {
+        super.onPause ();
+
+        closeFABMenu ();
     }
 }

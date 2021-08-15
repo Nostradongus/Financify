@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Financify</string>
+
+    <string-array name="account_types">
+        <item>Physical Wallet</item>
+        <item>Bank Account</item>
+        <item>Digital Wallet</item>
+    </string-array>
+
+    <string-array name="transaction_types">
+        <item>Income</item>
+        <item>Expense</item>
+        <item>Investment</item>
+    </string-array>
 </resources>

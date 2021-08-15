@@ -30,6 +30,7 @@ public class CashflowAccountActivity extends AppCompatActivity {
     // ImageView to be utilized as a Button
     private ImageView ivEditBtn;
 
+    private Account account;
     /**
      * When the activity is created, this function is also run once.
      */
@@ -47,22 +48,33 @@ public class CashflowAccountActivity extends AppCompatActivity {
         this.tvBalance = findViewById (R.id.tv_specific_account_balance);
         this.ivEditBtn = findViewById (R.id.iv_cashflow_edit_account);
 
+        // Retrieve essential information passed from the homepage activity
+        Intent i = getIntent ();
+
+        account = new Account (i.getStringExtra (Keys.KEY_ID),
+                               i.getStringExtra (Keys.KEY_NAME),
+                               i.getFloatExtra (Keys.KEY_BAL, 0),
+                               i.getStringExtra (Keys.KEY_TYPE));
+
         // TODO: Implement when CASHFLOW ACCOUNT UPDATING is done.
         ivEditBtn.setOnClickListener (new View.OnClickListener() {
             @Override
             public void onClick (View view) {
                 Intent i = new Intent (CashflowAccountActivity.this, CashflowUpdateAccountActivity.class);
+
+                i.putExtra (Keys.KEY_ID, account.getId ());
+                i.putExtra (Keys.KEY_NAME, account.getName ());
+                i.putExtra (Keys.KEY_BAL, account.getBalance());
+                i.putExtra (Keys.KEY_TYPE, account.getType ());
+
                 startActivity (i);
             }
         });
 
-        // Retrieve essential information passed from the homepage activity
-        Intent i = getIntent ();
-
         // Set value of TextViews
-        tvAccountName.setText (i.getStringExtra (Keys.KEY_NAME));
-        tvAccountType.setText (i.getStringExtra (Keys.KEY_TYPE));
-        tvBalance.setText (NumberFormat.getCurrencyInstance().format(i.getFloatExtra (Keys.KEY_BAL, 0)));
+        tvAccountName.setText (account.getName ());
+        tvAccountType.setText (account.getType ());
+        tvBalance.setText (account.getBalanceFormatted ());
 
         // Initialize RecyclerView components
         this.initRecyclerView ();

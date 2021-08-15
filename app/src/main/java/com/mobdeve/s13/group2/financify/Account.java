@@ -1,6 +1,8 @@
 package com.mobdeve.s13.group2.financify;
 
 
+import java.text.NumberFormat;
+
 /**
  * This serves as the class representation of an Account in the application.
  */
@@ -28,7 +30,7 @@ public class Account {
      * @param bal   the balance of this Account
      * @param type  the type of this Account
      */
-    public Account (String id, String name, int bal, String type) {
+    public Account (String id, String name, float bal, String type) {
         this.id = id;
         this.name = name;
         this.balance = bal;
@@ -60,6 +62,15 @@ public class Account {
      */
     public float getBalance () {
         return this.balance;
+    }
+
+    /**
+     * Returns a currency-formatted version of the balance of this Account.
+     *
+     * @return a currency-formatted version of the balance of this Account
+     */
+    public String getBalanceFormatted () {
+        return NumberFormat.getCurrencyInstance ().format (this.balance);
     }
 
     /**
