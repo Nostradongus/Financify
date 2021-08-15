@@ -7,8 +7,7 @@
 
     <!-- navigation drawer menu items -->
     <group
-        android:id="@+id/menu_action_items"
-        android:checkableBehavior="single">
+        android:id="@+id/menu_action_items">
         <!-- portfolio menu item -->
         <item
             android:id="@+id/nav_portfolio"
@@ -18,7 +17,7 @@
         <!-- cash flow menu item -->
         <item
             android:id="@+id/nav_cash_flow"
-            android:icon="@drawable/ic_php"
+            android:icon="@drawable/ic_cash"
             android:title="@string/menu_cash_flow" />
 
         <!-- reminder list menu item -->

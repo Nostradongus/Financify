@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:openDrawer="end">
 
     <!-- the main content -->
     <LinearLayout
@@ -20,7 +20,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/financify_blue"
+            android:background="@color/financify_light_blue"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:elevation="4dp">
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingTop="8dp"
-                android:text="@string/app_name"
+                android:text="@string/app_header"
                 android:textSize="27sp"
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/white" />
@@ -50,13 +50,11 @@
         android:id="@+id/nav_view"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="22dp"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_drawer"
         app:itemTextAppearance="@style/FinancifyNavigationBar"
-        app:itemIconTint="@color/financify_blue"
-        app:itemIconSize="25sp"
-        app:itemTextColor="@color/financify_blue" />
+        app:itemIconTint="@color/financify_light_blue"
+        app:itemTextColor="@color/financify_light_blue" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

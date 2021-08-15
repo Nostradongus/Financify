@@ -1,5 +1,21 @@
 <resources>
-    <string name="app_name">financify</string>
+    <!-- base application component strings -->
+    <string name="app_name">Financify</string>
+    <string name="app_header">financify</string>
+
+    <!-- login and register component strings -->
+    <string name="login_label">Log in to your account</string>
+    <string name="register_label">Create a new account</string>
+    <string name="login_btn_label">Log In</string>
+    <string name="register_btn_label">Create Account</string>
+    <string name="register_redirect_label"><u>Create a new account</u></string>
+    <string name="firstname_label">First Name</string>
+    <string name="lastname_label">Last Name</string>
+    <string name="email_label">Email Address</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+
+    <!-- drawer and menu component strings -->
     <string name="navigation_open">Open Navigation Drawer</string>
     <string name="navigation_close">Close Navigation Drawer</string>
     <string name="sample_name">Zinnia Launio</string>

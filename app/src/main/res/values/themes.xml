@@ -17,6 +17,6 @@
     <!-- style for application's navigation bar -->
     <style name="FinancifyNavigationBar">
         <item name="android:fontFamily">@font/poppins_bold</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

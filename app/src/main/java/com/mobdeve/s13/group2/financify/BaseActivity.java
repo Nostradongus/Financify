@@ -35,8 +35,12 @@ public class BaseActivity extends AppCompatActivity {
     // drawer menu
     private Menu drawerMenu;
 
-    // hamburger menu (toggle)
+    // toolbar (application header)
+    Toolbar toolbar;
+
+    // hamburger menu (toggle) for navigation view bar
     ActionBarDrawerToggle toggle;
+    private MenuItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +51,63 @@ public class BaseActivity extends AppCompatActivity {
         this.flActivity = findViewById(R.id.fl_activity);
         this.navigationView = findViewById(R.id.nav_view);
         this.drawerLayout = findViewById(R.id.drawer_layout);
-        // toolbar (application header)
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // to remove default title in action bar
+        // to remove default title in toolbar (action bar)
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
+        // initialize drawer layout and navigation view bar menu items
+        initDrawer();
+    }
+
+    public void initDrawer() {
         // set toggle for navigation bar
         toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_open, R.string.navigation_close
         );
         drawerLayout.addDrawerListener(toggle);
+
+        // set listener for menu items in the navigation view bar
+        drawerMenu = navigationView.getMenu();
+        for (int j = 0; j < drawerMenu.size(); j++) {
+            drawerMenu.getItem(j).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    // TODO: complete code here
+                    switch (item.getItemId()) {
+                        case R.id.nav_portfolio:
+
+                            return true;
+                        case R.id.nav_cash_flow:
+
+                            return true;
+                        case R.id.nav_reminder_list:
+
+                            return true;
+                        case R.id.nav_settings:
+
+                            return true;
+                        case R.id.nav_logout:
+
+                            return true;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -73,6 +122,8 @@ public class BaseActivity extends AppCompatActivity {
         toggle.onConfigurationChanged(newConfig);
     }
 
+    // override setContentView to put current activity layout as child layout
+    // inside FrameLayout of base layout (activity_base.xml)
     @Override
     public void setContentView(int layoutResID) {
         if (flActivity != null) {
@@ -103,34 +154,9 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle your other action bar items...
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    // TODO: complete code here
-//    @Override
-//    public boolean onMenuItemClick(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.item1:
-//                // handle it
-//                break;
-//            case R.id.item2:
-//                // do whatever
-//                break;
-//            // and so on...
-//        }
-//        return false;
-//    }
-
-    @Override
     public void onBackPressed() {
+        // when back button is pressed and navigation view bar is opened, close
+        // the navigation view bar
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
