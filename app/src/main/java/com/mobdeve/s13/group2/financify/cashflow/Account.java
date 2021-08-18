@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 
 import java.text.NumberFormat;

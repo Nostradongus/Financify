@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,11 +8,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.mobdeve.s13.group2.financify.R;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -22,7 +26,10 @@ public class CashflowAddEntryActivity extends AppCompatActivity {
 
     private DatePickerDialog datePickerDialog;
     private Button btnDate;
-    private Spinner spTransType, spAccounts;
+    private Spinner spTransType;
+    private AutoCompleteTextView atcvTransAccount;
+
+    private ArrayList<Account> accounts;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -32,7 +39,7 @@ public class CashflowAddEntryActivity extends AppCompatActivity {
         initDatePicker ();
 
         btnDate = findViewById (R.id.btn_cf_entry_date);
-        btnDate.setText (getDateToday ());
+        btnDate.setText (DateHelper.getDateToday ());
         btnDate.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
@@ -57,23 +64,12 @@ public class CashflowAddEntryActivity extends AppCompatActivity {
             TODO: Implement account selection spinner when DATABASE IS IMPLEMENTED.
             This requires access to ALL of the user's accounts.
          */
-//        this.spAccounts = findViewById (R.id.sp_cf_account);
-//        ArrayAdapter<CharSequence> spAccountsAdapter = ArrayAdapter.createFromResource (
-//                this, /* ARRAY OF ACCOUNTS OF USER */, android.R.layout.simple_spinner_item
-//        );
-//
-//        spAccountsAdapter.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
-//
-//        spTransType.setAdapter (spAccountsAdapter);
-    }
 
-    private String getDateToday () {
-        Calendar calendar = Calendar.getInstance ();
-        int year = calendar.get (Calendar.YEAR);
-        int month = calendar.get (Calendar.MONTH);
-        month = month + 1;
-        int day = calendar.get (Calendar.DAY_OF_MONTH);
-        return makeDateString (day, month, year);
+        this.atcvTransAccount = findViewById (R.id.actv_cf_entry_account);
+
+        ArrayAdapter<String> atcvAccountsAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1,  generateAccounts());
+        atcvTransAccount.setAdapter (atcvAccountsAdapter);
+
     }
 
     private void initDatePicker () {
@@ -81,7 +77,7 @@ public class CashflowAddEntryActivity extends AppCompatActivity {
             @Override
             public void onDateSet (DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = makeDateString (day, month, year);
+                String date = DateHelper.makeDateString (day, month, year);
                 btnDate.setText (date);
             }
         };
@@ -95,24 +91,24 @@ public class CashflowAddEntryActivity extends AppCompatActivity {
 
     }
 
-    private String makeDateString (int day, int month, int year) {
-        return getMonthFormat (month) + " " + day + " " + year;
-    }
-
-    private String getMonthFormat (int month) {
-        String[] months = new String[] {
-                "JAN", "FEB", "MAR", "APR",
-                "MAY", "JUN", "JUL", "AUG",
-                "SEP", "OCT", "NOV", "DEC"
-        };
-
-        if (month > 0 && month < 12)
-            return months[month - 1];
-
-        return "JAN";
-    }
 
     public void openDatePicker(View view) {
         datePickerDialog.show();
+    }
+
+    // TODO: TEMPORARY; TO BE REMOVED
+    private ArrayList<String> generateAccounts () {
+//        accounts = new ArrayList<> ();
+//
+//        accounts.add (new Account ("0","BDO", 500, Account.TYPE_BANK));
+//        accounts.add (new Account ("1","BPI", 500, Account.TYPE_BANK));
+//        accounts.add (new Account ("2","GCash", 500, Account.TYPE_DIGITAL));
+
+        ArrayList<String> test = new ArrayList<> ();
+        test.add ("BDO");
+        test.add ("BPI");
+        test.add ("GCash");
+
+        return test;
     }
 }

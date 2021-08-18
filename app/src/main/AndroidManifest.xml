@@ -9,13 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Financify">
-        <activity android:name=".CashflowUpdateEntryActivity"></activity>
-        <activity android:name=".CashflowAddEntryActivity" />
-        <activity android:name=".CashflowUpdateAccountActivity" />
-        <activity android:name=".CashflowAddAccountActivity" />
-        <activity android:name=".CashflowAccountActivity" />
-        <activity android:name=".CashflowHomeActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".cashflow.CashflowUpdateEntryActivity"></activity>
+        <activity android:name=".cashflow.CashflowAddEntryActivity" />
+        <activity android:name=".cashflow.CashflowUpdateAccountActivity" />
+        <activity android:name=".cashflow.CashflowAddAccountActivity" />
+        <activity android:name=".cashflow.CashflowAccountActivity" />
+        <activity android:name=".cashflow.CashflowHomeActivity" />
+        <activity android:name=".cashflow.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

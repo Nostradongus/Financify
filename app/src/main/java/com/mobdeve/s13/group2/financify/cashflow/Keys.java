@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 /**
  * This class serves as a container for Key constants used all throughout the application.

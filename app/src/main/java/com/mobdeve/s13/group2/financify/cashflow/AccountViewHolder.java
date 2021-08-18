@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,6 +6,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.mobdeve.s13.group2.financify.R;
 
 import org.jetbrains.annotations.NotNull;
 

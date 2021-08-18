@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 /**
  * This serves as the class representation of a Transaction in the application.
@@ -68,6 +68,28 @@ public class Transaction {
      */
     public String getDate () {
         return this.date;
+    }
+
+    /**
+     * Returns the month of the date of this Transaction.
+     *
+     * @return the month of the date of this Transaction
+     */
+    public String getMonth () {
+        String[] temp = this.date.split ("/");
+
+        return temp[0];
+    }
+
+    /**
+     * Returns the year of the date of this Transaction.
+     *
+     * @return the year of the date of this Transaction
+     */
+    public String getYear () {
+        String[] temp = this.date.split ("/");
+
+        return temp[2];
     }
 
     /**

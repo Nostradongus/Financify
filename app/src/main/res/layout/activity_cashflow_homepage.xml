@@ -5,7 +5,39 @@
     android:id="@+id/cl_cf_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CashflowHomeActivity">
+    tools:context=".cashflow.CashflowHomeActivity">
+
+    <TextView
+        android:id="@+id/tv_cf_account_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="No transactions to show..."
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sv_account_search" />
+
+    <ImageView
+        android:id="@+id/iv_cf_account_divider2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-7dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_accounts_label"
+        app:srcCompat="@android:drawable/title_bar"
+        app:tint="@color/financify_dark_blue" />
 
     <TextView
         android:id="@+id/tv_cashflow_home_label"
@@ -24,19 +56,19 @@
 
     <TextView
         android:id="@+id/tv_cashflow_accounts_label"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="18dp"
         android:fontFamily="@font/poppins_bold"
         android:text="YOUR ACCOUNTS"
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/sv_account_search"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_account_filter"
         app:layout_constraintHorizontal_bias="0.105"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_current_balance" />
 
     <TextView
         android:id="@+id/tv_cashflow_current_balance"
@@ -56,14 +88,13 @@
         android:id="@+id/rv_accounts"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_current_balance"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty"
         app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -85,13 +116,15 @@
         android:id="@+id/sv_account_search"
         android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/search_border"
-        app:layout_constraintBottom_toTopOf="@+id/rv_accounts"
+        android:animateLayoutChanges="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_cf_account_divider2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_entry"
@@ -166,5 +199,17 @@
             app:layout_constraintEnd_toStartOf="@+id/fab_cashflow_add_account"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@+id/ib_cashflow_account_filter"
+        android:layout_width="20dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_cashflow_accounts_label"
+        app:srcCompat="@drawable/filter_icon"
+        app:tint="@color/financify_dark_blue" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

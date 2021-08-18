@@ -5,7 +5,7 @@
     android:id="@+id/cl_transaction_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp"
+    android:layout_marginTop="6dp"
     android:background="@drawable/tile_round_gray">
 
     <TextView

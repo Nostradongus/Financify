@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/financify_lightest_blue"
-    tools:context=".CashflowAddAccountActivity">
+    tools:context=".cashflow.CashflowAddAccountActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -37,11 +37,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/cashflow_bg_form"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline7">
@@ -132,9 +131,9 @@
             android:id="@+id/tv_cf_update_account_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="18dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="UPDATE ACCOUNT"
+            android:text="EDIT ACCOUNT"
             android:textAlignment="center"
             android:textColor="@color/financify_dark_blue"
             android:textSize="24sp"
@@ -175,12 +174,14 @@
             android:id="@+id/btn_cf_delete_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
             android:backgroundTint="@color/financify_pastel_red"
             android:fontFamily="@font/poppins_bold"
             android:text="delete account"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btn_cf_update_account"
             app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="@+id/btn_cf_update_account"

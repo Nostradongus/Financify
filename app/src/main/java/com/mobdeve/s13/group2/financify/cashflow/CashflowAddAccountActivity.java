@@ -1,10 +1,12 @@
-package com.mobdeve.s13.group2.financify;
+package com.mobdeve.s13.group2.financify.cashflow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.mobdeve.s13.group2.financify.R;
 
 /**
  * TODO: Implement & Document CASHFLOW ADDING OF ACCOUNT

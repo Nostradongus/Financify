@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/financify_lightest_blue"
-    tools:context=".CashflowAddAccountActivity">
+    tools:context=".cashflow.CashflowAddAccountActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline22"
@@ -37,28 +37,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/cashflow_bg_form"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline25"
         app:layout_constraintEnd_toStartOf="@+id/guideline23"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toTopOf="@+id/guideline24"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="@+id/guideline24">
 
         <Button
             android:id="@+id/btn_cf_add_entry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:layout_marginBottom="18dp"
             android:backgroundTint="@color/financify_pastel_green"
             android:fontFamily="@font/poppins_bold"
             android:text="add transaction"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_entry_desc_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_entry_desc_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_cf_entry_desc_label" />
@@ -90,28 +90,6 @@
             app:layout_constraintEnd_toEndOf="@+id/et_cf_entry_desc"
             app:layout_constraintStart_toStartOf="@+id/et_cf_entry_desc"
             app:layout_constraintTop_toBottomOf="@+id/et_cf_entry_desc" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_cf_account"
-            android:layout_width="0dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/search_border"
-            app:layout_constraintEnd_toEndOf="@+id/tv_cf_entry_date_label"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/tv_cf_entry_date_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cf_entry_type_label">
-
-            <Spinner
-                android:id="@+id/sp_cf_account"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:spinnerMode="dropdown"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_cf_entry_type_label"
@@ -163,16 +141,15 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="16sp"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/cl_cf_account"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/cl_cf_account"
-            app:layout_constraintTop_toBottomOf="@+id/cl_cf_account" />
+            app:layout_constraintEnd_toEndOf="@+id/actv_cf_entry_account"
+            app:layout_constraintStart_toStartOf="@+id/actv_cf_entry_account"
+            app:layout_constraintTop_toBottomOf="@+id/actv_cf_entry_account" />
 
         <TextView
             android:id="@+id/tv_cf_add_entry_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="18dp"
             android:fontFamily="@font/poppins_bold"
             android:text="ADD A NEW TRANSACTION"
             android:textAlignment="center"
@@ -186,7 +163,7 @@
             android:id="@+id/et_cf_entry_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="44dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="ex: 500.00"
@@ -240,6 +217,17 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_entry_amount_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_entry_amount_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_cf_entry_amount_label" />
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_cf_entry_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/edit_text_border"
+            android:hint="Select an account"
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_entry_type_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_entry_type_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_entry_type_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

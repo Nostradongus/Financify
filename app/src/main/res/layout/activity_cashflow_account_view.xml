@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".cashflow.CashflowAccountActivity">
+
+    <ImageButton
+        android:id="@+id/ib_cashflow_entry_filter"
+        android:layout_width="20dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_specific_entries_label"
+        app:srcCompat="@drawable/filter_icon"
+        app:tint="@color/financify_dark_blue" />
+
+    <TextView
+        android:id="@+id/tv_specific_account_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Account Name"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_specific_account_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Account Type"
+        android:textColor="@color/financify_light_blue"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specific_account_name" />
+
+    <TextView
+        android:id="@+id/tv_specific_balance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="CURRENT BALANCE"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specific_account_type" />
+
+    <TextView
+        android:id="@+id/tv_specific_account_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-14dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Balance"
+        android:textColor="@color/financify_light_blue"
+        android:textSize="38sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specific_balance_label" />
+
+    <TextView
+        android:id="@+id/tv_specific_entries_label"
+        android:layout_width="0dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="YOUR TRANSACTIONS"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_entry_filter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specific_account_balance" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_transactions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cf_entry_empty" />
+
+    <ImageView
+        android:id="@+id/iv_cashflow_edit_account"
+        android:layout_width="14dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        app:tint="@color/financify_light_blue"
+        app:layout_constraintStart_toEndOf="@+id/tv_specific_account_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_specific_account_name"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageView
+        android:id="@+id/iv_cf_account_divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginEnd="15dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_specific_entries_label"
+        app:srcCompat="@android:drawable/title_bar"
+        app:tint="@color/financify_dark_blue" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_cf_account_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_cf_account_divider">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_cf_sp_type_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_border"
+            app:layout_constraintEnd_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/sp_cf_type_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_cf_month_filter_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="month"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_month_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_month_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_month_filter" />
+
+        <TextView
+            android:id="@+id/tv_cf_year_filter_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="year"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_year_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_year_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_year_filter" />
+
+        <Button
+            android:id="@+id/btn_cf_month_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="NONE"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_type_filter_label"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_cf_year_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="NONE"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_type_filter_label"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_cf_entry_clear_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Clear Filters"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_account_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tv_cf_type_filter_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="transaction type"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/cl_cf_sp_type_container"
+            app:layout_constraintStart_toStartOf="@+id/cl_cf_sp_type_container"
+            app:layout_constraintTop_toBottomOf="@+id/cl_cf_sp_type_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_cf_entry_empty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="No transactions to show..."
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_cf_account_filter" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
