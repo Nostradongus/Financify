@@ -64,7 +64,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
      *
      * @param amt   the amount to be displayed
      */
-    public void setTransAmt (float amt) {
+    public void setTransAmt (double amt) {
         this.tvTransAmt.setText (NumberFormat.getCurrencyInstance().format(amt));
     }
 

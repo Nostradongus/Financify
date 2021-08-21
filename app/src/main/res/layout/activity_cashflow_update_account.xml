@@ -45,20 +45,21 @@
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline7">
 
-        <TextView
-            android:id="@+id/tv_cf_update_account_balance_label"
+        <Button
+            android:id="@+id/btn_cf_cancel_update_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="initial balance"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/financify_light_blue"
+            android:layout_marginBottom="18dp"
+            android:backgroundTint="@color/financify_gray"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Cancel"
+            android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/et_cf_update_account_balance"
-            app:layout_constraintStart_toStartOf="@+id/et_cf_update_account_balance"
-            app:layout_constraintTop_toBottomOf="@+id/et_cf_update_account_balance" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_delete_account"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_delete_account"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_delete_account" />
 
         <TextView
             android:id="@+id/tv_cf_update_account_name_label"
@@ -73,20 +74,6 @@
             app:layout_constraintEnd_toEndOf="@+id/et_cf_update_account_name"
             app:layout_constraintStart_toStartOf="@+id/et_cf_update_account_name"
             app:layout_constraintTop_toBottomOf="@+id/et_cf_update_account_name" />
-
-        <EditText
-            android:id="@+id/et_cf_update_account_balance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/edit_text_border"
-            android:ems="10"
-            android:hint="ex: 500.00"
-            android:inputType="numberDecimal"
-            android:maxLength="9"
-            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_account_type_label"
-            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_account_type_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_account_type_label" />
 
         <EditText
             android:id="@+id/et_cf_update_account_name"
@@ -159,29 +146,27 @@
             android:id="@+id/btn_cf_update_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="@color/financify_pastel_green"
             android:fontFamily="@font/poppins_bold"
             android:text="update account"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_account_balance_label"
-            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_account_balance_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_account_balance_label" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_account_type_label"
+            app:layout_constraintStart_toStartOf="@+id/tv_cf_update_account_type_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_account_type_label" />
 
         <Button
             android:id="@+id/btn_cf_delete_account"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
             android:backgroundTint="@color/financify_pastel_red"
             android:fontFamily="@font/poppins_bold"
             android:text="delete account"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btn_cf_update_account"
             app:layout_constraintHorizontal_bias="0.571"
             app:layout_constraintStart_toStartOf="@+id/btn_cf_update_account"

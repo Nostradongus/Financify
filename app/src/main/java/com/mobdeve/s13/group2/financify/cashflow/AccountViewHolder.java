@@ -29,6 +29,7 @@ public class AccountViewHolder extends RecyclerView.ViewHolder {
     public AccountViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
+        // Retrieve element IDs
         tvAccountName = itemView.findViewById (R.id.tv_account_name);
         tvAccountBalance = itemView.findViewById (R.id.tv_account_balance);
         tvAccountType = itemView.findViewById (R.id.tv_account_type);
@@ -62,7 +63,7 @@ public class AccountViewHolder extends RecyclerView.ViewHolder {
      *
      * @param bal   the current balance of this account
      */
-    public void setAccountBalance (float bal) {
+    public void setAccountBalance (double bal) {
         this.tvAccountBalance.setText (NumberFormat.getCurrencyInstance().format(bal));
     }
 

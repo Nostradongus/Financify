@@ -18,16 +18,20 @@ import java.util.ArrayList;
  * The Adapter for the Transaction entries that will be displayed in the Transactions RecyclerView.
  */
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHolder> {
-    // A list of all the Transactions
+    // Account affiliated with Transaction
+    private Account account;
+    // List of al Transactions under this account
     private ArrayList<Transaction> transactions;
 
     /**
      * Constructor. Instantiates the attributes of this class.
      *
-     * @param data  a list of all the Transactions.
+     * @param account       the Account affiliated with the Transaction
+     * @param transactions  a list of all the Transactions.
      */
-    public TransactionAdapter (ArrayList<Transaction> data) {
-        this.transactions = data;
+    public TransactionAdapter (Account account, ArrayList<Transaction> transactions) {
+        this.account = account;
+        this.transactions = transactions;
     }
 
     /**
@@ -47,14 +51,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
         transViewHolder.getContainer ().setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                Intent i = new Intent(view.getContext (), CashflowUpdateEntryActivity.class);
+                Intent i = new Intent (view.getContext (), CashflowUpdateEntryActivity.class);
 
-//                i.putExtra (Keys.KEY_ID, transactions.get (transViewHolder.getBindingAdapterPosition ()).getId ());
-//                i.putExtra (Keys.KEY_NAME, transactions.get (transViewHolder.getBindingAdapterPosition ()).getName ());
-//                i.putExtra (Keys.KEY_BAL, transactions.get (transViewHolder.getBindingAdapterPosition ()).getBalance());
-//                i.putExtra (Keys.KEY_TYPE, transactions.get (transViewHolder.getBindingAdapterPosition ()).getType ());
+                i.putExtra (Keys.KEY_ACC, account);
+                i.putExtra (Keys.KEY_TRAN, account.getTransaction (transactions.get (transViewHolder.getBindingAdapterPosition ()).getId ()));
 
                 view.getContext ().startActivity (i);
+                ((CashflowAccountActivity) view.getContext ()).finish ();
             }
         });
 

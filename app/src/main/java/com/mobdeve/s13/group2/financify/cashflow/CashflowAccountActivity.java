@@ -1,5 +1,6 @@
 package com.mobdeve.s13.group2.financify.cashflow;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,14 +20,28 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Field;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -36,20 +51,22 @@ import java.util.Calendar;
  */
 public class CashflowAccountActivity extends AppCompatActivity {
 
-    // RecyclerView attributes
+    // RecyclerView Attributes
     private RecyclerView rvTransList;
     private LinearLayoutManager transManager;
     private TransactionAdapter transAdapter;
     private ArrayList<Transaction> transactions;
 
-    // TextView attributes
+    // UI Attributes
     private TextView tvAccountName, tvAccountType, tvBalance, tvEmptyMessage;
-    // ImageView to be utilized as a Button
     private ImageView ivEditBtn;
+    private ConstraintLayout clHomeBtn;
+    private ProgressBar pbAccount;
+
     // Account to be displayed in the activity
     private Account account;
 
-    /* Filter attributes */
+    // Filter Attributes
     private ImageButton ibTransFilterBtn;
     private ConstraintLayout clFilterContainer;
     private Spinner spTransType;
@@ -57,6 +74,12 @@ public class CashflowAccountActivity extends AppCompatActivity {
     private DatePickerDialog dpMonthDialog, dpYearDialog;
     private ArrayList<Transaction> transactionsBackup;
     private boolean filterVisible;
+
+    // Firebase Attributes
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String userId;
+    private DatabaseReference dbRef;
 
     /**
      * When the activity is created, this function is also run once.
@@ -67,65 +90,190 @@ public class CashflowAccountActivity extends AppCompatActivity {
         // Cash Flow specific account layout
         setContentView (R.layout.activity_cashflow_account_view);
 
-        // Initialize RecyclerView components
-        this.initRecyclerView ();
-
         // Initialize general information seen in this activity
-        this.initInfo ();
-
+        initInfo ();
+        // Initialize Firebase components
+        initFirebase ();
+        // Initialize RecyclerView components
+        initRecyclerView ();
         // Initialize filter components
-        this.initFilters ();
+        initFilters ();
     }
 
     /**
-     * Show/hide empty message on activity resumption, if applicable
+     * Show/hide empty message on activity resumption, if applicable.
      */
     @Override
     protected void onResume () {
         super.onResume ();
 
         // Show empty message, if applicable
-        this.displayEmptyMessage ();
+        displayEmptyMessage ();
+    }
+
+    /**
+     * When the user presses the back button of the device.
+     */
+    @Override
+    public void onBackPressed () {
+        super.onBackPressed ();
+
+        // Go back to homepage
+        goBackToHomepage ();
+    }
+
+    /**
+     * Launches an activity leading to the Cashflow Homepage and finishes this activity.
+     */
+    private void goBackToHomepage () {
+        Intent i = new Intent (CashflowAccountActivity.this, CashflowHomeActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
+     * Initialize Firebase components.
+     */
+    private void initFirebase () {
+        mAuth = FirebaseAuth.getInstance ();
+        user = mAuth.getCurrentUser ();
+
+        // If valid session
+        if (user != null) {
+            // Retrieve user ID
+            userId = user.getUid ();
+            // Create DB reference to a specific Cashflow account of this user
+            dbRef = FirebaseDatabase.getInstance ().getReference ().child ("users")
+                    .child (userId)
+                    .child ("accounts")
+                    .child (account.getId ());
+
+            // Value listener for this DB reference
+            dbRef.addValueEventListener (new ValueEventListener () {
+                @Override
+                public void onDataChange (@NonNull @NotNull DataSnapshot snapshot) {
+                    // Temporarily empty Transactions
+                    transactions.clear ();
+
+                    // To catch NullPointerException
+                    try {
+                        // Temporary array to store Transactions retrieved from Firebase
+                        ArrayList<Transaction> transFromFirebase = new ArrayList<> ();
+
+                        // Loop through received Transactions
+                        for (DataSnapshot transaction : snapshot.child ("transactions").getChildren ()) {
+                            // Instantiate a Transaction object per child
+                            transFromFirebase.add (new Transaction (
+                                    transaction.getKey (),
+                                    transaction.child ("description").getValue ().toString (),
+                                    Double.valueOf (transaction.child ("amount").getValue ().toString ()),
+                                    transaction.child ("type").getValue ().toString (),
+                                    transaction.child ("date").getValue ().toString (),
+                                    transaction.child ("accountId").getValue ().toString ()
+                            ));
+                        }
+
+                        // Instantiate Account to be used in this activity
+                        account = new Account (
+                            snapshot.getKey (),
+                            snapshot.child ("name").getValue ().toString (),
+                            Double.parseDouble (snapshot.child ("balance").getValue ().toString ()),
+                            snapshot.child ("type").getValue ().toString (),
+                            transFromFirebase
+                        );
+                    } catch (Exception e) {
+                        System.out.println (e.toString ());
+                    }
+
+                    // Once Firebase operations are done, initialize local attributes
+                    // Populate Transaction list
+                    transactions.addAll (account.getTransactions ());
+                    // Create a backup list (for filter feature)
+                    transactionsBackup = new ArrayList<> (transactions);
+                    // Hide ProgressBar
+                    pbAccount.setVisibility (View.GONE);
+                    // Refresh the Adapter
+                    transAdapter.notifyDataSetChanged ();
+                    // Display empty message, if applicable
+                    displayEmptyMessage ();
+
+                    // Update Account balance being displayed
+                    tvBalance.setText (account.getBalanceFormatted ());
+                }
+
+                @Override
+                public void onCancelled (@NonNull @NotNull DatabaseError error) {}
+            });
+        // If invalid session
+        } else {
+            // TODO: Handle when session is invalid.
+        }
     }
 
     /**
      * Initializes all the RecyclerView components.
      */
     private void initRecyclerView () {
-        // Instantiate list
-        this.transactions = new ArrayList<> ();
-
         // Initialize RecyclerView for transactions
-        this.rvTransList = findViewById (R.id.rv_transactions);
+        rvTransList = findViewById (R.id.rv_transactions);
 
         // Instantiate & Attach LayoutManager
-        this.transManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        this.rvTransList.setLayoutManager (transManager);
-
-        // TODO: TEMPORARY; Delete when db is implemented!
-        this.initData ();
-        transactionsBackup = new ArrayList<> (transactions);
+        transManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvTransList.setLayoutManager (transManager);
 
         // Instantiate & Attach Adapter
-        transAdapter = new TransactionAdapter (transactions);
-        this.rvTransList.setAdapter (transAdapter);
+        transAdapter = new TransactionAdapter (account, transactions);
+        rvTransList.setAdapter (transAdapter);
 
         // Empty message for RecyclerView
-        this.tvEmptyMessage = findViewById (R.id.tv_cf_entry_empty);
-        this.tvEmptyMessage.setVisibility (View.GONE);
+        tvEmptyMessage = findViewById (R.id.tv_cf_entry_empty);
+        tvEmptyMessage.setVisibility (View.GONE);
     }
 
-    // TODO: TEMPORARY; Delete when db is implemented!
-    private void initData () {
-        this.transactions.add (new Transaction ("Paid tuition fee", 63000, Transaction.TYPE_EXPENSE, "01/01/2021"));
-        this.transactions.add (new Transaction ("Monthly income", 100000, Transaction.TYPE_INCOME, "01/01/2021"));
-        this.transactions.add (new Transaction ("Invested in Crypto", 20000, Transaction.TYPE_INVESTMENT, "01/01/2021"));
+    /**
+     * Initializes all general information for this activity.
+     */
+    private void initInfo () {
+        // Retrieve element IDs
+        tvAccountName = findViewById (R.id.tv_specific_account_name);
+        tvAccountType = findViewById (R.id.tv_specific_account_type);
+        tvBalance = findViewById (R.id.tv_specific_account_balance);
+        ivEditBtn = findViewById (R.id.iv_cashflow_edit_account);
+        clHomeBtn = findViewById (R.id.cl_cf_back_home_nav);
+        pbAccount = findViewById (R.id.pb_cf_account);
 
-        this.transactions.add (new Transaction ("Invested in Crypto", 20000, Transaction.TYPE_INVESTMENT, "01/01/2021"));
-        this.transactions.add (new Transaction ("Invested in Crypto", 20000, Transaction.TYPE_INVESTMENT, "01/01/2021"));
-        this.transactions.add (new Transaction ("Invested in Stocks", 20000, Transaction.TYPE_INVESTMENT, "02/01/2019"));
-        this.transactions.add (new Transaction ("Happy Birthday!", 20000, Transaction.TYPE_EXPENSE, "02/12/2021"));
-        this.transactions.add (new Transaction ("Invested in Forex", 20000, Transaction.TYPE_INVESTMENT, "03/01/2016"));
+        // Back button for Account page
+        clHomeBtn.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                goBackToHomepage ();
+            }
+        });
+
+        // Retrieve essential information passed from the homepage activity
+        Intent i = getIntent ();
+
+        // Instantiate Account for this activity
+        account = i.getParcelableExtra (Keys.KEY_ACC);
+        transactions = new ArrayList<> (account.getTransactions ());
+        transactionsBackup = new ArrayList<> (transactions);
+
+        // OnClickListener for editing Account information
+        ivEditBtn.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+                Intent i = new Intent (CashflowAccountActivity.this, CashflowUpdateAccountActivity.class);
+
+                i.putExtra (Keys.KEY_ACC, account);
+
+                startActivity (i);
+                finish ();
+            }
+        });
+
+        // Set value of TextViews
+        tvAccountName.setText (account.getName ());
+        tvAccountType.setText (account.getType ());
     }
 
     /**
@@ -133,20 +281,20 @@ public class CashflowAccountActivity extends AppCompatActivity {
      */
     private void initFilters () {
         // Retrieve element IDs
-        this.ibTransFilterBtn = findViewById (R.id.ib_cashflow_entry_filter);
-        this.btnClearFilter = findViewById (R.id.btn_cf_entry_clear_filter);
-        this.clFilterContainer = findViewById (R.id.cl_cf_account_filter);
+        ibTransFilterBtn = findViewById (R.id.ib_cashflow_entry_filter);
+        btnClearFilter = findViewById (R.id.btn_cf_entry_clear_filter);
+        clFilterContainer = findViewById (R.id.cl_cf_account_filter);
 
         // Default values
-        this.filterVisible = false;
-        this.clFilterContainer.setVisibility (View.GONE);
+        filterVisible = false;
+        clFilterContainer.setVisibility (View.GONE);
 
         // Initialize other components
-        this.initSpinner ();
-        this.initDatePickers ();
+        initSpinner ();
+        initDatePickers ();
 
         // Toggle visibility of filters
-        this.ibTransFilterBtn.setOnClickListener (new View.OnClickListener () {
+        ibTransFilterBtn.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 if (filterVisible) {
@@ -160,7 +308,7 @@ public class CashflowAccountActivity extends AppCompatActivity {
         });
 
         // OnClickListener for Button that clears all filters
-        this.btnClearFilter.setOnClickListener(new View.OnClickListener () {
+        btnClearFilter.setOnClickListener(new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 clearFilters ();
@@ -169,51 +317,11 @@ public class CashflowAccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes all general information for this activity.
-     */
-    private void initInfo () {
-        // Retrieve element IDs
-        this.tvAccountName = findViewById (R.id.tv_specific_account_name);
-        this.tvAccountType = findViewById (R.id.tv_specific_account_type);
-        this.tvBalance = findViewById (R.id.tv_specific_account_balance);
-        this.ivEditBtn = findViewById (R.id.iv_cashflow_edit_account);
-
-        // Retrieve essential information passed from the homepage activity
-        Intent i = getIntent ();
-
-        // Instantiate Account for this activity
-        account = new Account (i.getStringExtra (Keys.KEY_ID),
-                i.getStringExtra (Keys.KEY_NAME),
-                i.getFloatExtra (Keys.KEY_BAL, 0),
-                i.getStringExtra (Keys.KEY_TYPE));
-
-        // OnClickListener for editing Account information
-        ivEditBtn.setOnClickListener (new View.OnClickListener() {
-            @Override
-            public void onClick (View view) {
-                Intent i = new Intent (CashflowAccountActivity.this, CashflowUpdateAccountActivity.class);
-
-                i.putExtra (Keys.KEY_ID, account.getId ());
-                i.putExtra (Keys.KEY_NAME, account.getName ());
-                i.putExtra (Keys.KEY_BAL, account.getBalance());
-                i.putExtra (Keys.KEY_TYPE, account.getType ());
-
-                startActivity (i);
-            }
-        });
-
-        // Set value of TextViews
-        tvAccountName.setText (account.getName ());
-        tvAccountType.setText (account.getType ());
-        tvBalance.setText (account.getBalanceFormatted ());
-    }
-
-    /**
      * Initialize all "Type" Spinner-related components.
      */
     private void initSpinner () {
         // Retrieve element ID
-        this.spTransType = findViewById (R.id.sp_cf_type_filter);
+        spTransType = findViewById (R.id.sp_cf_type_filter);
 
         // Initialize "Type" Spinner
         ArrayAdapter<CharSequence> spTypeFilterAdapter = ArrayAdapter.createFromResource (
@@ -241,8 +349,8 @@ public class CashflowAccountActivity extends AppCompatActivity {
      */
     private void initDatePickers () {
         // Retrieve element IDs
-        this.btnMonth = findViewById (R.id.btn_cf_month_filter);
-        this.btnYear = findViewById (R.id.btn_cf_year_filter);
+        btnMonth = findViewById (R.id.btn_cf_month_filter);
+        btnYear = findViewById (R.id.btn_cf_year_filter);
 
         // TODO: Figure out how to work with depreciated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
@@ -319,9 +427,9 @@ public class CashflowAccountActivity extends AppCompatActivity {
      * Clear the filter. Resets the RecyclerView contents to its default state.
      */
     private void clearFilters () {
-        this.btnMonth.setText (String.valueOf("NONE"));
-        this.btnYear.setText (String.valueOf("NONE"));
-        this.spTransType.setSelection (0);
+        btnMonth.setText (String.valueOf("NONE"));
+        btnYear.setText (String.valueOf("NONE"));
+        spTransType.setSelection (0);
 
         // Clear filtered list
         transactions.clear ();
@@ -331,7 +439,7 @@ public class CashflowAccountActivity extends AppCompatActivity {
         transAdapter.notifyDataSetChanged ();
 
         // Show empty message, if applicable
-        this.displayEmptyMessage ();
+        displayEmptyMessage ();
     }
 
     /**
@@ -339,9 +447,9 @@ public class CashflowAccountActivity extends AppCompatActivity {
      */
     private void filterTransactions () {
         // Retrieve filer from each setting
-        String typeFilter = this.spTransType.getSelectedItem ().toString ().toLowerCase ();
-        String monthFilter = this.btnMonth.getText ().toString ().toLowerCase ();
-        String yearFilter = this.btnYear.getText ().toString ().toLowerCase ();
+        String typeFilter = spTransType.getSelectedItem ().toString ().toLowerCase ();
+        String monthFilter = btnMonth.getText ().toString ().toLowerCase ();
+        String yearFilter = btnYear.getText ().toString ().toLowerCase ();
 
         /*
             GENERAL IDEA FOR FILTERING:
@@ -366,9 +474,11 @@ public class CashflowAccountActivity extends AppCompatActivity {
             // Loop through each Transaction
             for (Transaction transaction : transactions) {
                 // If "Type" filter matches Transaction type
-                if (typeFilter.equalsIgnoreCase (transaction.getType ()))
+                if (typeFilter.equalsIgnoreCase (transaction.getType ())) {
+                    Toast.makeText (this, "Type Filter Triggered.", Toast.LENGTH_SHORT).show ();
                     // Add to temporary list
-                    temp.add (transaction);
+                    temp.add(transaction);
+                }
             }
 
             // Reset main list
@@ -377,6 +487,7 @@ public class CashflowAccountActivity extends AppCompatActivity {
             transactions.addAll (temp);
             // Clear filtered list holder
             temp.clear ();
+
 
         // If the user resets the "Type" filter back to "none"
         } else {
@@ -421,6 +532,8 @@ public class CashflowAccountActivity extends AppCompatActivity {
             temp.clear ();
         }
 
+        Toast.makeText (this, "TEST" + transactions.size (), Toast.LENGTH_SHORT).show ();
+
         // Refresh RecyclerView
         transAdapter.notifyDataSetChanged ();
 
@@ -432,9 +545,9 @@ public class CashflowAccountActivity extends AppCompatActivity {
      * Shows and hides the empty message for the RecyclerView.
      */
     private void displayEmptyMessage () {
-        if (transactions.size () == 0)
-            this.tvEmptyMessage.setVisibility (View.VISIBLE);
+        if (transactions.isEmpty ())
+            tvEmptyMessage.setVisibility (View.VISIBLE);
         else
-            this.tvEmptyMessage.setVisibility (View.GONE);
+            tvEmptyMessage.setVisibility (View.GONE);
     }
 }
