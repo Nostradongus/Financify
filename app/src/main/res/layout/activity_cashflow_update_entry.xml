@@ -47,6 +47,22 @@
         app:layout_constraintTop_toTopOf="@+id/guideline24">
 
         <Button
+            android:id="@+id/btn_cf_cancel_update_entry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:backgroundTint="@color/financify_gray"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Cancel"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_delete_entry"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_delete_entry"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_delete_entry" />
+
+        <Button
             android:id="@+id/btn_cf_update_entry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,14 +81,12 @@
             android:id="@+id/btn_cf_delete_entry"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
             android:backgroundTint="@color/financify_pastel_red"
             android:fontFamily="@font/poppins_bold"
             android:text="delete transaction"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/btn_cf_update_entry"
             app:layout_constraintStart_toStartOf="@+id/btn_cf_update_entry"
             app:layout_constraintTop_toBottomOf="@+id/btn_cf_update_entry" />
@@ -166,7 +180,7 @@
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="ex: 500.00"
-            android:inputType="textPersonName"
+            android:inputType="number|textPersonName"
             android:maxLength="9"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_label"
@@ -202,10 +216,10 @@
 
         <Button
             android:id="@+id/btn_cf_update_entry_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:backgroundTint="@color/financify_dark_blue"
+            android:backgroundTint="@color/financify_light_blue"
             android:ems="10"
             android:fontFamily="@font/poppins_medium"
             android:inputType="date"

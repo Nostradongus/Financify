@@ -160,17 +160,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="18dp"
             android:backgroundTint="@color/financify_pastel_green"
             android:fontFamily="@font/poppins_bold"
             android:text="add account"
             android:textColor="@color/financify_dark_blue"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_account_balance_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_account_balance_label"
             app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_balance_label" />
+
+        <Button
+            android:id="@+id/btn_cf_cancel_add_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:backgroundTint="@color/financify_gray"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Cancel"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/btn_cf_add_account"
+            app:layout_constraintStart_toStartOf="@+id/btn_cf_add_account"
+            app:layout_constraintTop_toBottomOf="@+id/btn_cf_add_account" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

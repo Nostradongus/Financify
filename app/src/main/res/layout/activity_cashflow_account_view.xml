@@ -8,13 +8,15 @@
 
     <ImageButton
         android:id="@+id/ib_cashflow_entry_filter"
-        android:layout_width="20dp"
+        android:layout_width="17dp"
         android:layout_height="18dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:padding="2dp"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_specific_entries_label"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
         app:srcCompat="@drawable/filter_icon"
         app:tint="@color/financify_dark_blue" />
 
@@ -23,13 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/poppins_bold"
         android:text="Account Name"
         android:textColor="@color/financify_dark_blue"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_cf_back_home_nav" />
 
     <TextView
         android:id="@+id/tv_specific_account_type"
@@ -83,7 +85,7 @@
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
         android:textStyle="italic"
-        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_entry_filter"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_specific_account_balance" />
 
@@ -100,14 +102,17 @@
 
     <ImageView
         android:id="@+id/iv_cashflow_edit_account"
-        android:layout_width="14dp"
-        android:layout_height="13dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        app:tint="@color/financify_light_blue"
+        android:layout_width="34dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="-8dp"
+        android:layout_marginBottom="5dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_specific_account_name"
         app:layout_constraintStart_toEndOf="@+id/tv_specific_account_name"
         app:layout_constraintTop_toTopOf="@+id/tv_specific_account_name"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        app:tint="@color/financify_light_blue" />
 
     <ImageView
         android:id="@+id/iv_cf_account_divider"
@@ -220,8 +225,10 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="10dp"
+            android:backgroundTint="@color/financify_gray"
             android:fontFamily="@font/poppins_medium"
             android:text="Clear Filters"
+            android:textColor="@color/financify_dark_blue"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
@@ -264,6 +271,63 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_cf_account_filter" />
+
+    <ProgressBar
+        android:id="@+id/pb_cf_account"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_transactions" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FILTER"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_specific_entries_label"
+        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_entry_filter"
+        app:layout_constraintTop_toTopOf="@+id/tv_specific_entries_label" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_cf_back_home_nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_back_home"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginBottom="2dp"
+            android:padding="2dp"
+            android:paddingBottom="2dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_back_home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_back_home"
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            app:tint="@color/financify_light_blue" />
+
+        <TextView
+            android:id="@+id/tv_back_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Back to Homepage"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_back_home"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

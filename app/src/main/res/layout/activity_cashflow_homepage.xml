@@ -65,7 +65,7 @@
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
         android:textStyle="bold|italic"
-        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_account_filter"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_current_balance" />
@@ -90,12 +90,12 @@
         android:layout_height="0dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_cashflow_add"
@@ -202,14 +202,39 @@
 
     <ImageButton
         android:id="@+id/ib_cashflow_account_filter"
-        android:layout_width="20dp"
+        android:layout_width="17dp"
         android:layout_height="18dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:padding="2dp"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_cashflow_accounts_label"
+        app:layout_constraintTop_toTopOf="@+id/textView"
         app:srcCompat="@drawable/filter_icon"
         app:tint="@color/financify_dark_blue" />
+
+    <ProgressBar
+        android:id="@+id/pb_cf_home"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FILTER"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_cf_account_divider2"
+        app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_account_filter"
+        app:layout_constraintTop_toTopOf="@+id/tv_cashflow_accounts_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

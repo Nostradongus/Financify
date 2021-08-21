@@ -40,20 +40,16 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountViewHolder> {
         // Inflate cashflow_account_entry.xml here
         LayoutInflater inflater = LayoutInflater.from (parent.getContext ());
         View itemView = inflater.inflate (R.layout.cashflow_account_entry, parent, false);
-
         AccountViewHolder accountViewHolder = new AccountViewHolder (itemView);
 
+        // OnClickListener for Account tiles
         accountViewHolder.getContainer ().setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 Intent i = new Intent(view.getContext (), CashflowAccountActivity.class);
-
-                i.putExtra (Keys.KEY_ID, accounts.get (accountViewHolder.getBindingAdapterPosition ()).getId ());
-                i.putExtra (Keys.KEY_NAME, accounts.get (accountViewHolder.getBindingAdapterPosition ()).getName ());
-                i.putExtra (Keys.KEY_BAL, accounts.get (accountViewHolder.getBindingAdapterPosition ()).getBalance());
-                i.putExtra (Keys.KEY_TYPE, accounts.get (accountViewHolder.getBindingAdapterPosition ()).getType ());
-
+                i.putExtra (Keys.KEY_ACC, accounts.get (accountViewHolder.getBindingAdapterPosition ()));
                 view.getContext ().startActivity (i);
+                ((CashflowHomeActivity) view.getContext ()).finish ();
             }
         });
 
