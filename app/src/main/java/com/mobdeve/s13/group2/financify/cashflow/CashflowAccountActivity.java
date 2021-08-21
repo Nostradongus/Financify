@@ -470,12 +470,11 @@ public class CashflowAccountActivity extends AppCompatActivity {
         ArrayList<Transaction> temp = new ArrayList<> ();
 
         // If the user filtered based on TRANSACTION TYPE
-        if (!typeFilter.equalsIgnoreCase ("none")) {
+        if (!typeFilter.equalsIgnoreCase ("Select type…")) {
             // Loop through each Transaction
             for (Transaction transaction : transactions) {
                 // If "Type" filter matches Transaction type
                 if (typeFilter.equalsIgnoreCase (transaction.getType ())) {
-                    Toast.makeText (this, "Type Filter Triggered.", Toast.LENGTH_SHORT).show ();
                     // Add to temporary list
                     temp.add(transaction);
                 }
@@ -531,8 +530,6 @@ public class CashflowAccountActivity extends AppCompatActivity {
             // Clear filtered list holder
             temp.clear ();
         }
-
-        Toast.makeText (this, "TEST" + transactions.size (), Toast.LENGTH_SHORT).show ();
 
         // Refresh RecyclerView
         transAdapter.notifyDataSetChanged ();

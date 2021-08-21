@@ -47,7 +47,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
 
         TransactionViewHolder transViewHolder = new TransactionViewHolder (itemView);
 
-        // TODO: Implement when UPDATE TRANSACTION is done.
         transViewHolder.getContainer ().setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
