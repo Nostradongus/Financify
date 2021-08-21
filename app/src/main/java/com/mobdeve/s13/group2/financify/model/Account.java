@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify.cashflow;
+package com.mobdeve.s13.group2.financify.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

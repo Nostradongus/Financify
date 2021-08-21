@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,11 +17,14 @@ import android.widget.FrameLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+// TODO: add documentation
 public class BaseActivity extends AppCompatActivity {
 
     // current activity on screen's layout
@@ -75,21 +79,40 @@ public class BaseActivity extends AppCompatActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     // TODO: complete code here
+                    // intent for redirecting to other activities according to menu item pressed
+                    Intent intent;
                     switch (item.getItemId()) {
                         case R.id.nav_portfolio:
 
                             return true;
-                        case R.id.nav_cash_flow:
 
+                        case R.id.nav_cash_flow:
+                            // redirect to cash flow's start activity
+                            intent = new Intent(getBaseContext(), CashflowHomeActivity.class);
+                            startActivity(intent);
+
+                            // end current activity
+                            finish();
                             return true;
+
                         case R.id.nav_reminder_list:
 
                             return true;
+
                         case R.id.nav_settings:
 
                             return true;
-                        case R.id.nav_logout:
 
+                        case R.id.nav_logout:
+                            // sign out current user of the application
+                            FirebaseAuth.getInstance().signOut();
+
+                            // redirect back to login page
+                            intent = new Intent(getBaseContext(), LoginActivity.class);
+                            startActivity(intent);
+
+                            // end current activity
+                            finish();
                             return true;
                     }
                     return false;
@@ -100,12 +123,11 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
+        // pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }

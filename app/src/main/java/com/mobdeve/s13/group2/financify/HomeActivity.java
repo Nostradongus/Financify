@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+// TODO: add documentation
 public class HomeActivity extends BaseActivity {
 
     @Override
@@ -11,4 +12,6 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
     }
+
+    // TODO: add functionalities to the image buttons in activity_home.xml
 }

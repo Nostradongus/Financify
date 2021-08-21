@@ -1,8 +1,6 @@
 package com.mobdeve.s13.group2.financify.cashflow;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,26 +17,26 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.model.Account;
+import com.mobdeve.s13.group2.financify.model.Transaction;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This activity serves as the "landing page" when a user navigates to the Cash Flow section of
  * the mobile application.
  */
-public class CashflowHomeActivity extends AppCompatActivity {
+public class CashflowHomeActivity extends BaseActivity {
 
     // RecyclerView Attributes
     private RecyclerView rvAccountList;

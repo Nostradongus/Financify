@@ -13,14 +13,13 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity">
-        <activity android:name=".cashflow.CashflowUpdateEntryActivity"></activity>
+        <activity android:name=".cashflow.CashflowUpdateEntryActivity" />
         <activity android:name=".cashflow.CashflowAddEntryActivity" />
         <activity android:name=".cashflow.CashflowUpdateAccountActivity" />
         <activity android:name=".cashflow.CashflowAddAccountActivity" />
         <activity android:name=".cashflow.CashflowAccountActivity" />
         <activity android:name=".cashflow.CashflowHomeActivity" />
-        <activity android:name=".cashflow.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
