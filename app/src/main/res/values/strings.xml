@@ -30,4 +30,35 @@
     <!-- home page strings -->
     <string name="action_indicator">What do you want to do?</string>
     <string name="user_greeting">Hello, Zinnia!</string>
+
+    <!-- types of account -->
+    <string-array name="account_types">
+        <item>Physical Wallet</item>
+        <item>Bank Account</item>
+        <item>Digital Wallet</item>
+    </string-array>
+
+    <!-- types of transaction -->
+    <string-array name="transaction_types">
+        <item>Select type…</item>
+        <item>Income</item>
+        <item>Expense</item>
+        <item>Investment</item>
+    </string-array>
+
+    <!-- months in a year -->
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>
