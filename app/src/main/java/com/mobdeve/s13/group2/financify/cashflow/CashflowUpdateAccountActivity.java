@@ -1,10 +1,5 @@
 package com.mobdeve.s13.group2.financify.cashflow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,16 +13,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.model.Account;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * This activity serves as the "update an account view" when the user opts to edit a Cashflow account.
  */
-public class CashflowUpdateAccountActivity extends AppCompatActivity {
+public class CashflowUpdateAccountActivity extends BaseActivity {
 
     // UI Attributes
     private Button btnUpdate, btnDelete, btnCancel;

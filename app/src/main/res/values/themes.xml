@@ -14,15 +14,23 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- style for application's navigation bar -->
+    <style name="FinancifyNavigationBar">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- style for DatePicker button -->
+    <style name="DatePickerTheme.ButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/financify_dark_blue</item>
+    </style>
+
+    <!-- style for DatePicker dialog -->
     <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/financify_dark_blue</item>
         <item name="colorPrimaryDark">@color/financify_dark_blue</item>
         <item name="colorAccent">@color/financify_dark_blue</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerTheme.ButtonStyle</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerTheme.ButtonStyle</item>
-    </style>
-
-    <style name="DatePickerTheme.ButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/financify_dark_blue</item>
     </style>
 </resources>

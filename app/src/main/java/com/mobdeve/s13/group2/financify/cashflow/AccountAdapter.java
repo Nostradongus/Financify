@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.model.Account;
 
 import org.jetbrains.annotations.NotNull;
 

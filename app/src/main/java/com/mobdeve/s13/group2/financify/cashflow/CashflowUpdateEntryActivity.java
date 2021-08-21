@@ -1,7 +1,5 @@
 package com.mobdeve.s13.group2.financify.cashflow;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.model.Account;
+import com.mobdeve.s13.group2.financify.model.Transaction;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * This activity serves as the "update a transaction view" when the user opts to edit a Cashflow entry.
  */
-public class CashflowUpdateEntryActivity extends AppCompatActivity {
+public class CashflowUpdateEntryActivity extends BaseActivity {
 
     // UI Attributes
     private EditText etAmt, etDesc;
