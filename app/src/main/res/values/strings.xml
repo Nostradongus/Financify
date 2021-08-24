@@ -1,7 +1,14 @@
 <resources>
-    <!-- base application component strings -->
+    <!-- base application and common component strings -->
     <string name="app_name">Financify</string>
     <string name="app_header">financify</string>
+    <string name="back_home">Back to Home</string>
+    <string name="back_accounts">Back to Accounts</string>
+    <string name="back_transactions">Back to Transactions</string>
+    <string name="back_reminders">Back to Reminders</string>
+    <string name="sample_name">Zinnia Launio</string>
+    <!-- TODO: temporary for now -->
+    <string name="back_summary">Back to Summary</string>
 
     <!-- login and register page strings -->
     <string name="login_label">Log in to your account</string>
@@ -15,12 +22,16 @@
     <string name="email_label">E-mail Address</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
+    <string name="login_failed">Invalid Email or Password!</string>
+    <string name="login_success">Logged In Successfully!</string>
+    <string name="register_success">User Registered Successfully!</string>
+    <string name="register_failed">User Registration Failed!</string>
 
     <!-- drawer and menu strings -->
     <string name="navigation_open">Open Navigation Drawer</string>
     <string name="navigation_close">Close Navigation Drawer</string>
-    <string name="sample_name">Zinnia Launio</string>
-    <string name="menu_portfolio">Portfolio</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_summary">Summary</string>
     <string name="menu_cash_flow">Cash Flow</string>
     <string name="menu_reminder_list">Reminder List</string>
     <string name="menu_budget_sheet">Budget Sheet</string>
@@ -30,6 +41,16 @@
     <!-- home page strings -->
     <string name="action_indicator">What do you want to do?</string>
     <string name="user_greeting">Hello, Zinnia!</string>
+
+    <!-- account settings strings -->
+    <string name="settings_label">Account Settings</string>
+    <string name="settings_save">Save Changes</string>
+
+    <!-- types of summary -->
+    <string-array name="summary_types">
+        <item>Top Accounts By Balance</item>
+        <item>Transaction Types Ratio</item>
+    </string-array>
 
     <!-- types of account -->
     <string-array name="account_types">

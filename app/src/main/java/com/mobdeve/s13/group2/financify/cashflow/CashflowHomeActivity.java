@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 import com.mobdeve.s13.group2.financify.model.Transaction;
@@ -406,6 +407,7 @@ public class CashflowHomeActivity extends BaseActivity {
         displayEmptyMessage ();
     }
 
+    // TODO: update searchAccounts method (accountsBackup must have the original data)
     /**
      * Update the contents of the accounts ArrayList based on SearchView query.
      *
@@ -438,5 +440,15 @@ public class CashflowHomeActivity extends BaseActivity {
             this.tvEmptyMessage.setVisibility (View.VISIBLE);
         else
             this.tvEmptyMessage.setVisibility (View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // go back to home activity page
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+
+        // end cash flow home activity
+        finish();
     }
 }

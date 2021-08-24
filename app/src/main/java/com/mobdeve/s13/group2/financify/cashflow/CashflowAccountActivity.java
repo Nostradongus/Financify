@@ -110,8 +110,6 @@ public class CashflowAccountActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed () {
-        super.onBackPressed ();
-
         // Go back to homepage
         goBackToHomepage ();
     }
@@ -346,7 +344,7 @@ public class CashflowAccountActivity extends BaseActivity {
         btnMonth = findViewById (R.id.btn_cf_month_filter);
         btnYear = findViewById (R.id.btn_cf_year_filter);
 
-        // TODO: Figure out how to work with depreciated stuffs!
+        // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today

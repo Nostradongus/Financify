@@ -72,7 +72,7 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed () {
-        super.onBackPressed ();
+        // go back to account activity page
         goBackToAccountPage ();
     }
 

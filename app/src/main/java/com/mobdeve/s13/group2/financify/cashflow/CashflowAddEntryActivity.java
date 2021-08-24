@@ -73,7 +73,7 @@ public class CashflowAddEntryActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed () {
-        super.onBackPressed ();
+        // go back to home activity page
         goBackToHomepage ();
     }
 

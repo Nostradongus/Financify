@@ -83,8 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
-                // check if fields are empty
-                if (!checkEmpty(firstName, lastName, email, password)) {
+                // check if fields are empty and validate email and password fields as well
+                if (!checkEmpty(firstName, lastName, email, password) &&
+                    validateEmailAndPassword(email, password)) {
                     // register new user to the database
                     registerUser(new User(firstName, lastName, email, password));
                 }
@@ -137,6 +138,29 @@ public class RegisterActivity extends AppCompatActivity {
         return hasEmpty;
     }
 
+    private boolean validateEmailAndPassword(String email, String password) {
+        boolean valid = true;
+
+        // check if email is in valid format
+        String[] atFormat = email.split("@");
+        String[] dotFormat = email.split("\\.");
+        if (atFormat.length < 2 || dotFormat.length < 2) {
+            // set error message
+            this.etEmail.setError("Please input a valid email");
+            this.etEmail.requestFocus();
+            valid = false;
+        }
+        // check if password is more than or equal to 6 characters as restricted by Firebase Auth
+        else if (password.length() < 6) {
+            // set error message
+            this.etPassword.setError("Password must be more than or equal to 6 characters");
+            this.etPassword.requestFocus();
+            valid = false;
+        }
+
+        return valid;
+    }
+
     private void registerUser(User user) {
         // show register progress bar as new user data is being added to database
         this.pbRegister.setVisibility(View.VISIBLE);
@@ -154,9 +178,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                    // disable register progress bar as process is complete
-                                    pbRegister.setVisibility(View.GONE);
-
                                     // if new user account data was added successfully to the database
                                     if (task.isSuccessful()) {
                                         registerSuccess();
@@ -173,10 +194,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerSuccess() {
+        // disable register progress bar as process is complete
+        this.pbRegister.setVisibility(View.GONE);
+
+        // log out temporarily logged in user
+        this.mAuth.signOut();
+
         // alert user that registration was successful
         Toast.makeText(
                 this,
-                "User Registered Successfully!",
+                R.string.register_success,
                 Toast.LENGTH_SHORT
         ).show();
 
@@ -189,10 +216,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerFailed() {
+        // disable register progress bar as process is complete
+        this.pbRegister.setVisibility(View.GONE);
+
         // alert user that error has occurred during registration process
         Toast.makeText(
                 this,
-                "User Registration Failed!",
+                R.string.register_failed,
                 Toast.LENGTH_SHORT
         ).show();
     }

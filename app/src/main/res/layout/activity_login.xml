@@ -89,7 +89,7 @@
             android:paddingEnd="15dp"
             android:background="@drawable/bg_input"
             android:hint="@string/email_label"
-            android:inputType="textEmailAddress|textWebEmailAddress"
+            android:inputType="textEmailAddress"
             android:textColorHint="@android:color/darker_gray"
             android:fontFamily="@font/poppins_medium"
             android:textSize="20sp"
