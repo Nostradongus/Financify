@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 import com.mobdeve.s13.group2.financify.model.Transaction;
@@ -81,7 +82,16 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
      */
     private void goBackToAccountPage () {
         Intent i = new Intent (CashflowUpdateEntryActivity.this, CashflowAccountActivity.class);
-        i.putExtra (Keys.KEY_ACC, account);
+        i.putExtra (Keys.KEY_CF_ACC, account);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowUpdateEntryActivity.this, LoginActivity.class);
         startActivity (i);
         finish ();
     }
@@ -142,7 +152,8 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
                     .child (transaction.getId ());
         // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -222,8 +233,8 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
 
         // Retrieve Account from Account page
         Intent i = getIntent ();
-        account = i.getParcelableExtra (Keys.KEY_ACC);
-        transaction = i.getParcelableExtra (Keys.KEY_TRAN);
+        account = i.getParcelableExtra (Keys.KEY_CF_ACC);
+        transaction = i.getParcelableExtra (Keys.KEY_CF_TRAN);
 
         // Set field values
         etAmt.setText (String.valueOf (transaction.getAmount()));

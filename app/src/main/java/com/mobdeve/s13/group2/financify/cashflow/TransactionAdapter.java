@@ -54,8 +54,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionViewHold
             public void onClick (View view) {
                 Intent i = new Intent (view.getContext (), CashflowUpdateEntryActivity.class);
 
-                i.putExtra (Keys.KEY_ACC, account);
-                i.putExtra (Keys.KEY_TRAN, account.getTransaction (transactions.get (transViewHolder.getBindingAdapterPosition ()).getId ()));
+                i.putExtra (Keys.KEY_CF_ACC, account);
+                i.putExtra (Keys.KEY_CF_TRAN, account.getTransaction (transactions.get (transViewHolder.getBindingAdapterPosition ()).getId ()));
 
                 view.getContext ().startActivity (i);
                 ((CashflowAccountActivity) view.getContext ()).finish ();

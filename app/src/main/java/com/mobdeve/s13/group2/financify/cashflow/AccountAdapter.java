@@ -48,7 +48,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountViewHolder> {
             @Override
             public void onClick (View view) {
                 Intent i = new Intent(view.getContext (), CashflowAccountActivity.class);
-                i.putExtra (Keys.KEY_ACC, accounts.get (accountViewHolder.getBindingAdapterPosition ()));
+                i.putExtra (Keys.KEY_CF_ACC, accounts.get (accountViewHolder.getBindingAdapterPosition ()));
                 view.getContext ().startActivity (i);
                 ((CashflowHomeActivity) view.getContext ()).finish ();
             }
