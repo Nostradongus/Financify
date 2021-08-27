@@ -41,10 +41,6 @@ public class HomeActivity extends BaseActivity {
      * Reminder list layout button.
      */
     private ConstraintLayout clReminderList;
-    /**
-     * Budget sheet layout button.
-     */
-    private ConstraintLayout clBudgetSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +57,6 @@ public class HomeActivity extends BaseActivity {
         this.clSummary = findViewById(R.id.cl_summary_card);
         this.clCashFlow = findViewById(R.id.cl_cash_flow_card);
 //        this.clReminderList = findViewById(R.id.cl_reminder_list_card);
-//        this.clBudgetSheet = findViewById(R.id.cl_budget_sheet_card);
 
         // update greeting with logged in user's first name
         this.sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);

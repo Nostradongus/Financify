@@ -34,12 +34,6 @@
             android:id="@+id/nav_reminder_list"
             android:icon="@drawable/ic_reminder"
             android:title="@string/menu_reminder_list" />
-
-        <!-- budget sheet menu item -->
-        <item
-            android:id="@+id/nav_budget_sheet"
-            android:icon="@drawable/ic_budget"
-            android:title="@string/menu_budget_sheet" />
     </group>
 
     <group android:id="@+id/menu_account_items">
