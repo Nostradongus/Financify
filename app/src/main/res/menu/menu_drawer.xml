@@ -5,14 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <!-- navigation drawer menu items -->
+    <!-- home activity drawer menu item -->
+    <group
+        android:id="@+id/menu_home_item">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/menu_home" />
+    </group>
+
+    <!-- activity drawer menu items -->
     <group
         android:id="@+id/menu_action_items">
         <!-- portfolio menu item -->
         <item
-            android:id="@+id/nav_portfolio"
-            android:icon="@drawable/ic_portfolio"
-            android:title="@string/menu_portfolio" />
+            android:id="@+id/nav_summary"
+            android:icon="@drawable/ic_summary"
+            android:title="@string/menu_summary" />
 
         <!-- cash flow menu item -->
         <item
@@ -25,12 +34,6 @@
             android:id="@+id/nav_reminder_list"
             android:icon="@drawable/ic_reminder"
             android:title="@string/menu_reminder_list" />
-
-        <!-- budget sheet menu item -->
-        <item
-            android:id="@+id/nav_budget_sheet"
-            android:icon="@drawable/ic_budget"
-            android:title="@string/menu_budget_sheet" />
     </group>
 
     <group android:id="@+id/menu_account_items">

@@ -1,4 +1,4 @@
-package com.mobdeve.s13.group2.financify.cashflow;
+package com.mobdeve.s13.group2.financify;
 
 import java.util.Calendar;
 

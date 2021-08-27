@@ -5,9 +5,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -23,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 import com.mobdeve.s13.group2.financify.model.Transaction;
@@ -246,6 +255,8 @@ public class CashflowHomeActivity extends BaseActivity {
             // When query is submitted
             @Override
             public boolean onQueryTextSubmit(String query) {
+                resetRecyclerViewContents ();
+
                 // If there is query input
                 if (query.trim ().length () > 0)
                     searchAccounts (query);
@@ -256,10 +267,12 @@ public class CashflowHomeActivity extends BaseActivity {
             // When there is a change in text
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 if (newText.length () == 0 &&
                     accounts != null &&
-                    accountsBackup != null)
+                    accountsBackup != null) {
                     resetRecyclerViewContents ();
+                }
 
                 return false;
             }
@@ -303,7 +316,7 @@ public class CashflowHomeActivity extends BaseActivity {
                     clearFilters ();
                     Intent i = new Intent (CashflowHomeActivity.this, CashflowAddEntryActivity.class);
 
-                    i.putParcelableArrayListExtra (Keys.KEY_ACCS, accounts);
+                    i.putParcelableArrayListExtra (Keys.KEY_CF_ACCS, accounts);
 
                     startActivity (i);
                     finish ();
@@ -320,7 +333,7 @@ public class CashflowHomeActivity extends BaseActivity {
                 clearFilters ();
                 Intent i = new Intent (CashflowHomeActivity.this, CashflowAddAccountActivity.class);
 
-                i.putParcelableArrayListExtra (Keys.KEY_ACCS, accounts);
+                i.putParcelableArrayListExtra (Keys.KEY_CF_ACCS, accounts);
 
                 startActivity (i);
                 finish ();
@@ -371,8 +384,9 @@ public class CashflowHomeActivity extends BaseActivity {
         this.tvAddAccount.setVisibility (View.GONE);
 
         // Animate FABs
-        this.clAddAccount.animate().translationY(0);
-        this.clAddEntry.animate().translationY(0);
+        this.clAddAccount.animate ().translationY (0);
+        this.clAddEntry.animate ().translationY (0);
+
     }
 
     /**
@@ -406,6 +420,7 @@ public class CashflowHomeActivity extends BaseActivity {
         displayEmptyMessage ();
     }
 
+    // TODO: update searchAccounts method (accountsBackup must have the original data)
     /**
      * Update the contents of the accounts ArrayList based on SearchView query.
      *
@@ -438,5 +453,15 @@ public class CashflowHomeActivity extends BaseActivity {
             this.tvEmptyMessage.setVisibility (View.VISIBLE);
         else
             this.tvEmptyMessage.setVisibility (View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // go back to home activity page
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+
+        // end cash flow home activity
+        finish();
     }
 }

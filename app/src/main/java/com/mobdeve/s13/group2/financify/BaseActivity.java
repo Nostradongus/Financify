@@ -5,27 +5,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
+import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
 // TODO: add documentation
 public class BaseActivity extends AppCompatActivity {
+
+    // SharedPreferences to get logged in user's firstname and lastname
+    private SharedPreferences sharedPreferences;
+
+    // layout resource id of current activity extending BaseActivity
+    private int layoutResId;
+
+    // delay in milliseconds to close application processes
+    private static final int DELAY = 500;
 
     // current activity on screen's layout
     private FrameLayout flActivity;
@@ -66,6 +85,18 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void initDrawer() {
+        // get header child layout from navigation view layout
+        View navHeader = this.navigationView.getHeaderView(0);
+        // get textview from header child layout
+        TextView tvNavHeader = navHeader.findViewById(R.id.tv_nav_header);
+        // get first name and last name of user from SharedPreferences
+        this.sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
+        String firstName = this.sharedPreferences.getString("FIRSTNAME", "");
+        String lastName = this.sharedPreferences.getString("LASTNAME", "");
+        String fullName = firstName + " " + lastName;
+        // set user's full name to the navigation view's header
+        tvNavHeader.setText(fullName);
+
         // set toggle for navigation bar
         toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_open, R.string.navigation_close
@@ -82,17 +113,19 @@ public class BaseActivity extends AppCompatActivity {
                     // intent for redirecting to other activities according to menu item pressed
                     Intent intent;
                     switch (item.getItemId()) {
-                        case R.id.nav_portfolio:
+                        case R.id.nav_home:
+                            // launch main home activity
+                            launchActivity(R.layout.activity_home, HomeActivity.class);
+                            return true;
 
+                        case R.id.nav_summary:
+                            // launch summary activity
+                            launchActivity(R.layout.activity_summary, SummaryActivity.class);
                             return true;
 
                         case R.id.nav_cash_flow:
-                            // redirect to cash flow's start activity
-                            intent = new Intent(getBaseContext(), CashflowHomeActivity.class);
-                            startActivity(intent);
-
-                            // end current activity
-                            finish();
+                            // launch cash flow home activity
+                            launchActivity(R.layout.activity_cashflow_homepage, CashflowHomeActivity.class);
                             return true;
 
                         case R.id.nav_reminder_list:
@@ -100,7 +133,8 @@ public class BaseActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_settings:
-
+                            // launch settings activity
+                            launchActivity(R.layout.activity_settings, SettingsActivity.class);
                             return true;
 
                         case R.id.nav_logout:
@@ -118,6 +152,25 @@ public class BaseActivity extends AppCompatActivity {
                     return false;
                 }
             });
+        }
+    }
+
+    private <T> void launchActivity (int layout, Class<T> activity) {
+        // check if user is not currently on chosen activity from menu
+        if (this.layoutResId != layout) {
+            // redirect to chosen activity
+            Intent intent = new Intent(getBaseContext(), activity);
+            startActivity(intent);
+
+            // end current activity
+            finish();
+        } else {
+            // display message to indicate that user is already on the activity
+            Toast.makeText(
+                    getBaseContext(),
+                    "You are already on the page.",
+                    Toast.LENGTH_SHORT
+            ).show();
         }
     }
 
@@ -149,6 +202,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         if (flActivity != null) {
+            // store layout resource id
+            this.layoutResId = layoutResID;
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -181,7 +236,22 @@ public class BaseActivity extends AppCompatActivity {
         // the navigation view bar
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        // if current activity is the only activity on state
+        else if (isTaskRoot()) {
+            // end and close application and its tasks
+            finishAndRemoveTask();
+
+            // kill application process when activity is finished completely
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }, DELAY);
+        }
+        else {
+            // move back to previous activity
             super.onBackPressed();
         }
     }

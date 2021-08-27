@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.DateHelper;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 import com.mobdeve.s13.group2.financify.model.Transaction;
@@ -72,7 +74,7 @@ public class CashflowAddEntryActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed () {
-        super.onBackPressed ();
+        // go back to home activity page
         goBackToHomepage ();
     }
 
@@ -81,6 +83,15 @@ public class CashflowAddEntryActivity extends BaseActivity {
      */
     private void goBackToHomepage () {
         Intent i = new Intent (CashflowAddEntryActivity.this, CashflowHomeActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowAddEntryActivity.this, LoginActivity.class);
         startActivity (i);
         finish ();
     }
@@ -127,7 +138,8 @@ public class CashflowAddEntryActivity extends BaseActivity {
                     .child (userId).child ("accounts");
         // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -145,7 +157,7 @@ public class CashflowAddEntryActivity extends BaseActivity {
         // Retrieve accounts passed from Intent (using Parcelable)
         Intent i = getIntent ();
         // Instantiate accounts list
-        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_ACCS));
+        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_CF_ACCS));
 
         // Cancel Button OnClickListener
         btnCancel.setOnClickListener (new View.OnClickListener () {

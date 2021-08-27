@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 
@@ -61,8 +62,6 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed () {
-        super.onBackPressed ();
-
         // Go back to homepage
         goBackToHomepage ();
     }
@@ -72,7 +71,7 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
      */
     private void goBackToAccountPage () {
         Intent i = new Intent (CashflowUpdateAccountActivity.this, CashflowAccountActivity.class);
-        i.putExtra (Keys.KEY_ACC, account);
+        i.putExtra (Keys.KEY_CF_ACC, account);
         startActivity (i);
         finish ();
     }
@@ -82,6 +81,15 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
      */
     private void goBackToHomepage () {
         Intent i = new Intent (CashflowUpdateAccountActivity.this, CashflowHomeActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowUpdateAccountActivity.this, LoginActivity.class);
         startActivity (i);
         finish ();
     }
@@ -125,7 +133,8 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
                     .child ("accounts");
         // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -187,7 +196,7 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
 
         // Retrieve Account from Account page
         Intent i = getIntent ();
-        account = i.getParcelableExtra (Keys.KEY_ACC);
+        account = i.getParcelableExtra (Keys.KEY_CF_ACC);
 
         // Set field value
         etAccountName.setText (this.account.getName ());
