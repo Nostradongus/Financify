@@ -107,6 +107,6 @@ public class RemindersActivity extends BaseActivity {
         startActivity(intent);
 
         // end current activity
-        finish();
+        finish ();
     }
 }
