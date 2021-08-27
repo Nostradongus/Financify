@@ -16,11 +16,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class RemindersActivity extends BaseActivity {
 
     private RecyclerView rvReminderList;
     private RecyclerView.LayoutManager myManager;
@@ -76,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
         this.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent (MainActivity.this, AddRemindersActivity.class);
+                Intent i = new Intent (RemindersActivity.this, AddRemindersActivity.class);
                 myActivityResultLauncher.launch(i);
             }
         });
     }
 
     private void initRecyclerView() {
-        this.rvReminderList  =findViewById(R.id.rv_reminders);
+        this.rvReminderList = findViewById(R.id.rv_reminders);
 
         this.myManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         this.rvReminderList.setLayoutManager(this.myManager);
@@ -96,5 +98,14 @@ public class MainActivity extends AppCompatActivity {
         // making new page and attaching it to the recycler view
         SnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(this.rvReminderList);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // redirect back to home page
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+
+        // end current activity
     }
 }

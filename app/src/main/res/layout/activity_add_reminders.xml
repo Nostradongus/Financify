@@ -168,7 +168,7 @@
             android:background="@drawable/edit_text_border"
             android:hint="ex: Expenses"
             android:inputType="textShortMessage"
-            android:maxLength="9"
+            android:maxLength="20"
             app:layout_constraintEnd_toEndOf="@+id/tv_rem_add_reminder_label"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/tv_rem_add_reminder_label"

@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.R;
 
-import org.w3c.dom.Text;
-
-public class AddRemindersActivity extends Activity {
+public class AddRemindersActivity extends BaseActivity {
 
     public static final String KEY_TITLE = "KEY_TITLE";
     public static final String KEY_DESCRIPTION = "KEY_DESCRIPTION";
@@ -60,7 +58,7 @@ public class AddRemindersActivity extends Activity {
         this.btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent (AddRemindersActivity.this, MainActivity.class);
+                Intent i = new Intent (AddRemindersActivity.this, RemindersActivity.class);
                 startActivity (i);
                 finish ();
             }

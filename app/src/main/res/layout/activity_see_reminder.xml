@@ -100,7 +100,6 @@
         android:ems="10"
         android:hint="ex: Paid bills"
         android:inputType="textPersonName"
-        android:maxLength="30"
         app:layout_constraintEnd_toEndOf="@+id/tv_rem_update_entry_type_label"
         app:layout_constraintStart_toStartOf="@+id/tv_rem_update_entry_type_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_rem_update_entry_type_label" />
@@ -181,7 +180,7 @@
         android:ems="10"
         android:hint="ex: Payment Deadline"
         android:inputType="number|textPersonName"
-        android:maxLength="9"
+        android:maxLength="20"
         app:layout_constraintEnd_toEndOf="@+id/tv_rem_update_entry_label"
         app:layout_constraintStart_toStartOf="@+id/tv_rem_update_entry_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_rem_update_entry_label" />

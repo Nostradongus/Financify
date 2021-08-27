@@ -11,7 +11,7 @@ class DataHelper {
         data.add(new Reminders(
                 "Utility Bills for the month of January",
                 types[0],
-                "January (Utility Bills) Deadline",
+                "January Utility Bills",
                 "February 14, 2021"
         ));
         data.add(new Reminders(

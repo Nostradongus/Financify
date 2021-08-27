@@ -4,15 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.R;
 
-public class SeeReminderActivity extends AppCompatActivity {
+public class SeeReminderActivity extends BaseActivity {
 
     // get the widgets that change
-    private TextView tvTitle;
-    private TextView tvDesc;
+    private EditText etTitle;
+    private EditText etDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,18 +22,18 @@ public class SeeReminderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_see_reminder);
 
         // retrieving
-        this.tvTitle = findViewById(R.id.tv_reminders_title);
-        this.tvDesc = findViewById(R.id.tv_reminders_description);
+        this.etTitle = findViewById(R.id.et_rem_update_entry_title);
+        this.etDesc = findViewById(R.id.et_rem_update_entry_desc);
 
         Intent i = getIntent();
 
         // TITLE
         String sName = i.getStringExtra(Adapter.KEY_TITLE);
-        this.tvTitle.setText(sName);
+        this.etTitle.setText(sName);
 
         // DESCRIPTION
         String desc = i.getStringExtra(Adapter.KEY_DESCRIPTION);
-        this.tvDesc.setText(desc);
+        this.etDesc.setText(desc);
 
     }
 }
