@@ -1,44 +1,12 @@
 <resources>
-    <!-- base application component strings -->
     <string name="app_name">Financify</string>
-    <string name="app_header">financify</string>
 
-    <!-- login and register page strings -->
-    <string name="login_label">Log in to your account</string>
-    <string name="register_label">Create a new account</string>
-    <string name="login_btn_label">Log In</string>
-    <string name="register_btn_label">Create Account</string>
-    <string name="login_redirect_label"><u>Sign in instead</u></string>
-    <string name="register_redirect_label"><u>Create a new account</u></string>
-    <string name="firstname_label">First Name</string>
-    <string name="lastname_label">Last Name</string>
-    <string name="email_label">E-mail Address</string>
-    <string name="username_label">Username</string>
-    <string name="password_label">Password</string>
-
-    <!-- drawer and menu strings -->
-    <string name="navigation_open">Open Navigation Drawer</string>
-    <string name="navigation_close">Close Navigation Drawer</string>
-    <string name="sample_name">Zinnia Launio</string>
-    <string name="menu_portfolio">Portfolio</string>
-    <string name="menu_cash_flow">Cash Flow</string>
-    <string name="menu_reminder_list">Reminder List</string>
-    <string name="menu_budget_sheet">Budget Sheet</string>
-    <string name="menu_settings">Account Settings</string>
-    <string name="menu_logout">Log Out</string>
-
-    <!-- home page strings -->
-    <string name="action_indicator">What do you want to do?</string>
-    <string name="user_greeting">Hello, Zinnia!</string>
-
-    <!-- types of account -->
     <string-array name="account_types">
         <item>Physical Wallet</item>
         <item>Bank Account</item>
         <item>Digital Wallet</item>
     </string-array>
 
-    <!-- types of transaction -->
     <string-array name="transaction_types">
         <item>Select type…</item>
         <item>Income</item>
@@ -46,7 +14,6 @@
         <item>Investment</item>
     </string-array>
 
-    <!-- months in a year -->
     <string-array name="months">
         <item>January</item>
         <item>February</item>
@@ -61,4 +28,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+
 </resources>
