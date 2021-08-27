@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.DateHelper;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 import com.mobdeve.s13.group2.financify.model.Transaction;
@@ -87,6 +88,15 @@ public class CashflowAddEntryActivity extends BaseActivity {
     }
 
     /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowAddEntryActivity.this, LoginActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
      * Adds the newly created Transaction to the Firebase database.
      *
      * @param accountIndex  the list index of the Account to be added
@@ -128,7 +138,8 @@ public class CashflowAddEntryActivity extends BaseActivity {
                     .child (userId).child ("accounts");
         // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -146,7 +157,7 @@ public class CashflowAddEntryActivity extends BaseActivity {
         // Retrieve accounts passed from Intent (using Parcelable)
         Intent i = getIntent ();
         // Instantiate accounts list
-        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_ACCS));
+        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_CF_ACCS));
 
         // Cancel Button OnClickListener
         btnCancel.setOnClickListener (new View.OnClickListener () {

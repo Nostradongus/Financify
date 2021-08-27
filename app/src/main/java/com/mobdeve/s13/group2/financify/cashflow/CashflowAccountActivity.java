@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.DateHelper;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
@@ -124,6 +125,15 @@ public class CashflowAccountActivity extends BaseActivity {
     }
 
     /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowAccountActivity.this, LoginActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
      * Initialize Firebase components.
      */
     private void initFirebase () {
@@ -158,7 +168,7 @@ public class CashflowAccountActivity extends BaseActivity {
                             transFromFirebase.add (new Transaction (
                                     transaction.getKey (),
                                     transaction.child ("description").getValue ().toString (),
-                                    Double.valueOf (transaction.child ("amount").getValue ().toString ()),
+                                    Double.parseDouble (transaction.child ("amount").getValue ().toString ()),
                                     transaction.child ("type").getValue ().toString (),
                                     transaction.child ("date").getValue ().toString (),
                                     transaction.child ("accountId").getValue ().toString ()
@@ -198,7 +208,8 @@ public class CashflowAccountActivity extends BaseActivity {
             });
         // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -246,7 +257,7 @@ public class CashflowAccountActivity extends BaseActivity {
         Intent i = getIntent ();
 
         // Instantiate Account for this activity
-        account = i.getParcelableExtra (Keys.KEY_ACC);
+        account = i.getParcelableExtra (Keys.KEY_CF_ACC);
         transactions = new ArrayList<> (account.getTransactions ());
         transactionsBackup = new ArrayList<> (transactions);
 
@@ -256,7 +267,7 @@ public class CashflowAccountActivity extends BaseActivity {
             public void onClick (View view) {
                 Intent i = new Intent (CashflowAccountActivity.this, CashflowUpdateAccountActivity.class);
 
-                i.putExtra (Keys.KEY_ACC, account);
+                i.putExtra (Keys.KEY_CF_ACC, account);
 
                 startActivity (i);
                 finish ();

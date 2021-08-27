@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Account;
 
@@ -74,6 +75,15 @@ public class CashflowAddAccountActivity extends BaseActivity {
     }
 
     /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (CashflowAddAccountActivity.this, LoginActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    /**
      * Adds the newly created Account to the Firebase database
      *
      * @param name      the name of the new Account
@@ -118,7 +128,8 @@ public class CashflowAddAccountActivity extends BaseActivity {
                     .child ("accounts");
             // If invalid session
         } else {
-            // TODO: Handle when session is invalid.
+            // TODO: Verify if redirect to login is working
+            goBackToLogin ();
         }
     }
 
@@ -143,7 +154,7 @@ public class CashflowAddAccountActivity extends BaseActivity {
         // Retrieve accounts passed from Intent (using Parcelable)
         Intent i = getIntent ();
         // Instantiate accounts list
-        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_ACCS));
+        accounts = new ArrayList<> (i.getParcelableArrayListExtra (Keys.KEY_CF_ACCS));
 
         // Add Button OnClickListener
         btnAdd.setOnClickListener(new View.OnClickListener () {
