@@ -25,6 +25,8 @@
         <activity android:name=".cashflow.CashflowAddAccountActivity" />
         <activity android:name=".cashflow.CashflowAccountActivity" />
         <activity android:name=".cashflow.CashflowHomeActivity" />
+        <activity android:name=".reminders.SeeReminderActivity" />
+        <activity android:name=".reminders.AddRemindersActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
