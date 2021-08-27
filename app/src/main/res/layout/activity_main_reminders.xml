@@ -5,27 +5,27 @@
     android:id="@+id/cl_cf_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".cashflow.CashflowHomeActivity">
+    tools:context=".reminders.RemindersActivity">
 
     <TextView
-        android:id="@+id/tv_cf_account_empty"
+        android:id="@+id/tv_reminders_empty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:visibility="gone"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="No transactions to show..."
         android:textAlignment="center"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sv_account_search" />
+        app:layout_constraintTop_toBottomOf="@+id/sv_reminder_search" />
 
     <ImageView
-        android:id="@+id/iv_cf_account_divider2"
+        android:id="@+id/iv_reminders_divider2"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="15dp"
@@ -35,57 +35,57 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_accounts_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_label"
         app:srcCompat="@android:drawable/title_bar"
         app:tint="@color/financify_dark_blue" />
 
     <TextView
-        android:id="@+id/tv_cashflow_home_label"
+        android:id="@+id/tv_reminders_home_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="CURRENT BALANCE"
+        android:text="REMINDERS TODAY"
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_back_home" />
 
     <TextView
-        android:id="@+id/tv_cashflow_accounts_label"
+        android:id="@+id/tv_reminders_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="18dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="YOUR ACCOUNTS"
+        android:text="REMINDERS"
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.105"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_current_balance" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_current_date" />
 
     <TextView
-        android:id="@+id/tv_cashflow_current_balance"
+        android:id="@+id/tv_reminders_current_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-14dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="Php 0.00"
+        android:text="08-27-2021"
         android:textColor="@color/financify_light_blue"
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cashflow_home_label" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_home_label" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_accounts"
+        android:id="@+id/rv_reminders"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="15dp"
@@ -95,10 +95,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_empty" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_cashflow_add"
+        android:id="@+id/fab_reminders_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -112,8 +112,35 @@
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="#FFFFFF" />
 
+    <ImageView
+        android:id="@+id/iv_back_home"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="10dp"
+        android:padding="2dp"
+        android:paddingBottom="2dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_back_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_back_home"
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        app:tint="@color/financify_light_blue" />
+
+    <TextView
+        android:id="@+id/tv_back_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Back to Homepage"
+        android:textColor="@color/financify_light_blue"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_back_home"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <SearchView
-        android:id="@+id/sv_account_search"
+        android:id="@+id/sv_reminder_search"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginStart="15dp"
@@ -124,81 +151,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_cf_account_divider2" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_add_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="18dp"
-        android:animateLayoutChanges="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_cashflow_add_entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="6dp"
-            android:clickable="true"
-            app:backgroundTint="@color/financify_light_blue"
-            app:fabCustomSize="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="14sp"
-            app:srcCompat="@drawable/php"
-            app:tint="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/tv_fab_add_entry_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Add a transaction"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fab_cashflow_add_entry"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_add_account"
-        android:layout_width="233dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="18dp"
-        android:animateLayoutChanges="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_cashflow_add_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="6dp"
-            android:clickable="true"
-            app:backgroundTint="@color/financify_light_blue"
-            app:fabCustomSize="32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="14dp"
-            app:srcCompat="@drawable/account_icon"
-            app:tint="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/tv_fab_add_account_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Add an account"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/fab_cashflow_add_account"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/iv_reminders_divider2" />
 
     <ImageButton
         android:id="@+id/ib_cashflow_account_filter"
@@ -214,17 +167,6 @@
         app:srcCompat="@drawable/filter_icon"
         app:tint="@color/financify_dark_blue" />
 
-    <ProgressBar
-        android:id="@+id/pb_cf_home"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cf_account_empty" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -233,8 +175,8 @@
         android:textColor="@color/financify_dark_blue"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_cf_account_divider2"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_reminders_divider2"
         app:layout_constraintEnd_toStartOf="@+id/ib_cashflow_account_filter"
-        app:layout_constraintTop_toTopOf="@+id/tv_cashflow_accounts_label" />
+        app:layout_constraintTop_toTopOf="@+id/tv_reminders_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

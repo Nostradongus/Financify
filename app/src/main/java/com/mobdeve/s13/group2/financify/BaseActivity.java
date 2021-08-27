@@ -27,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
+import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -129,7 +130,8 @@ public class BaseActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_reminder_list:
-
+                            // launch reminder list home activity
+                            launchActivity(R.layout.activity_main_reminders, RemindersActivity.class);
                             return true;
 
                         case R.id.nav_settings:

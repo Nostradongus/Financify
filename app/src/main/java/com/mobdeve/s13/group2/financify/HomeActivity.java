@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
+import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
 // TODO: add documentation
@@ -56,7 +57,7 @@ public class HomeActivity extends BaseActivity {
         this.tvUserGreeting = findViewById(R.id.tv_user_greeting);
         this.clSummary = findViewById(R.id.cl_summary_card);
         this.clCashFlow = findViewById(R.id.cl_cash_flow_card);
-//        this.clReminderList = findViewById(R.id.cl_reminder_list_card);
+        this.clReminderList = findViewById(R.id.cl_reminder_list_card);
 
         // update greeting with logged in user's first name
         this.sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
@@ -64,7 +65,6 @@ public class HomeActivity extends BaseActivity {
         String userGreeting = "Hello, " + firstName + "!";
         tvUserGreeting.setText(userGreeting);
 
-        // TODO: add and complete the functionalities to the rest of the image buttons
         // set listener for summary card button
         this.clSummary.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +84,19 @@ public class HomeActivity extends BaseActivity {
             public void onClick(View v) {
                 // redirect to cash flow's start activity
                 Intent intent = new Intent(getBaseContext(), CashflowHomeActivity.class);
+                startActivity(intent);
+
+                // end current activity
+                finish();
+            }
+        });
+
+        // set listener for reminder list card button
+        this.clReminderList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to reminder list's start activity
+                Intent intent = new Intent(getBaseContext(), RemindersActivity.class);
                 startActivity(intent);
 
                 // end current activity

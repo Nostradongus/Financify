@@ -127,7 +127,8 @@ public class CashflowAddAccountActivity extends BaseActivity {
                     .child (userId)
                     .child ("accounts");
             // If invalid session
-        } else {
+        }
+        else {
             // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }

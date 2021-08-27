@@ -59,7 +59,6 @@
         <item>Digital Wallet</item>
     </string-array>
 
-    <!-- types of transaction -->
     <string-array name="transaction_types">
         <item>Select type…</item>
         <item>Income</item>
@@ -67,7 +66,6 @@
         <item>Investment</item>
     </string-array>
 
-    <!-- months in a year -->
     <string-array name="months">
         <item>January</item>
         <item>February</item>
@@ -82,4 +80,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+
 </resources>
