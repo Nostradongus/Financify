@@ -43,6 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     // progress bar when login button is pressed
     private ProgressBar pbLogin;
 
+    // login button
+    private Button loginBtn;
+
     // Firebase components
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -74,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         this.pbLogin = findViewById(R.id.pb_login);
 
         // initialize login button functionality
-        Button loginBtn = findViewById(R.id.btn_login);
+        loginBtn = findViewById(R.id.btn_login);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
                 // validate input fields
                 if (!checkEmpty(email, password) &&
                     validateEmailAndPassword(email, password)) {
+                    // disable login button
+                    loginBtn.setEnabled (false);
+                    loginBtn.setVisibility (View.INVISIBLE);
+
                     // login user with inputted credentials
                     loginUser(email, password);
                 }
@@ -165,6 +172,10 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             loginFailed();
                         }
+
+                        // re-enable login button
+                        loginBtn.setEnabled (true);
+                        loginBtn.setVisibility (View.VISIBLE);
                     }
                 });
     }
