@@ -216,6 +216,10 @@ public class SettingsActivity extends BaseActivity {
      * Updates the account data and details of the user depending on what was changed.
      */
     private void updateUserAccount() {
+        // disable save button
+        btnSave.setEnabled(false);
+        btnSave.setClickable(false);
+
         // turn on progress bar
         this.pbSettings.setVisibility(View.VISIBLE);
 
@@ -277,6 +281,9 @@ public class SettingsActivity extends BaseActivity {
         else {
             // if some data has been updated
             if (updated) {
+                // enable button save
+                btnSave.setEnabled(true);
+                btnSave.setClickable(true);
                 // indicate user that data has been updated successfully
                 // and return back to home page afterwards
                 updateSuccessful();

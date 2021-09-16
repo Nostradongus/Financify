@@ -216,7 +216,7 @@
         android:id="@+id/btn_settings_save"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="40dp"
         android:text="@string/settings_save"
         android:textSize="@dimen/_10sdp"
         android:fontFamily="@font/poppins_bold"
