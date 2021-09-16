@@ -66,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/poppins_bold"
         android:text="REMINDERS"
         android:textColor="@color/financify_dark_blue"
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_current_time" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_current_date" />
 
     <TextView
         android:id="@+id/tv_reminders_current_date"
@@ -90,20 +90,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_reminders_home_label" />
-
-    <TextView
-        android:id="@+id/tv_reminders_current_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-14dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="00:00 AM"
-        android:textColor="@color/financify_light_blue"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_reminders_current_date" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_reminders"

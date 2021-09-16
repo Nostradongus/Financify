@@ -206,19 +206,12 @@ public class RemindersActivity extends BaseActivity {
         // for the current date being displayed
         this.currDate = findViewById(R.id.tv_reminders_current_date);
 
-        // for the current time being displayed
-        this.currTime = findViewById(R.id.tv_reminders_current_time);
-
         // setting up the date
         this.calendar = Calendar.getInstance();
         this.dateFormat = new SimpleDateFormat("EEE, d MMM ''yy");
         this.date = dateFormat.format(calendar.getTime());
         this.currDate.setText(date);
 
-        // setting up the time
-        this.timeFormat = new SimpleDateFormat("h:mm a");
-        this.time = timeFormat.format(calendar.getTime());
-        this.currTime.setText(time);
     }
 
 
