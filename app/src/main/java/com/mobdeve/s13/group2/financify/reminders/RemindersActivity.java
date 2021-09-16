@@ -93,6 +93,9 @@ public class RemindersActivity extends BaseActivity {
     private DatabaseReference dbRef;
     private ProgressBar pbHome;
 
+    // Home button
+    private ConstraintLayout clHomeBtn;
+
     /**
      * This function is only run once.
      */
@@ -102,6 +105,8 @@ public class RemindersActivity extends BaseActivity {
         // Homepage layout of reminders
         setContentView(R.layout.activity_main_reminders);
 
+        // Initialize General components
+        this.initComponents ();
         // Initialize RecyclerView Components
         this.initRecyclerView();
         // Initialize date and time
@@ -124,6 +129,23 @@ public class RemindersActivity extends BaseActivity {
 
         // Show empty message if there are no reminders on the database
         this.displayEmptyMessage ();
+    }
+
+    /**
+     * Initialize general components.
+     */
+    private void initComponents () {
+        clHomeBtn = findViewById (R.id.cl_rem_back_home_nav);
+
+        // Back button for Account page
+        clHomeBtn.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent i = new Intent (RemindersActivity.this, HomeActivity.class);
+                startActivity (i);
+                finish ();
+            }
+        });
     }
 
     /**

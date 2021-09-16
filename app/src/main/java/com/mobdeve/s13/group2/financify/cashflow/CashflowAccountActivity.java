@@ -242,7 +242,7 @@ public class CashflowAccountActivity extends BaseActivity {
         tvAccountType = findViewById (R.id.tv_specific_account_type);
         tvBalance = findViewById (R.id.tv_specific_account_balance);
         ivEditBtn = findViewById (R.id.iv_cashflow_edit_account);
-        clHomeBtn = findViewById (R.id.cl_cf_back_home_nav);
+        clHomeBtn = findViewById (R.id.cl_cfa_back_home_nav);
         pbAccount = findViewById (R.id.pb_cf_account);
 
         // Back button for Account page

@@ -16,95 +16,54 @@
         app:layout_constraintGuide_percent="0.17" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_bottom_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_left_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_right_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_h1_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_h2_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_v1_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.47" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_v2_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.53" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_v3_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.29" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_mid_v4_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.70" />
+        app:layout_constraintGuide_percent="0.97" />
 
     <!-- action indicator text -->
     <TextView
         android:id="@+id/tv_action_indicator"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="@string/action_indicator"
-        android:textSize="@dimen/_20sdp"
+        android:textAlignment="center"
         android:textColor="@color/financify_dark_blue"
-        android:fontFamily="@font/poppins_semibold"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@id/gl_top_home"
-        app:layout_constraintStart_toEndOf="@id/gl_left_home"
-        app:layout_constraintEnd_toStartOf="@id/gl_right_home"/>
+        app:layout_constraintEnd_toStartOf="@id/gl_right_home"
+        app:layout_constraintStart_toEndOf="@id/gl_left_home" />
 
     <!-- user greeting text -->
     <TextView
         android:id="@+id/tv_user_greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="-15dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/user_greeting"
-        android:textSize="@dimen/_20sdp"
         android:textColor="@color/financify_dark_blue"
-        android:fontFamily="@font/poppins_semibold"
-        app:layout_constraintEnd_toStartOf="@id/gl_right_home"
+        android:textSize="@dimen/_24sdp"
         app:layout_constraintBottom_toTopOf="@id/tv_action_indicator"
+        app:layout_constraintEnd_toStartOf="@id/gl_right_home"
         app:layout_constraintStart_toEndOf="@id/gl_left_home" />
 
     <!-- summary card button -->
@@ -112,131 +71,182 @@
         android:id="@+id/cl_summary_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/btn_ripple"
+        android:backgroundTint="@color/financify_pastel_red"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/btn_ripple"
-        android:backgroundTint="@color/financify_lightest_blue"
-        app:layout_constraintTop_toBottomOf="@id/gl_top_home"
-        app:layout_constraintBottom_toTopOf="@id/gl_mid_h1_home"
-        app:layout_constraintStart_toEndOf="@id/gl_mid_v3_home"
-        app:layout_constraintEnd_toStartOf="@id/gl_mid_v4_home">
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/gl_center"
+        app:layout_constraintStart_toStartOf="@+id/gl_left_home"
+        app:layout_constraintTop_toTopOf="@+id/gl_top_home">
 
         <!-- summary icon -->
         <ImageView
             android:id="@+id/iv_summary_card"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_summary"
-            app:tint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_summary"
+            app:tint="#BD828C" />
 
         <!-- summary icon text -->
         <TextView
             android:id="@+id/tv_summary_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_summary"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_20sdp"
             android:fontFamily="@font/poppins_semibold"
-            app:layout_constraintTop_toBottomOf="@id/iv_summary_card"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="@string/menu_summary"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_summary_card"
+            app:layout_constraintStart_toStartOf="@+id/iv_summary_card"
+            app:layout_constraintTop_toBottomOf="@id/iv_summary_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- cash flow card button -->
+
+    <!-- reminder list card button -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_cash_flow_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/btn_ripple"
+        android:backgroundTint="@color/financify_pastel_green"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/btn_ripple"
-        android:backgroundTint="@color/financify_lightest_blue"
-        app:layout_constraintTop_toBottomOf="@id/gl_mid_h2_home"
-        app:layout_constraintBottom_toTopOf="@id/gl_bottom_home"
-        app:layout_constraintStart_toEndOf="@id/gl_left_home"
-        app:layout_constraintEnd_toStartOf="@id/gl_mid_v1_home">
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/gl_right_home"
+        app:layout_constraintStart_toStartOf="@+id/gl_center"
+        app:layout_constraintTop_toTopOf="@+id/gl_top_home">
 
         <!-- cash flow icon -->
         <ImageView
             android:id="@+id/iv_cash_flow_card"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_cash"
-            app:tint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cash"
+            app:tint="#83B692" />
 
         <!-- cash flow icon text -->
         <TextView
             android:id="@+id/tv_cash_flow_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_cash_flow"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_19sdp"
             android:fontFamily="@font/poppins_semibold"
-            app:layout_constraintTop_toBottomOf="@id/iv_cash_flow_card"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="@string/menu_cash_flow"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cash_flow_card"
+            app:layout_constraintStart_toStartOf="@+id/iv_cash_flow_card"
+            app:layout_constraintTop_toBottomOf="@+id/iv_cash_flow_card" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- reminder list card button -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_reminder_list_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/btn_ripple"
+        android:backgroundTint="@color/financify_pastel_yellow"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/btn_ripple"
-        android:backgroundTint="@color/financify_lightest_blue"
-        app:layout_constraintTop_toBottomOf="@id/gl_mid_h2_home"
-        app:layout_constraintBottom_toTopOf="@id/gl_bottom_home"
-        app:layout_constraintStart_toEndOf="@id/gl_mid_v2_home"
-        app:layout_constraintEnd_toStartOf="@id/gl_right_home">
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/gl_center"
+        app:layout_constraintStart_toStartOf="@+id/gl_left_home"
+        app:layout_constraintTop_toBottomOf="@+id/cl_summary_card">
 
         <!-- reminder list icon -->
+
         <ImageView
             android:id="@+id/iv_reminder_list"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_reminder"
-            app:tint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reminder"
+            app:tint="#C6B79D" />
 
         <!-- reminder list icon text -->
         <TextView
             android:id="@+id/tv_reminder_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/menu_reminder_list"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16sdp"
             android:fontFamily="@font/poppins_semibold"
-            app:layout_constraintTop_toBottomOf="@id/iv_reminder_list"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="@string/menu_reminder_list"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_reminder_list"
+            app:layout_constraintHorizontal_bias="0.51"
+            app:layout_constraintStart_toStartOf="@+id/iv_reminder_list"
+            app:layout_constraintTop_toBottomOf="@id/iv_reminder_list" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_settings_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/btn_ripple"
+        android:backgroundTint="@color/financify_gray"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/gl_right_home"
+        app:layout_constraintStart_toStartOf="@+id/gl_center"
+        app:layout_constraintTop_toBottomOf="@+id/cl_summary_card">
+
+        <ImageView
+            android:id="@+id/iv_settings"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_settings"
+            app:tint="#B3B3B3" />
+
+        <TextView
+            android:id="@+id/tv_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/menu_settings_card"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_settings"
+            app:layout_constraintStart_toStartOf="@+id/iv_settings"
+            app:layout_constraintTop_toBottomOf="@+id/iv_settings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
