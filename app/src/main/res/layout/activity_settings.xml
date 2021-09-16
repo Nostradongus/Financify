@@ -88,7 +88,7 @@
 
     <!-- first name input field label -->
     <TextView
-        android:id="@+id/et_settings_first_name_label"
+        android:id="@+id/tv_settings_first_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
@@ -121,7 +121,7 @@
 
     <!-- last name input field label -->
     <TextView
-        android:id="@+id/et_settings_last_name_label"
+        android:id="@+id/tv_settings_last_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
@@ -154,7 +154,7 @@
 
     <!-- email input field label -->
     <TextView
-        android:id="@+id/et_settings_email_label"
+        android:id="@+id/tv_settings_email_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
@@ -187,7 +187,7 @@
 
     <!-- password input field label -->
     <TextView
-        android:id="@+id/et_settings_password_label"
+        android:id="@+id/tv_settings_password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
@@ -199,6 +199,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- progress bar for user account update process -->
+    <ProgressBar
+        android:id="@+id/pb_settings"
+        android:elevation="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/btn_settings_save"
+        app:layout_constraintBottom_toBottomOf="@id/btn_settings_save"
+        app:layout_constraintStart_toStartOf="@id/btn_settings_save"
+        app:layout_constraintEnd_toEndOf="@id/btn_settings_save" />
+
     <!-- save changes button -->
     <Button
         android:id="@+id/btn_settings_save"
@@ -206,7 +218,9 @@
         android:layout_height="55dp"
         android:layout_marginTop="100dp"
         android:text="@string/settings_save"
-        app:layout_constraintTop_toBottomOf="@id/et_settings_password_label"
+        android:textSize="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_bold"
+        app:layout_constraintTop_toBottomOf="@id/tv_settings_password_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

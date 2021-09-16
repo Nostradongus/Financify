@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
 
+    // indicator if user is logged in
+    private boolean isLoggedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        // indicator if user is logged in
+        isLoggedIn = false;
+
         // initialize text fields and progress bar functionalities
         this.etEmail = findViewById(R.id.et_login_email);
         this.etPassword = findViewById(R.id.et_login_password);
@@ -131,9 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean valid = true;
 
         // check if email is in valid format
-        String[] atFormat = email.split("@");
-        String[] dotFormat = email.split("\\.");
-        if (atFormat.length < 2 && dotFormat.length < 2) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             // set error message
             this.etEmail.setError("Please input a valid email address");
             this.etEmail.requestFocus();
@@ -176,33 +181,38 @@ public class LoginActivity extends AppCompatActivity {
         users.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        // get first name and last name of user
-                        String firstName = snapshot.child("firstName").getValue().toString();
-                        String lastName = snapshot.child("lastName").getValue().toString();
+                        if (!isLoggedIn) {
+                            // user is logged in
+                            isLoggedIn = true;
 
-                        // store user's firstname and lastname in SharedPreferences
-                        sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
-                        spEditor = sharedPreferences.edit();
-                        spEditor.putString("FIRSTNAME", firstName);
-                        spEditor.putString("LASTNAME", lastName);
-                        spEditor.apply();
+                            // get first name and last name of user
+                            String firstName = snapshot.child("firstName").getValue().toString();
+                            String lastName = snapshot.child("lastName").getValue().toString();
 
-                        // disable login progress bar as authentication process is complete
-                        pbLogin.setVisibility(View.GONE);
+                            // store user's firstname and lastname in SharedPreferences
+                            sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
+                            spEditor = sharedPreferences.edit();
+                            spEditor.putString("FIRSTNAME", firstName);
+                            spEditor.putString("LASTNAME", lastName);
+                            spEditor.apply();
 
-                        // show success message to user
-                        Toast.makeText(
-                                LoginActivity.this,
-                                R.string.login_success,
-                                Toast.LENGTH_SHORT
-                        ).show();
+                            // disable login progress bar as authentication process is complete
+                            pbLogin.setVisibility(View.GONE);
 
-                        // redirect to home page
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
+                            // show success message to user
+                            Toast.makeText(
+                                    LoginActivity.this,
+                                    R.string.login_success,
+                                    Toast.LENGTH_SHORT
+                            ).show();
 
-                        // end login activity
-                        finish();
+                            // redirect to home page
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
+
+                            // end login activity
+                            finish();
+                        }
                     }
 
                     @Override
