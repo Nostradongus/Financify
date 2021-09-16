@@ -180,7 +180,7 @@
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="ex: 500.00"
-            android:inputType="number|textPersonName"
+            android:inputType="numberDecimal"
             android:maxLength="12"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_update_entry_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_update_entry_label"

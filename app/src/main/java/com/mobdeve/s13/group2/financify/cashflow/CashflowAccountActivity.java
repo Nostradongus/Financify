@@ -135,7 +135,7 @@ public class CashflowAccountActivity extends BaseActivity {
     }
 
     /**
-     * Initialize Firebase components.
+     * Initializes Firebase components.
      */
     private void initFirebase () {
         mAuth = FirebaseAuth.getInstance ();
@@ -209,7 +209,7 @@ public class CashflowAccountActivity extends BaseActivity {
             });
         // If invalid session
         } else {
-            // TODO: Verify if redirect to login is working
+            // redirect to login for user account login
             goBackToLogin ();
         }
     }

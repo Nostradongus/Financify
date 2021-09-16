@@ -7,8 +7,6 @@
     <string name="back_transactions">Back to Transactions</string>
     <string name="back_reminders">Back to Reminders</string>
     <string name="sample_name">Zinnia Launio</string>
-    <!-- TODO: temporary for now -->
-    <string name="back_summary">Back to Summary</string>
 
     <!-- login and register page strings -->
     <string name="login_label">Log in to your account</string>
@@ -46,6 +44,14 @@
     <!-- account settings strings -->
     <string name="settings_label">Account Settings</string>
     <string name="settings_save">Save Changes</string>
+
+    <!-- summary page strings -->
+    <string name="summary_empty">
+        You have not yet made any accounts, create accounts at the Cash Flow page.
+    </string>
+    <string name="summary_date_empty">
+        No accounts were made at the given date.
+    </string>
 
     <!-- types of summary -->
     <string-array name="summary_types">

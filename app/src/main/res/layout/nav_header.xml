@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:paddingTop="13dp"
         android:text="@string/sample_name"
-        android:textSize="27sp"
+        android:textSize="@dimen/_17sdp"
         android:textStyle="bold"
         android:fontFamily="@font/poppins_bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

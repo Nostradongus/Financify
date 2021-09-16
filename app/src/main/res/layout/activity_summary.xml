@@ -149,6 +149,7 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="12sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/btn_summary_month_filter"
             app:layout_constraintStart_toStartOf="@+id/btn_summary_month_filter"
             app:layout_constraintTop_toBottomOf="@+id/btn_summary_month_filter" />
@@ -165,6 +166,7 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="12sp"
             android:textStyle="italic"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/btn_summary_year_filter"
             app:layout_constraintStart_toStartOf="@+id/btn_summary_year_filter"
             app:layout_constraintTop_toBottomOf="@+id/btn_summary_year_filter" />
@@ -178,6 +180,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="NONE"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/gl_summary_filter_box_mid"
             app:layout_constraintHorizontal_bias="1.0"
@@ -194,6 +197,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="NONE"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.555"
@@ -247,6 +251,42 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.80" />
+
+    <!-- message if no data available to create graph summary -->
+    <TextView
+        android:id="@+id/tv_summary_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="@string/summary_empty"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/financify_lightest_blue"
+        android:fontFamily="@font/poppins_bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cl_summary_filter_box"
+        app:layout_constraintBottom_toBottomOf="@id/gl_summary_chart_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- message if no data available to create graph summary -->
+    <TextView
+        android:id="@+id/tv_summary_date_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="@string/summary_date_empty"
+        android:textSize="@dimen/_11sdp"
+        android:textColor="@color/financify_lightest_blue"
+        android:fontFamily="@font/poppins_bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/cl_summary_filter_box"
+        app:layout_constraintBottom_toBottomOf="@id/gl_summary_chart_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- pie chart for summary statistics graphical view -->
     <com.github.mikephil.charting.charts.PieChart

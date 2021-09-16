@@ -1,5 +1,6 @@
 package com.mobdeve.s13.group2.financify.summary;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -31,17 +33,43 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.DateHelper;
 import com.mobdeve.s13.group2.financify.HomeActivity;
+import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.cashflow.CashflowAccountActivity;
 import com.mobdeve.s13.group2.financify.model.Account;
+import com.mobdeve.s13.group2.financify.model.Model;
+import com.mobdeve.s13.group2.financify.model.Transaction;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
-// TODO: add documentation
+// comparator for accounts to be sorted according to their balance
+// in descending order
+class BalanceComparator implements Comparator<Account> {
+    @Override
+    public int compare(Account o1, Account o2) {
+        if (o1.getBalance() > o2.getBalance()) {
+            return -1;
+        } else if (o1.getBalance() < o2.getBalance()) {
+            return 1;
+        }
+        return 0;
+    }
+}
+
+// for summary activity / page (summary statistics)
 public class SummaryActivity extends BaseActivity {
 
     // UI components
@@ -56,21 +84,33 @@ public class SummaryActivity extends BaseActivity {
     private TextView tvSummaryTitle;
     private TextView[] tvSummaryTexts;
 
+    // empty indicator messages
+    private TextView tvEmpty;
+    private TextView tvDateEmpty;
+
     // Preferences / filter box components
     private ImageButton ibPrefs;
     private ConstraintLayout clPrefsBox;
     private boolean prefsVisible;
-    private Spinner spChartType, spSummaryType;
+    private Spinner spSummaryType;
     private Button btnMonth, btnYear, btnClearPrefs;
+    private TextView tvMonthLabel, tvYearLabel;
     private DatePickerDialog dpMonthDialog, dpYearDialog;
 
     // Firebase components
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
-    // user's list of accounts
+    // user's list of accounts (for Top Accounts By Balance)
     private ArrayList<Account> accounts;
+
+    // backup for user's list of accounts
+    private ArrayList<Account> accountsBackup;
+
+    // user's list of transactions from all accounts (for Income, Investment, and Expense Ratio)
+    private ArrayList<Transaction> transactions;
+
+    // backup for user's list of transactions from all accounts
+    private ArrayList<Transaction> transactionsBackup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +123,13 @@ public class SummaryActivity extends BaseActivity {
         // initialize preference / filter box
         initPreferencesBox();
 
-        // TODO: to be updated when backend is implemented
-//        // initialize data with Firebase
-//        initFirebase();
-
-        // initialize data for statistics
-        initData();
-
-        // initialize summary texts
-        initSummary();
-
-        // initialize pie chart with data
-        initChart();
+        // initialize data with Firebase and get needed data for summary statistics
+        initFirebase();
     }
 
+    /**
+     * Initializes UI components.
+     */
     private void initComponents() {
         // initialize preference box components
         ibPrefs = findViewById(R.id.ib_summary_filter_box);
@@ -122,6 +155,18 @@ public class SummaryActivity extends BaseActivity {
         tvSummaryTexts[2] = findViewById(R.id.tv_summary_placeholder_3);
         tvSummaryTexts[3] = findViewById(R.id.tv_summary_placeholder_4);
 
+        // initialize list of accounts
+        accounts = new ArrayList<>();
+        accountsBackup = new ArrayList<>();
+
+        // initialize list of transactions per account
+        transactions = new ArrayList<>();
+        transactionsBackup = new ArrayList<>();
+
+        // initialize empty indicator messages
+        tvEmpty = findViewById(R.id.tv_summary_empty);
+        tvDateEmpty = findViewById(R.id.tv_summary_date_empty);
+
         // initialize home button layout
         clHomeBtn = findViewById(R.id.cl_summary_back_home_nav);
 
@@ -134,6 +179,9 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Initializes Preferences (Filter) Options Box.
+     */
     private void initPreferencesBox() {
         // default values
         prefsVisible = false;
@@ -167,85 +215,281 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
-    // TODO: complete code here, get all accounts of logged in user
+    /**
+     * Initializes Firebase components.
+     */
     private void initFirebase() {
+        // get current user logged in
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // if there is a user logged in (or in session)
+        if (user != null) {
+            // get reference to user's list of accounts from the database
+            dbRef = FirebaseDatabase.getInstance().getReference()
+                    .child(Model.users.name())
+                    .child(user.getUid())
+                    .child(Model.accounts.name());
+
+            // get user's list of accounts
+            dbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                    // try and catch NullPointerException
+                    try {
+                        // loop through user's list of accounts from the database
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            // temporary ArrayList to store transactions from current account
+                            ArrayList<Transaction> temp = new ArrayList<>();
+
+                            // Loop through received Transactions
+                            for (DataSnapshot transaction : postSnapshot.child ("transactions").getChildren ()) {
+                                // Instantiate a Transaction object per child
+                                temp.add (new Transaction (
+                                        transaction.getKey (),
+                                        transaction.child ("description").getValue ().toString (),
+                                        Double.parseDouble (transaction.child ("amount").getValue ().toString ()),
+                                        transaction.child ("type").getValue ().toString (),
+                                        transaction.child ("date").getValue ().toString (),
+                                        transaction.child ("accountId").getValue ().toString ()
+                                ));
+                            }
+
+                            // get current account
+                            Account account = new Account (
+                                    postSnapshot.getKey (),
+                                    postSnapshot.child ("name").getValue ().toString (),
+                                    Double.parseDouble (postSnapshot.child ("balance").getValue ().toString ()),
+                                    postSnapshot.child ("type").getValue ().toString (),
+                                    temp
+                            );
+
+                            // add current account to accounts list
+                            accounts.add(account);
+
+                            // add current account's transactions to transactions list
+                            if (account.getTransactions() != null && account.getTransactions().size() > 0) {
+                                transactions.addAll(account.getTransactions());
+                            }
+                        }
+
+                        // check if user has accounts
+                        if (accounts.size() > 0) {
+                            // create backup for user's list of accounts
+                            accountsBackup.addAll(accounts);
+
+                            // create backup for user's transactions per account
+                            if (transactions.size() > 0) {
+                                transactionsBackup.addAll(transactions);
+                            }
+
+                            // proceed to setting required data for summary statistics
+                            setData();
+                        }
+                        // display message
+                        else {
+                            displayEmptyMessage();
+                        }
+                    } catch (Exception e) {
+                        // display exception's message
+                        e.printStackTrace();
+
+                        displayEmptyMessage();
+
+                        // set error text
+                        tvEmpty.setText("Error occurred during the process.");
+
+                        // set preference box to unclickable as error occurred
+                        ibPrefs.setClickable(false);
+                        ibPrefs.setEnabled(false);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                    // leave blank...
+                }
+            });
+        }
+        // if invalid session
+        else {
+            // redirect to login page for user account login
+            goBackToLogin();
+        }
     }
 
-    // TODO: HARDCODED FOR NOW; to be revised and updated when backend is implemented
-    private void initData() {
+    /**
+     * Displays empty data message to user.
+     */
+    private void displayEmptyMessage() {
+        // show message
+        tvEmpty.setVisibility(View.VISIBLE);
+
+        // hide pie chart graph
+        pieChart.setVisibility(View.GONE);
+
+        // hide summary statistics texts
+        tvSummaryTitle.setVisibility(View.GONE);
+        for (int i = 0; i < tvSummaryTexts.length; i++) {
+            tvSummaryTexts[i].setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Displays empty data message to user on specified date.
+     */
+    private void displayEmptyDateMessage() {
+        // show message
+        tvDateEmpty.setVisibility(View.VISIBLE);
+
+        // hide pie chart graph
+        pieChart.setVisibility(View.GONE);
+
+        // hide summary statistics texts
+        tvSummaryTitle.setVisibility(View.GONE);
+        for (int i = 0; i < tvSummaryTexts.length; i++) {
+            tvSummaryTexts[i].setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Launches an activity leading to the Login page and finishes this activity.
+     */
+    private void goBackToLogin () {
+        Intent i = new Intent (this, LoginActivity.class);
+        startActivity (i);
+        finish ();
+    }
+
+    private void setData() {
+        /* TOP ACCOUNTS BY BALANCE DATA */
+        // sort accounts by balance in descending order
+        Collections.sort(accounts, new BalanceComparator());
+
+        // accumulate total balance from all accounts of user
+        double totalBalance = 0.0;
+        for (Account account : accounts) {
+            totalBalance += account.getBalance();
+        }
+
+        // for more than 3 accounts
+        double otherAccountsBalance = 0.0;
+
         // initialize pie chart data entries for "top accounts by balance"
         ArrayList<PieEntry> pieAccounts = new ArrayList<>();
-        pieAccounts.add(new PieEntry(50, "MyBanko"));
-        pieAccounts.add(new PieEntry(25, "BDO"));
-        pieAccounts.add(new PieEntry(15, "Lincoln"));
-        pieAccounts.add(new PieEntry(10, "Others"));
+        // get the top 3 accounts by balance
+        for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
+            pieAccounts.add(new PieEntry(
+                    (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100) / 100.0 * 100),
+                    accounts.get(i).getName()
+            ));
+        }
+        // if user has more than 3 accounts, create pie data for the "other accounts"
+        if (accounts.size() > 3) {
+            // accumulate total for the "other accounts"
+            for (int i = 3; i < accounts.size(); i++) {
+                otherAccountsBalance += accounts.get(i).getBalance();
+            }
 
+            // add as pie data
+            pieAccounts.add(new PieEntry(
+                    (float)(Math.round(otherAccountsBalance / totalBalance * 100) / 100.0 * 100),
+                    "Others"
+            ));
+        }
+
+        // initialize accounts pie data set
         PieDataSet pieDataSetAccounts = new PieDataSet(pieAccounts, "Top Accounts By Balance");
         pieDataSetAccounts.setColors(ColorTemplate.PASTEL_COLORS);
         pieDataSetAccounts.setValueTextColor(Color.BLACK);
         pieDataSetAccounts.setValueTextSize(14f);
-        pieDataSetAccounts.setValueFormatter(new PercentFormatter());
 
-        // set pie accounts data set
+        // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
+        pieDataAccounts.setValueFormatter(new PercentFormatter());
 
-        // initialize pie chart data for "income, investment, and expense ratios"
-        ArrayList<PieEntry> pieRatios = new ArrayList<>();
-        pieRatios.add(new PieEntry(70, "Income"));
-        pieRatios.add(new PieEntry(10, "Investment"));
-        pieRatios.add(new PieEntry(20, "Expense"));
+        /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
+        // get number of income, investment, and expense transactions from each account
+        int incomes = 0;
+        int investments = 0;
+        int expenses = 0;
+        for (Transaction transaction : transactions) {
+            switch (transaction.getType()) {
+                case Transaction.TYPE_INCOME:
+                    incomes++;
+                    break;
+                case Transaction.TYPE_INVESTMENT:
+                    investments++;
+                    break;
+                case Transaction.TYPE_EXPENSE:
+                    expenses++;
+            }
+        }
 
-        PieDataSet pieDataSetRatios = new PieDataSet(pieRatios, "Income, Investment, and Expense Ratio");
-        pieDataSetRatios.setColors(ColorTemplate.PASTEL_COLORS);
-        pieDataSetRatios.setValueTextColor(Color.BLACK);
-        pieDataSetRatios.setValueTextSize(14f);
-        pieDataSetRatios.setValueFormatter(new PercentFormatter());
+        // get total count of transactions
+        int totalTransactions = incomes + investments + expenses;
 
-        // set pie ratios data set
-        pieDataRatios = new PieData(pieDataSetRatios);
+        // incomes, investments, and expenses ratio percentages
+        float p1 = (float)(Math.round(incomes * 1.0 / totalTransactions * 100));
+        float p2 = (float)(Math.round(investments * 1.0 / totalTransactions * 100));
+        float p3 = (float)(Math.round(expenses * 1.0 / totalTransactions * 100));
+
+        // initialize pie chart data entries for "income, investment, and expense ratios"
+        if (totalTransactions > 0) {
+            ArrayList<PieEntry> pieRatios = new ArrayList<>();
+            pieRatios.add(new PieEntry(p1, "Income"));
+            pieRatios.add(new PieEntry(p2, "Investment"));
+            pieRatios.add(new PieEntry(p3, "Expense"));
+
+            // initialize pie data set for ratios
+            PieDataSet pieDataSetRatios = new PieDataSet(pieRatios, "Income, Investment, and Expense Ratio");
+            pieDataSetRatios.setColors(ColorTemplate.PASTEL_COLORS);
+            pieDataSetRatios.setValueTextColor(Color.BLACK);
+            pieDataSetRatios.setValueTextSize(14f);
+
+            // initialize pie data for ratios pie chart
+            pieDataRatios = new PieData(pieDataSetRatios);
+            pieDataRatios.setValueFormatter(new PercentFormatter());
+        }
 
         // initialize summary numerical texts
-        titleAccounts = "Top accounts by balance in 2021";
-        titleRatios = "Income, Investment, and Expense Ratio in 2021";
+        String monthFilter = btnMonth.getText().toString().toLowerCase();
+        String yearFilter = btnYear.getText().toString().toLowerCase();
+        String date;
+        if (!yearFilter.equalsIgnoreCase("none")) {
+            date = yearFilter;
+        } else {
+            date = Calendar.getInstance().get(Calendar.YEAR) + "";
+        }
+        if (!monthFilter.equalsIgnoreCase("none")) {
+            date = DateHelper.getMonthFormat(Integer.parseInt(transactions.get(0).getMonth()))
+                    .substring(0, 3) + " " + date;
+        }
+        titleAccounts = "Top accounts by balance in " + date;
+        titleRatios = "Income, Investment, and Expense Ratio in " + date;
 
         textAccounts.clear();
-        textAccounts.add("MyBanko - 50%");
-        textAccounts.add("BDO - 25%");
-        textAccounts.add("Lincoln - 15%");
-        textAccounts.add("Others - 10%");
+        for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
+            String accountName = accounts.get(i).getName();
+            String percentage = (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100)) + "";
+            textAccounts.add(accountName + " - " + percentage + "%");
+        }
+        if (accounts.size() > 3) {
+            String percentage = (float)(Math.round(otherAccountsBalance / totalBalance * 100)) + "";
+            textAccounts.add("Others - " + percentage + "%");
+        }
 
         textRatios.clear();
-        textRatios.add("Income - 70%");
-        textRatios.add("Investment - 10%");
-        textRatios.add("Expense - 20%");
-    }
+        if (totalTransactions > 0) {
+            String incomePercentage = p1 + " ";
+            String investPercentage = p2 + " ";
+            String expensePercentage = p3 + " ";
+            textRatios.add("Income - " + incomePercentage + "%");
+            textRatios.add("Investment - " + investPercentage + "%");
+            textRatios.add("Expense - " + expensePercentage + "%");
+        }
 
-    // TODO: to be updated when backend is implemented
-    private void initChart() {
-        // start progress bar for loading indicator
-        pbSummary.setVisibility(View.VISIBLE);
-
-        // initialize pie chart with default data (top accounts by balance)
-        pieChart.setData(pieDataAccounts);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText("Top Accounts By Balance");
-
-        // animate pie chart
-        pieChart.animate();
-        pieChart.spin( 500,0,360f, Easing.EaseInOutQuad);
-
-        // stop progress bar as chart loading process is complete
-        pbSummary.setVisibility(View.GONE);
-    }
-
-    // TODO: HARDCODED FOR NOW; to be updated when backend is implemented
-    private void initSummary() {
-        tvSummaryTitle.setText(titleAccounts);
-        tvSummaryTexts[0].setText(textAccounts.get(0));
-        tvSummaryTexts[1].setText(textAccounts.get(1));
-        tvSummaryTexts[2].setText(textAccounts.get(2));
-        tvSummaryTexts[3].setText(textAccounts.get(3));
+        // display data
+        onSelectSummary();
     }
 
     private void initSpinners() {
@@ -272,6 +516,8 @@ public class SummaryActivity extends BaseActivity {
         // initialize date picker components inside preferences / filter box
         btnMonth = findViewById (R.id.btn_summary_month_filter);
         btnYear = findViewById (R.id.btn_summary_year_filter);
+        tvMonthLabel = findViewById(R.id.tv_summary_month_filter_label);
+        tvYearLabel = findViewById(R.id.tv_summary_year_filter_label);
 
         // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
@@ -288,7 +534,7 @@ public class SummaryActivity extends BaseActivity {
                 // Update button text
                 btnMonth.setText (DateHelper.getMonthFormat (month + 1));
                 // Trigger filter
-                updateData ();
+                filterData();
             }
         }, cal.get (Calendar.YEAR), cal.get (Calendar.MONTH), cal.get (Calendar.DAY_OF_MONTH)) {
             // For styling purposes only, removes additional background design
@@ -318,9 +564,10 @@ public class SummaryActivity extends BaseActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 // Update button text
-                btnYear.setText (String.valueOf (year));
+                btnYear.setText (String.valueOf(year));
+
                 // Trigger filter
-                updateData();
+                filterData();
             }
         }, cal.get (Calendar.YEAR), cal.get (Calendar.MONTH), cal.get (Calendar.DAY_OF_MONTH)) {
             // For styling purposes only, removes additional background design
@@ -344,7 +591,6 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
-    // TODO: to be updated when backend is implemented
     private void clearPreferences() {
         // reset month and year buttons
         btnMonth.setText("NONE");
@@ -353,67 +599,216 @@ public class SummaryActivity extends BaseActivity {
         // reset summary type selected value
         spSummaryType.setSelection(0);
 
-        // reset data to be displayed graphically and textually
-        initSummary();
-        initChart();
+        // reset account list data if needed
+        if (accounts.size() != accountsBackup.size()) {
+            accounts.clear();
+            accounts.addAll(accountsBackup);
+        }
+
+        // reset transaction list data if needed
+        if (transactions.size() != transactionsBackup.size()) {
+            transactions.clear();
+            transactions.addAll(transactionsBackup);
+        }
+
+        setData();
+
+        // set default summary statistics
+        onSelectSummary();
     }
 
+    /**
+     * Shows summary statistics components (pie chart, etc.).
+     */
+    private void showSummaryComponents() {
+        // show pie chart
+        pieChart.setVisibility(View.VISIBLE);
+
+        // hide empty messages
+        tvEmpty.setVisibility(View.GONE);
+        tvDateEmpty.setVisibility(View.GONE);
+
+        // hide summary statistics texts
+        tvSummaryTitle.setVisibility(View.VISIBLE);
+        for (int i = 0; i < tvSummaryTexts.length; i++) {
+            tvSummaryTexts[i].setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Changes summary statistics to show depending on summary type chosen by user.
+     */
     private void onSelectSummary() {
+        // show summary components
+        showSummaryComponents();
+
+        // to check if there is data to show
+        boolean verified = true;
+
+        // show progress bar
+        pbSummary.setVisibility(View.VISIBLE);
+
+        // get selected summary type
         String type = spSummaryType.getSelectedItem().toString();
 
         if (type.equalsIgnoreCase("Top Accounts By Balance")) {
+            // hide month and year filter options
+            btnMonth.setVisibility(View.GONE);
+            btnYear.setVisibility(View.GONE);
+            tvMonthLabel.setVisibility(View.GONE);
+            tvYearLabel.setVisibility(View.GONE);
+
             tvSummaryTitle.setText(titleAccounts);
-            tvSummaryTexts[0].setText(textAccounts.get(0));
-            tvSummaryTexts[1].setText(textAccounts.get(1));
-            tvSummaryTexts[2].setText(textAccounts.get(2));
-            tvSummaryTexts[3].setVisibility(View.VISIBLE);
-            tvSummaryTexts[3].setText(textAccounts.get(3));
+
+            for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
+                tvSummaryTexts[i].setVisibility(View.VISIBLE);
+                tvSummaryTexts[i].setText(textAccounts.get(i));
+            }
+
+            // if more than 3 accounts, display 4th summary statistics text
+            if (accounts.size() > 3) {
+                tvSummaryTexts[3].setVisibility(View.VISIBLE);
+                tvSummaryTexts[3].setText(textAccounts.get(3));
+            }
+
+            // hide texts according to accounts size
+            for (int i = accounts.size(); i < tvSummaryTexts.length; i++) {
+                tvSummaryTexts[i].setVisibility(View.GONE);
+            }
 
             // update pie chart with chosen data (income, investment, and expense ratio)
             pieChart.setData(pieDataAccounts);
             pieChart.setCenterText("Top Accounts By Balance");
         } else {
-            tvSummaryTitle.setText(titleRatios);
-            tvSummaryTexts[0].setText(textRatios.get(0));
-            tvSummaryTexts[1].setText(textRatios.get(1));
-            tvSummaryTexts[2].setText(textRatios.get(2));
-            tvSummaryTexts[3].setText("");
-            tvSummaryTexts[3].setVisibility(View.GONE);
+            // if there are data for transactions
+            if (transactions.size() > 0) {
+                // show month and year filter options
+                btnMonth.setVisibility(View.VISIBLE);
+                btnYear.setVisibility(View.VISIBLE);
+                tvMonthLabel.setVisibility(View.VISIBLE);
+                tvYearLabel.setVisibility(View.VISIBLE);
 
-            // update pie chart with chosen data (income, investment, and expense ratio)
-            pieChart.setData(pieDataRatios);
-            pieChart.setCenterText("Income, Investment, and Expense Ratio");
+                tvSummaryTitle.setText(titleRatios);
+
+                for (int i = 0; i < 3; i++) {
+                    tvSummaryTexts[i].setText(textRatios.get(i));
+                }
+
+                tvSummaryTexts[3].setText("");
+                tvSummaryTexts[3].setVisibility(View.GONE);
+
+                // update pie chart with chosen data (income, investment, and expense ratio)
+                pieChart.setData(pieDataRatios);
+                pieChart.setCenterText("Income, Investment, and Expense Ratio");
+            } else {
+                verified = false;
+            }
         }
 
-        // set no description
-        pieChart.getDescription().setEnabled(false);
+        // hide progress bar
+        pbSummary.setVisibility(View.GONE);
 
-        // refresh pie chart
-        pieChart.invalidate();
+        // if there is data to show
+        if (verified) {
+            // set no description
+            pieChart.getDescription().setEnabled(false);
 
-        // spin pie chart
-        pieChart.spin( 500,0,360f, Easing.EaseInOutQuad);
+            // refresh pie chart
+            pieChart.invalidate();
+
+            // spin pie chart
+            pieChart.animate();
+            pieChart.spin( 500,0,360f, Easing.EaseInOutQuad);
+        }
+        // specifically for income, investment, and expense ratio data, when no data to show
+        else {
+            displayEmptyDateMessage();
+            tvDateEmpty.setText(
+                    "You have no created transactions yet, create a transaction from one of your accounts."
+            );
+        }
     }
 
-    // TODO: to complete when backend is implemented
-    private void updateData() {
-        // TODO: add data querying codes here with user's list of accounts
+    private void filterData() {
+        // get month and year filter values
+        String monthFilter = btnMonth.getText().toString().toLowerCase();
+        String yearFilter = btnYear.getText().toString().toLowerCase();
 
-        // update summary texts
-        updateSummary();
+        // if no filter specified
+        if (monthFilter.equalsIgnoreCase("none") &&
+            yearFilter.equalsIgnoreCase("none")) {
+            // reset transactions list data if needed
+            if (transactions.size() != transactionsBackup.size()) {
+                transactions.clear();
+                transactions.addAll(transactionsBackup);
+                setData();
+            }
+        }
+        // filter according to month and year specified
+        else {
+            // create a temporary list (for copying purposes)
+            ArrayList<Transaction> temp = new ArrayList<>();
 
-        // update chart
-        updateChart();
-    }
+            // to indicate if transactions has been filtered according to month
+            boolean changed = false;
 
-    // TODO: to complete when backend is implemented
-    private void updateSummary() {
-        // code here to update summary texts (below the chart)
-    }
+            // if the user filtered based on the MONTH of transactions
+            if (!monthFilter.equalsIgnoreCase("none")) {
+                // loop through each transaction
+                for (Transaction transaction : transactionsBackup) {
+                    // if month filter value matches the current transaction's month
+                    if (monthFilter.equalsIgnoreCase (DateHelper.getMonthFormat (Integer.parseInt (transaction.getMonth ())))) {
+                        // add to temporary list
+                        temp.add(transaction);
+                    }
+                }
 
-    // TODO: to complete when backend is implemented
-    private void updateChart() {
-        // code here to update chart data (both bar and pie)
+                // reset transactions list
+                transactions.clear();
+                // populate transactions list with filtered content
+                transactions.addAll(temp);
+                // clear temporary list
+                temp.clear();
+
+                // transactions has been filtered with month
+                changed = true;
+            }
+
+            // If the user filtered based on the YEAR of Transactions
+            if (!yearFilter.equalsIgnoreCase ("none")) {
+                ArrayList<Transaction> temp2;
+                if(changed) {
+                    temp2 = transactions;
+                } else {
+                    temp2 = transactionsBackup;
+                }
+
+                // Loop through each Transaction
+                for (Transaction transaction : temp2) {
+                    // If "Year" filter matches the Year of the Transaction
+                    if (yearFilter.equalsIgnoreCase (transaction.getYear ()))
+                        // Add to temporary list
+                        temp.add (transaction);
+                }
+
+                // Reset main list
+                transactions.clear ();
+                // Populate main list with filtered content
+                transactions.addAll (temp);
+                // Clear filtered list holder
+                temp.clear ();
+            }
+
+            // if no transaction data acquired from the specified month and year filter
+            // display empty date message
+            if (transactions.size() <= 0) {
+                displayEmptyDateMessage();
+            }
+            // else, set data with acquired filtered transactions data
+            else {
+                setData();
+            }
+        }
     }
 
     private void goBackToHomePage() {

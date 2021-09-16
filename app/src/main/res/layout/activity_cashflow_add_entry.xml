@@ -181,7 +181,7 @@
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="ex: 500.00"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLength="12"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_add_entry_label"
             app:layout_constraintHorizontal_bias="1.0"
