@@ -393,8 +393,6 @@ public class CashflowAccountActivity extends BaseActivity {
             }
         });
 
-//        accounts.add (postSnapshot.getValue (Account.class))
-
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
         dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
