@@ -2,12 +2,16 @@ package com.mobdeve.s13.group2.financify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 // TODO: add documentation
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +22,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /**
+         * This allows schedule a local notification
+         */
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, 5);
+
+        Intent intent = new Intent("singh.ajit.action.DISPLAY_NOTIFICATION");
+        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
 
         // enable persistence for storing data in local cache for offline use
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -44,5 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, SPLASH_SCREEN_DELAY);
+
+
+
     }
 }
