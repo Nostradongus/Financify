@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -363,7 +364,7 @@ public class CashflowAccountActivity extends BaseActivity {
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)
-        dpMonthDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpMonthDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a month, trigger filter
             @Override
             public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
@@ -393,9 +394,11 @@ public class CashflowAccountActivity extends BaseActivity {
             }
         });
 
+//        accounts.add (postSnapshot.getValue (Account.class))
+
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
-        dpYearDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a year, trigger filter
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
