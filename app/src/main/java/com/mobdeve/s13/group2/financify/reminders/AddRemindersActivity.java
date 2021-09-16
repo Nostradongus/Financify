@@ -300,13 +300,4 @@ public class AddRemindersActivity extends BaseActivity {
 
         return false;
     }
-
-
-
-
-
-
-
-
-
 }

@@ -48,6 +48,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.accounts = new ArrayList<Account>();
+        this.reminders = new ArrayList<Reminder>();
     }
 
     /**
@@ -93,6 +94,10 @@ public class User {
      */
     public ArrayList<Account> getAccounts() {
         return new ArrayList<> (accounts);
+    }
+
+    public ArrayList<Reminder> getReminders() {
+        return new ArrayList<> (reminders);
     }
 
     // TODO: add more getter methods (reminder list entries and budget sheets)

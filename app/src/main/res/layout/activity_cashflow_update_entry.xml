@@ -144,7 +144,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_cf_update_entry_date_label">
 
             <Spinner
-                android:id="@+id/sp_cf_update_entry_type"
+                android:id="@+id/sp_rem_update_type"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="5dp"

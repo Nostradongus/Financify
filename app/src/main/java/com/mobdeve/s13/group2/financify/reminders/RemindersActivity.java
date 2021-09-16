@@ -87,8 +87,6 @@ public class RemindersActivity extends BaseActivity {
         // Homepage layout of reminders
         setContentView(R.layout.activity_main_reminders);
 
-        // Initialize Firebase components
-        this.initFirebase ();
         // Initialize RecyclerView Components
         this.initRecyclerView();
         // Initialize date and time
@@ -97,6 +95,8 @@ public class RemindersActivity extends BaseActivity {
         this.initFabAdd();
         // Initialize SearchView Components
         this.initSearchView();
+        // Initialize Firebase components
+        this.initFirebase ();
 
     }
 
@@ -140,7 +140,7 @@ public class RemindersActivity extends BaseActivity {
                                     reminder.child("title").getValue().toString(),
                                     reminder.child("description").getValue().toString(),
                                     reminder.child("type").getValue().toString(),
-                                    reminder.child("time").getValue().toString()
+                                    reminder.child("date").getValue().toString()
                             ));
                         } catch (Exception e) {
                             System.out.println(e.toString());

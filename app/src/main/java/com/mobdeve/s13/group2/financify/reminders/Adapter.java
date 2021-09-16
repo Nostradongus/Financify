@@ -20,14 +20,14 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<ViewHolder>{
 
     // reference the data, as an arraylist
-    private ArrayList<Reminder> reminders;
+    private ArrayList<Reminder> reminderList;
 
     /**
      * Construtor of this adapter for reminders
      * @param data
      */
     public Adapter (ArrayList<Reminder> data) {
-        this.reminders = data;
+        this.reminderList = data;
     }
 
     /**
@@ -48,7 +48,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder>{
             @Override
             public void onClick (View view) {
                 Intent i = new Intent(view.getContext (), SeeReminderActivity.class);
-                i.putExtra (Keys.KEY_REMINDERS, reminders.get (reminderViewHolder.getBindingAdapterPosition ()));
+                i.putExtra (Keys.KEY_REMINDERS, reminderList.get (reminderViewHolder.getBindingAdapterPosition ()));
                 view.getContext ().startActivity (i);
                 ((RemindersActivity) view.getContext ()).finish ();
             }
@@ -65,7 +65,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder>{
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         // everytime this gets called, youll go through an iteration
         // position is given
-        Reminder currentReminder = reminders.get(position);
+        Reminder currentReminder = reminderList.get(position);
 
         holder.setReminderTitle(currentReminder.getTitle());
         holder.setDescription(currentReminder.getDesc());
@@ -79,7 +79,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder>{
      */
     @Override
     public int getItemCount() {
-        return this.reminders.size();
+        return this.reminderList.size();
     }
 }
 
