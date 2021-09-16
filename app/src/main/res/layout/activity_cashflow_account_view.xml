@@ -130,7 +130,7 @@
         app:tint="@color/financify_dark_blue" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_cf_account_filter"
+        android:id="@+id/cl_reminder_filter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_cf_account_divider">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_cf_sp_type_container"
+            android:id="@+id/cl_rem_sp_type_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
@@ -151,7 +151,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Spinner
-                android:id="@+id/sp_cf_type_filter"
+                android:id="@+id/sp_rem_type_filter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -161,7 +161,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tv_cf_month_filter_label"
+            android:id="@+id/tv_rem_month_filter_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="-6dp"
@@ -171,12 +171,12 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="12sp"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/btn_cf_month_filter"
-            app:layout_constraintStart_toStartOf="@+id/btn_cf_month_filter"
-            app:layout_constraintTop_toBottomOf="@+id/btn_cf_month_filter" />
+            app:layout_constraintEnd_toEndOf="@+id/btn_rem_month_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_rem_month_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rem_month_filter" />
 
         <TextView
-            android:id="@+id/tv_cf_year_filter_label"
+            android:id="@+id/tv_rem_year_filter_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="-6dp"
@@ -186,12 +186,12 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="12sp"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/btn_cf_year_filter"
-            app:layout_constraintStart_toStartOf="@+id/btn_cf_year_filter"
-            app:layout_constraintTop_toBottomOf="@+id/btn_cf_year_filter" />
+            app:layout_constraintEnd_toEndOf="@+id/btn_rem_year_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_rem_year_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rem_year_filter" />
 
         <Button
-            android:id="@+id/btn_cf_month_filter"
+            android:id="@+id/btn_rem_month_filter"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginEnd="10dp"
@@ -202,11 +202,11 @@
             app:layout_constraintEnd_toStartOf="@+id/gl_account_filter"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cf_type_filter_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_em_type_label"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btn_cf_year_filter"
+            android:id="@+id/btn_rem_year_filter"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="10dp"
@@ -217,11 +217,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.555"
             app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
-            app:layout_constraintTop_toBottomOf="@+id/tv_cf_type_filter_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_em_type_label"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btn_cf_entry_clear_filter"
+            android:id="@+id/btn_rem_clear_filter"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginStart="10dp"
@@ -239,10 +239,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_begin="191dp" />
 
         <TextView
-            android:id="@+id/tv_cf_type_filter_label"
+            android:id="@+id/tv_em_type_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
@@ -251,9 +251,9 @@
             android:textColor="@color/financify_light_blue"
             android:textSize="12sp"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="@+id/cl_cf_sp_type_container"
-            app:layout_constraintStart_toStartOf="@+id/cl_cf_sp_type_container"
-            app:layout_constraintTop_toBottomOf="@+id/cl_cf_sp_type_container" />
+            app:layout_constraintEnd_toEndOf="@+id/cl_rem_sp_type_container"
+            app:layout_constraintStart_toStartOf="@+id/cl_rem_sp_type_container"
+            app:layout_constraintTop_toBottomOf="@+id/cl_rem_sp_type_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -270,7 +270,7 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_cf_account_filter" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_reminder_filter" />
 
     <ProgressBar
         android:id="@+id/pb_cf_account"

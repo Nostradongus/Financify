@@ -7,12 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".reminders.RemindersActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_reminder_half"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".50" />
+
     <TextView
         android:id="@+id/tv_reminders_empty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_medium"
         android:text="No reminders to show..."
@@ -22,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sv_reminder_search" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_reminder_filter" />
 
     <ImageView
         android:id="@+id/iv_reminders_divider2"
@@ -127,19 +134,7 @@
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="#FFFFFF" />
 
-    <SearchView
-        android:id="@+id/sv_reminder_search"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/search_border"
-        android:animateLayoutChanges="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_reminders_divider2" />
+
 
     <ImageButton
         android:id="@+id/ib_reminders_filter"
@@ -154,6 +149,149 @@
         app:layout_constraintTop_toTopOf="@+id/textView"
         app:srcCompat="@drawable/filter_icon"
         app:tint="@color/financify_dark_blue" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_reminder_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_reminders_divider2">
+
+        <SearchView
+            android:id="@+id/sv_reminder_search"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/search_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_rem_sp_type_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_border"
+            app:layout_constraintEnd_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sv_reminder_search">
+
+            <Spinner
+                android:id="@+id/sp_rem_type_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_rem_month_filter_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="month"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/btn_rem_month_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_rem_month_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rem_month_filter" />
+
+        <TextView
+            android:id="@+id/tv_rem_year_filter_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="year"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/btn_rem_year_filter"
+            app:layout_constraintStart_toStartOf="@+id/btn_rem_year_filter"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rem_year_filter" />
+
+        <Button
+            android:id="@+id/btn_rem_month_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="NONE"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_em_type_label"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_rem_year_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="NONE"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintTop_toBottomOf="@+id/tv_em_type_label"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btn_rem_clear_filter"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/financify_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Clear Filters"
+            android:textColor="@color/financify_dark_blue"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_account_filter"
+            app:layout_constraintTop_toBottomOf="@+id/sv_reminder_search" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_account_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="191dp" />
+
+        <TextView
+            android:id="@+id/tv_em_type_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="reminder type"
+            android:textAlignment="center"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/cl_rem_sp_type_container"
+            app:layout_constraintStart_toStartOf="@+id/cl_rem_sp_type_container"
+            app:layout_constraintTop_toBottomOf="@+id/cl_rem_sp_type_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/pb_reminders_home"
@@ -170,7 +308,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FILTER"
+        android:text="SEARCH OR FILTER"
         android:textColor="@color/financify_dark_blue"
         android:textSize="10sp"
         android:textStyle="bold"

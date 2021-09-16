@@ -285,8 +285,8 @@ public class CashflowAccountActivity extends BaseActivity {
     private void initFilters () {
         // Retrieve element IDs
         ibTransFilterBtn = findViewById (R.id.ib_cashflow_entry_filter);
-        btnClearFilter = findViewById (R.id.btn_cf_entry_clear_filter);
-        clFilterContainer = findViewById (R.id.cl_cf_account_filter);
+        btnClearFilter = findViewById (R.id.btn_rem_clear_filter);
+        clFilterContainer = findViewById (R.id.cl_reminder_filter);
 
         // Default values
         filterVisible = false;
@@ -324,7 +324,7 @@ public class CashflowAccountActivity extends BaseActivity {
      */
     private void initSpinner () {
         // Retrieve element ID
-        spTransType = findViewById (R.id.sp_cf_type_filter);
+        spTransType = findViewById (R.id.sp_rem_type_filter);
 
         // Initialize "Type" Spinner
         ArrayAdapter<CharSequence> spTypeFilterAdapter = ArrayAdapter.createFromResource (
@@ -352,8 +352,8 @@ public class CashflowAccountActivity extends BaseActivity {
      */
     private void initDatePickers () {
         // Retrieve element IDs
-        btnMonth = findViewById (R.id.btn_cf_month_filter);
-        btnYear = findViewById (R.id.btn_cf_year_filter);
+        btnMonth = findViewById (R.id.btn_rem_month_filter);
+        btnYear = findViewById (R.id.btn_rem_year_filter);
 
         // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);

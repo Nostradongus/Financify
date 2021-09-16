@@ -78,7 +78,7 @@ public class SeeReminderActivity extends BaseActivity {
      */
     private void goBackToRemindersPage () {
         Intent i = new Intent (SeeReminderActivity.this, RemindersActivity.class);
-        i.putExtra (Keys.KEY_REMINDER, reminder);
+        i.putExtra (Keys.KEY_REMINDERS, reminder);
         startActivity (i);
         finish ();
     }
@@ -200,7 +200,7 @@ public class SeeReminderActivity extends BaseActivity {
 
         // Retrieve Reminder from Reminder page
         Intent i = getIntent ();
-        reminder = i.getParcelableExtra (Keys.KEY_REMINDER);
+        reminder = i.getParcelableExtra (Keys.KEY_REMINDERS);
 
 //        // Set field value
         etTitle.setText (reminder.getTitle ());

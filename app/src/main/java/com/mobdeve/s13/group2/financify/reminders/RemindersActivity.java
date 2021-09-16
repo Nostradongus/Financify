@@ -5,13 +5,21 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
+import com.mobdeve.s13.group2.financify.DateHelper;
 import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowAccountActivity;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowUpdateAccountActivity;
 import com.mobdeve.s13.group2.financify.model.Reminder;
+import com.mobdeve.s13.group2.financify.model.Transaction;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -56,8 +66,13 @@ public class RemindersActivity extends BaseActivity {
 
     // Filter Attributes
     private ImageButton ibFilterBtn;
+    private ConstraintLayout clFilterContainer;
     private SearchView svReminderSearch;
+    private Spinner spRemType;
+    private Button btnMonth, btnYear, btnClearFilter;
+    private DatePickerDialog dpMonthDialog, dpYearDialog;
     private boolean filterVisible;
+
     private ArrayList<Reminder> reminderBackup;
 
     // add the date to display (current)
@@ -93,8 +108,8 @@ public class RemindersActivity extends BaseActivity {
         this.initTimeStamp();
         // Initialize FloatingActionButton
         this.initFabAdd();
-        // Initialize SearchView Components
-        this.initSearchView();
+        // Initialize Filter Components
+        this.initFilters();
         // Initialize Firebase components
         this.initFirebase ();
 
@@ -210,31 +225,50 @@ public class RemindersActivity extends BaseActivity {
     /**
      * This initializes all the search-view related components
      */
-    private void initSearchView() {
-        // Filter settings is invisible by default
-        this.filterVisible = false;
-
+    private void initFilters() {
         // Initialize elements
         this.ibFilterBtn = findViewById (R.id.ib_reminders_filter);
-        this.svReminderSearch = findViewById (R.id.sv_reminder_search);
-        this.svReminderSearch.setVisibility (View.GONE);
+        btnClearFilter = findViewById (R.id.btn_rem_clear_filter);
+        clFilterContainer = findViewById (R.id.cl_reminder_filter);
+
+
+        // Filter settings is invisible by default
+        this.filterVisible = false;
+        clFilterContainer.setVisibility (View.GONE);
+
+        // Initialize other components
+        initSpinner ();
+        initDatePickers ();
+        initSearch();
 
         // To toggle the visibility of the SearchView
         this.ibFilterBtn.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 if (filterVisible) {
-                    svReminderSearch.setVisibility(View.GONE);
+                    clFilterContainer.setVisibility(View.GONE);
                 } else {
-                    svReminderSearch.setVisibility(View.VISIBLE);
+                    clFilterContainer.setVisibility(View.VISIBLE);
                 }
 
                 filterVisible = !filterVisible;
             }
         });
 
+        // OnClickListener for Button that clears all filters
+        btnClearFilter.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                clearFilters ();
+            }
+        });
+    }
+
+    private void initSearch() {
         // To make SearchView clickable from anywhere, not just on icon
-        this.svReminderSearch.setOnClickListener (new View.OnClickListener () {
+        svReminderSearch = findViewById(R.id.sv_reminder_search);
+
+        svReminderSearch.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 svReminderSearch.setIconified(false);
@@ -242,7 +276,7 @@ public class RemindersActivity extends BaseActivity {
         });
 
         // When queries are made through the SearchView
-        this.svReminderSearch.setOnQueryTextListener (new SearchView.OnQueryTextListener () {
+        svReminderSearch.setOnQueryTextListener (new SearchView.OnQueryTextListener () {
             // When query is submitted
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -268,6 +302,200 @@ public class RemindersActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    private void initDatePickers() {
+        // Retrieve element IDs
+        btnMonth = findViewById (R.id.btn_rem_month_filter);
+        btnYear = findViewById (R.id.btn_rem_year_filter);
+
+        // TODO: Figure out how to work with deprecated stuffs!
+        System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
+
+        // For retrieving date today
+        Calendar cal = Calendar.getInstance ();
+
+        /* Month DatePickerDialog components */
+        // Initialize Month DatePickerDialog (Filter for Month)
+        dpMonthDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+            // On selecting a month, trigger filter
+            @Override
+            public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
+                // Update button text
+                btnMonth.setText (DateHelper.getMonthFormat (month + 1));
+                // Trigger filter
+                filterReminders ();
+            }
+        }, cal.get (Calendar.YEAR), cal.get (Calendar.MONTH), cal.get (Calendar.DAY_OF_MONTH)) {
+            // For styling purposes only, removes additional background design
+            @Override
+            public void onCreate (Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+        };
+
+        // To remove "Day" and "Year" inputs of DatePickerDialog for Month
+        dpMonthDialog.getDatePicker().findViewById(getResources().getIdentifier("day","id","android")).setVisibility(View.GONE);
+        dpMonthDialog.getDatePicker().findViewById(getResources().getIdentifier("year","id","android")).setVisibility(View.GONE);
+
+        // OnClickListener for Button (to show DatePickerDialog for Month)
+        btnMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                dpMonthDialog.show ();
+            }
+        });
+
+        /* Year DatePickerDialog components */
+        // Initialize Year DatePickerDialog (Filter for Year)
+        dpYearDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+            // On selecting a year, trigger filter
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                // Update button text
+                btnYear.setText (String.valueOf (year));
+                // Trigger filter
+                filterReminders ();
+            }
+        }, cal.get (Calendar.YEAR), cal.get (Calendar.MONTH), cal.get (Calendar.DAY_OF_MONTH)) {
+            // For styling purposes only, removes additional background design
+            @Override
+            public void onCreate (Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                getWindow().setBackgroundDrawable(new ColorDrawable (Color.TRANSPARENT));
+            }
+        };
+
+        // To remove "Day" and "Month" inputs of DatePickerDialog for Year
+        dpYearDialog.getDatePicker().findViewById(getResources().getIdentifier("day","id","android")).setVisibility(View.GONE);
+        dpYearDialog.getDatePicker().findViewById(getResources().getIdentifier("month","id","android")).setVisibility(View.GONE);
+
+        // OnClickListener for Button (to show DatePickerDialog for Year)
+        btnYear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                dpYearDialog.show ();
+            }
+        });
+    }
+
+    private void initSpinner() {
+        // Retrieve element ID
+        spRemType = findViewById (R.id.sp_rem_type_filter);
+
+        // Initialize "Type" Spinner
+        ArrayAdapter<CharSequence> spTypeFilterAdapter = ArrayAdapter.createFromResource (
+                this, R.array.reminder_types, android.R.layout.simple_spinner_item
+        );
+        spTypeFilterAdapter.setDropDownViewResource (android.R.layout.simple_spinner_dropdown_item);
+        spRemType.setAdapter (spTypeFilterAdapter);
+
+        // "Type" onItemSelectedListener (to trigger filtering of Transactions)
+        spRemType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterReminders ();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void filterReminders() {
+        // Retrieve filer from each setting
+        String typeFilter = spRemType.getSelectedItem ().toString ().toLowerCase ();
+        String monthFilter = btnMonth.getText ().toString ().toLowerCase ();
+        String yearFilter = btnYear.getText ().toString ().toLowerCase ();
+
+        /*
+            GENERAL IDEA FOR FILTERING:
+            (1) Filter main list based on TYPE first, store filtered content into a temporary list,
+                replace main list contents with temporary list contents, and proceed to next filter.
+            (2) Repeat for Month and Year filter.
+            (3) At the end, the main list will contain elements that passed through all filters.
+         */
+
+        // Clear filtered list to avoid potential duplication
+        reminders.clear ();
+        // Restore original list
+        reminders.addAll (reminderBackup);
+        // Create a backup of the original list
+        reminderBackup = new ArrayList<> (reminders);
+
+        // Create a temporary list (for copying purposes)
+        ArrayList<Reminder> temp = new ArrayList<> ();
+
+        // If the user filtered based on TRANSACTION TYPE
+        if (!typeFilter.equalsIgnoreCase ("Select type…")) {
+            // Loop through each Transaction
+            for (Reminder reminder : reminders) {
+                // If "Type" filter matches Transaction type
+                if (typeFilter.equalsIgnoreCase (reminder.getType ())) {
+                    // Add to temporary list
+                    temp.add(reminder);
+                }
+            }
+
+            // Reset main list
+            reminders.clear ();
+            // Populate main list with filtered content
+            reminders.addAll (temp);
+            // Clear filtered list holder
+            temp.clear ();
+
+
+            // If the user resets the "Type" filter back to "none"
+        } else {
+            // Clear the main list, and restore from backup list
+            reminders.clear ();
+            reminders.addAll (reminderBackup);
+        }
+
+        // If the user filtered based on the MONTH of Transactions
+        if (!monthFilter.equalsIgnoreCase ("none")) {
+            // Loop through each Transaction
+            for (Reminder reminder : reminders) {
+                // If "Month" filter matches the Month of the Transaction
+                if (monthFilter.equalsIgnoreCase (DateHelper.getMonthFormat (Integer.parseInt (reminder.getMonth ()))))
+                    // Add to temporary list
+                    temp.add (reminder);
+            }
+
+            // Reset main list
+            reminders.clear ();
+            // Populate main list with filtered content
+            reminders.addAll (temp);
+            // Clear filtered list holder
+            temp.clear ();
+        }
+
+        // If the user filtered based on the YEAR of Transactions
+        if (!yearFilter.equalsIgnoreCase ("none")) {
+            // Loop through each Transaction
+            for (Reminder reminder : reminders) {
+                // If "Year" filter matches the Year of the Transaction
+                if (yearFilter.equalsIgnoreCase (reminder.getYear ()))
+                    // Add to temporary list
+                    temp.add (reminder);
+            }
+
+            // Reset main list
+            reminders.clear ();
+            // Populate main list with filtered content
+            reminders.addAll (temp);
+            // Clear filtered list holder
+            temp.clear ();
+        }
+
+        // Refresh RecyclerView
+        myAdapter.notifyDataSetChanged ();
+
+        // Show empty message, if applicable
+        this.displayEmptyMessage ();
     }
 
     /**
@@ -309,6 +537,9 @@ public class RemindersActivity extends BaseActivity {
 
     private void clearFilters() {
         svReminderSearch.setQuery(String.valueOf(""), false);
+        btnMonth.setText (String.valueOf("NONE"));
+        btnYear.setText (String.valueOf("NONE"));
+        spRemType.setSelection (0);
 
         // Clear filtered list
         reminders.clear ();

@@ -179,7 +179,7 @@
         android:background="@drawable/edit_text_border"
         android:ems="10"
         android:hint="ex: Payment Deadline"
-        android:inputType="number|textPersonName"
+        android:inputType="textPersonName"
         android:maxLength="20"
         app:layout_constraintEnd_toEndOf="@+id/tv_rem_update_entry_label"
         app:layout_constraintStart_toStartOf="@+id/tv_rem_update_entry_label"
