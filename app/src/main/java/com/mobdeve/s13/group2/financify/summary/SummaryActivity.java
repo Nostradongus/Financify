@@ -405,7 +405,7 @@ public class SummaryActivity extends BaseActivity {
 
         // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
-        pieDataAccounts.setValueFormatter(new PercentFormatter());
+        pieDataAccounts.setValueFormatter(new PercentFormatter(pieChart));
 
         /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
         // get number of income, investment, and expense transactions from each account
@@ -448,8 +448,11 @@ public class SummaryActivity extends BaseActivity {
 
             // initialize pie data for ratios pie chart
             pieDataRatios = new PieData(pieDataSetRatios);
-            pieDataRatios.setValueFormatter(new PercentFormatter());
+            pieDataRatios.setValueFormatter(new PercentFormatter(pieChart));
         }
+
+        // set pie chart to use percent values
+        pieChart.setUsePercentValues(true);
 
         // initialize summary numerical texts
         String monthFilter = btnMonth.getText().toString().toLowerCase();
@@ -519,7 +522,6 @@ public class SummaryActivity extends BaseActivity {
         tvMonthLabel = findViewById(R.id.tv_summary_month_filter_label);
         tvYearLabel = findViewById(R.id.tv_summary_year_filter_label);
 
-        // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today
@@ -527,7 +529,7 @@ public class SummaryActivity extends BaseActivity {
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)
-        dpMonthDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpMonthDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a month, trigger filter
             @Override
             public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
@@ -559,7 +561,7 @@ public class SummaryActivity extends BaseActivity {
 
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
-        dpYearDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a year, trigger filter
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

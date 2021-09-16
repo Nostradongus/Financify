@@ -356,7 +356,6 @@ public class CashflowAccountActivity extends BaseActivity {
         btnMonth = findViewById (R.id.btn_rem_month_filter);
         btnYear = findViewById (R.id.btn_rem_year_filter);
 
-        // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today
