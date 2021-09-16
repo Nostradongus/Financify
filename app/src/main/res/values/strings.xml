@@ -62,6 +62,7 @@
 
     <!-- types of reminders -->
     <string-array name="reminder_types">
+        <item>Select type…</item>
         <item>Urgent</item>
         <item>Nonurgent</item>
     </string-array>

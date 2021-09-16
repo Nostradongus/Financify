@@ -81,9 +81,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
      */
     private void setColor(String type) {
         if (type.equalsIgnoreCase(Reminder.TYPE_URGENT)) {
-            clReminder.setBackgroundResource(R.drawable.tile_round_yellow);
+            clReminder.setBackgroundResource(R.drawable.tile_round_red);
         } else if (type.equalsIgnoreCase(Reminder.TYPE_NON)) {
-            clReminder.setBackgroundResource(R.drawable.tile_round_blue);
+            clReminder.setBackgroundResource(R.drawable.tile_round_yellow);
         }
     }
 

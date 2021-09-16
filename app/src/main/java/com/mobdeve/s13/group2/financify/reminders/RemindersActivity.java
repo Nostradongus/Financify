@@ -35,11 +35,7 @@ import com.mobdeve.s13.group2.financify.BaseActivity;
 import com.mobdeve.s13.group2.financify.DateHelper;
 import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
-import com.mobdeve.s13.group2.financify.cashflow.CashflowAccountActivity;
-import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
-import com.mobdeve.s13.group2.financify.cashflow.CashflowUpdateAccountActivity;
 import com.mobdeve.s13.group2.financify.model.Reminder;
-import com.mobdeve.s13.group2.financify.model.Transaction;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -81,10 +77,6 @@ public class RemindersActivity extends BaseActivity {
     private SimpleDateFormat dateFormat;
     private String date;
 
-    // add the time to display (current)
-    private TextView currTime;
-    private SimpleDateFormat timeFormat;
-    private String time;
 
     // Firebase Attributes
     private FirebaseUser user;
@@ -324,7 +316,6 @@ public class RemindersActivity extends BaseActivity {
         btnMonth = findViewById (R.id.btn_rem_month_filter);
         btnYear = findViewById (R.id.btn_rem_year_filter);
 
-        // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today
@@ -444,11 +435,11 @@ public class RemindersActivity extends BaseActivity {
         // Create a temporary list (for copying purposes)
         ArrayList<Reminder> temp = new ArrayList<> ();
 
-        // If the user filtered based on TRANSACTION TYPE
+        // If the user filtered based on REMINDER TYPE
         if (!typeFilter.equalsIgnoreCase ("Select type…")) {
-            // Loop through each Transaction
+            // Loop through each Reminder
             for (Reminder reminder : reminders) {
-                // If "Type" filter matches Transaction type
+                // If "Type" filter matches Reminder type
                 if (typeFilter.equalsIgnoreCase (reminder.getType ())) {
                     // Add to temporary list
                     temp.add(reminder);
