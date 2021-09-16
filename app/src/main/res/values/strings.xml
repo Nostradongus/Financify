@@ -32,14 +32,15 @@
     <string name="navigation_close">Close Navigation Drawer</string>
     <string name="menu_home">Home</string>
     <string name="menu_summary">Summary</string>
+    <string name="menu_settings_card">Settings</string>
     <string name="menu_cash_flow">Cash Flow</string>
-    <string name="menu_reminder_list">Reminder List</string>
+    <string name="menu_reminder_list">Reminders</string>
     <string name="menu_budget_sheet">Budget Sheet</string>
     <string name="menu_settings">Account Settings</string>
     <string name="menu_logout">Log Out</string>
 
     <!-- home page strings -->
-    <string name="action_indicator">What do you want to do?</string>
+    <string name="action_indicator">What do you want to do today?</string>
     <string name="user_greeting">Hello, Zinnia!</string>
 
     <!-- account settings strings -->
@@ -57,6 +58,12 @@
         <item>Physical Wallet</item>
         <item>Bank Account</item>
         <item>Digital Wallet</item>
+    </string-array>
+
+    <!-- types of reminders -->
+    <string-array name="reminder_types">
+        <item>Urgent</item>
+        <item>Nonurgent</item>
     </string-array>
 
     <string-array name="transaction_types">

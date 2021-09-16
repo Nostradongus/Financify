@@ -27,8 +27,12 @@ public class User {
      * User's list of accounts
      */
     private ArrayList<Account> accounts;
+    /**
+     * User's list of reminders
+     */
+    private ArrayList<Reminder> reminders;
 
-    // TODO: add more fields (reminder list entries and budget sheet entries)
+
 
     /**
      * Constructor. Instantiates all required attributes of the user
@@ -44,6 +48,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.accounts = new ArrayList<Account>();
+        this.reminders = new ArrayList<Reminder>();
     }
 
     /**
@@ -89,6 +94,10 @@ public class User {
      */
     public ArrayList<Account> getAccounts() {
         return new ArrayList<> (accounts);
+    }
+
+    public ArrayList<Reminder> getReminders() {
+        return new ArrayList<> (reminders);
     }
 
     // TODO: add more getter methods (reminder list entries and budget sheets)

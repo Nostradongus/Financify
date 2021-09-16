@@ -5,17 +5,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -56,7 +48,7 @@ public class CashflowHomeActivity extends BaseActivity {
     private ArrayList<Account> accounts;
 
     // UI Attributes
-    private ConstraintLayout clAddEntry, clAddAccount;
+    private ConstraintLayout clAddEntry, clAddAccount, clHomeBtn;
     private TextView tvAddEntry, tvAddAccount, tvCurrBal, tvEmptyMessage;
     private FloatingActionButton fabAddMain, fabAddEntry, fabAddAccount;
     private boolean fabShow;
@@ -83,14 +75,16 @@ public class CashflowHomeActivity extends BaseActivity {
         // Cash Flow homepage layout
         setContentView (R.layout.activity_cashflow_homepage);
 
+        // Initialize General components
+        initComponents ();
         // Initialize RecyclerView components
-        this.initRecyclerView ();
+        initRecyclerView ();
         // Initialize FloatingActionButton components
-        this.initFABs ();
+        initFABs ();
         // Initialize SearchView components
-        this.initSearchView ();
+        initSearchView ();
         // Initialize Firebase components
-        this.initFirebase ();
+        initFirebase ();
     }
 
     /**
@@ -112,6 +106,23 @@ public class CashflowHomeActivity extends BaseActivity {
 
         // Show empty message, if applicable
         this.displayEmptyMessage ();
+    }
+
+    /**
+     * Initialize general components.
+     */
+    private void initComponents () {
+        clHomeBtn = findViewById (R.id.cl_cfh_back_home_nav);
+
+        // Back button for Account page
+        clHomeBtn.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent i = new Intent (CashflowHomeActivity.this, HomeActivity.class);
+                startActivity (i);
+                finish ();
+            }
+        });
     }
 
     /**
@@ -224,7 +235,7 @@ public class CashflowHomeActivity extends BaseActivity {
         this.filterVisible = false;
 
         // Initialize elements
-        this.ibAccountFilterBtn = findViewById (R.id.ib_cashflow_account_filter);
+        this.ibAccountFilterBtn = findViewById (R.id.ib_reminders_filter);
         this.svAccountSearch = findViewById (R.id.sv_account_search);
         this.svAccountSearch.setVisibility (View.GONE);
 

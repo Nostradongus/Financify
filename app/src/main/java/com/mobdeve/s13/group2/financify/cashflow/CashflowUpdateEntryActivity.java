@@ -281,7 +281,7 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
      */
     private void initTransSpinners () {
         // Retrieve "Type" Spinner ID
-        spTransType = findViewById (R.id.sp_cf_update_entry_type);
+        spTransType = findViewById (R.id.sp_rem_update_type);
 
         // Set "Type" Spinner content using resource file
         ArrayAdapter<CharSequence> spTypeAdapter = ArrayAdapter.createFromResource (

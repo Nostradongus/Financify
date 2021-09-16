@@ -42,6 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
     // progress bar when register button is clicked
     private ProgressBar pbRegister;
 
+    // register button
+    private Button registerBtn;
+
     // Firebase components
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -74,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.etPassword = findViewById(R.id.et_register_password);
         this.pbRegister = findViewById(R.id.pb_register);
 
-        Button registerBtn = findViewById(R.id.btn_register);
+        registerBtn = findViewById(R.id.btn_register);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +89,10 @@ public class RegisterActivity extends AppCompatActivity {
                 // check if fields are empty and validate email and password fields as well
                 if (!checkEmpty(firstName, lastName, email, password) &&
                     validateEmailAndPassword(email, password)) {
+                    // disable register button
+                    registerBtn.setEnabled (false);
+                    registerBtn.setVisibility (View.INVISIBLE);
+
                     // register new user to the database
                     registerUser(new User(firstName, lastName, email, password));
                 }
@@ -184,6 +191,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     } else {
                                         registerFailed();
                                     }
+
+                                    // re-enable register button
+                                    registerBtn.setEnabled (true);
+                                    registerBtn.setVisibility (View.VISIBLE);
                                 }
                             });
                         } else {

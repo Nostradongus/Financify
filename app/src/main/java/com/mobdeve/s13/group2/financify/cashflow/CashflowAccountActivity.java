@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -242,7 +243,7 @@ public class CashflowAccountActivity extends BaseActivity {
         tvAccountType = findViewById (R.id.tv_specific_account_type);
         tvBalance = findViewById (R.id.tv_specific_account_balance);
         ivEditBtn = findViewById (R.id.iv_cashflow_edit_account);
-        clHomeBtn = findViewById (R.id.cl_cf_back_home_nav);
+        clHomeBtn = findViewById (R.id.cl_cfa_back_home_nav);
         pbAccount = findViewById (R.id.pb_cf_account);
 
         // Back button for Account page
@@ -285,8 +286,8 @@ public class CashflowAccountActivity extends BaseActivity {
     private void initFilters () {
         // Retrieve element IDs
         ibTransFilterBtn = findViewById (R.id.ib_cashflow_entry_filter);
-        btnClearFilter = findViewById (R.id.btn_cf_entry_clear_filter);
-        clFilterContainer = findViewById (R.id.cl_cf_account_filter);
+        btnClearFilter = findViewById (R.id.btn_rem_clear_filter);
+        clFilterContainer = findViewById (R.id.cl_reminder_filter);
 
         // Default values
         filterVisible = false;
@@ -324,7 +325,7 @@ public class CashflowAccountActivity extends BaseActivity {
      */
     private void initSpinner () {
         // Retrieve element ID
-        spTransType = findViewById (R.id.sp_cf_type_filter);
+        spTransType = findViewById (R.id.sp_rem_type_filter);
 
         // Initialize "Type" Spinner
         ArrayAdapter<CharSequence> spTypeFilterAdapter = ArrayAdapter.createFromResource (
@@ -352,8 +353,8 @@ public class CashflowAccountActivity extends BaseActivity {
      */
     private void initDatePickers () {
         // Retrieve element IDs
-        btnMonth = findViewById (R.id.btn_cf_month_filter);
-        btnYear = findViewById (R.id.btn_cf_year_filter);
+        btnMonth = findViewById (R.id.btn_rem_month_filter);
+        btnYear = findViewById (R.id.btn_rem_year_filter);
 
         // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
@@ -363,7 +364,7 @@ public class CashflowAccountActivity extends BaseActivity {
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)
-        dpMonthDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpMonthDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a month, trigger filter
             @Override
             public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
@@ -393,9 +394,11 @@ public class CashflowAccountActivity extends BaseActivity {
             }
         });
 
+//        accounts.add (postSnapshot.getValue (Account.class))
+
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
-        dpYearDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a year, trigger filter
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
