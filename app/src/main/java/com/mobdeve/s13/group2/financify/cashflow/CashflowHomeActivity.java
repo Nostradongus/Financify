@@ -150,6 +150,7 @@ public class CashflowHomeActivity extends BaseActivity {
 
                             // String id, String desc, double amt, String type, String date, String accountId
                             for (DataSnapshot transaction : account.child ("transactions").getChildren ()) {
+                                // Instantiate a Transaction object per child
                                 transFromFirebase.add (new Transaction (
                                         transaction.getKey (),
                                         transaction.child ("description").getValue ().toString (),
