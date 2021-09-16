@@ -31,7 +31,7 @@
         android:textColor="@color/financify_dark_blue"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_cf_back_home_nav" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_cfa_back_home_nav" />
 
     <TextView
         android:id="@+id/tv_specific_account_type"
@@ -295,7 +295,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_specific_entries_label" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_cf_back_home_nav"
+        android:id="@+id/cl_cfa_back_home_nav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"

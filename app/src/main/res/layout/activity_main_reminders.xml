@@ -7,6 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".reminders.RemindersActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_rem_back_home_nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_account_view_back_home"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginBottom="2dp"
+            android:padding="2dp"
+            android:paddingBottom="2dp"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_account_view_back_home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_account_view_back_home"
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            app:tint="@color/financify_light_blue" />
+
+        <TextView
+            android:id="@+id/tv_account_view_back_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/back_home"
+            android:textColor="@color/financify_light_blue"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_account_view_back_home"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_reminder_half"
         android:layout_width="wrap_content"
@@ -50,7 +85,7 @@
         android:id="@+id/tv_reminders_home_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="@font/poppins_bold"
         android:text="REMINDERS TODAY"
         android:textColor="@color/financify_dark_blue"

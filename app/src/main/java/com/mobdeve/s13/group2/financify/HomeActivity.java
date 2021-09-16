@@ -43,6 +43,11 @@ public class HomeActivity extends BaseActivity {
      */
     private ConstraintLayout clReminderList;
 
+    /**
+     * Account settings layout button.
+     */
+    private ConstraintLayout clSettings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,7 @@ public class HomeActivity extends BaseActivity {
         this.clSummary = findViewById(R.id.cl_summary_card);
         this.clCashFlow = findViewById(R.id.cl_cash_flow_card);
         this.clReminderList = findViewById(R.id.cl_reminder_list_card);
+        this.clSettings = findViewById (R.id.cl_settings_card);
 
         // update greeting with logged in user's first name
         this.sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
@@ -97,6 +103,19 @@ public class HomeActivity extends BaseActivity {
             public void onClick(View v) {
                 // redirect to reminder list's start activity
                 Intent intent = new Intent(getBaseContext(), RemindersActivity.class);
+                startActivity(intent);
+
+                // end current activity
+                finish();
+            }
+        });
+
+        // set listener for settings card button
+        this.clSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to settings' start activity
+                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
                 startActivity(intent);
 
                 // end current activity

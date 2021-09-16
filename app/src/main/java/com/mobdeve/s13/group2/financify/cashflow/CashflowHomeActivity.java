@@ -48,7 +48,7 @@ public class CashflowHomeActivity extends BaseActivity {
     private ArrayList<Account> accounts;
 
     // UI Attributes
-    private ConstraintLayout clAddEntry, clAddAccount;
+    private ConstraintLayout clAddEntry, clAddAccount, clHomeBtn;
     private TextView tvAddEntry, tvAddAccount, tvCurrBal, tvEmptyMessage;
     private FloatingActionButton fabAddMain, fabAddEntry, fabAddAccount;
     private boolean fabShow;
@@ -75,14 +75,16 @@ public class CashflowHomeActivity extends BaseActivity {
         // Cash Flow homepage layout
         setContentView (R.layout.activity_cashflow_homepage);
 
+        // Initialize General components
+        initComponents ();
         // Initialize RecyclerView components
-        this.initRecyclerView ();
+        initRecyclerView ();
         // Initialize FloatingActionButton components
-        this.initFABs ();
+        initFABs ();
         // Initialize SearchView components
-        this.initSearchView ();
+        initSearchView ();
         // Initialize Firebase components
-        this.initFirebase ();
+        initFirebase ();
     }
 
     /**
@@ -104,6 +106,23 @@ public class CashflowHomeActivity extends BaseActivity {
 
         // Show empty message, if applicable
         this.displayEmptyMessage ();
+    }
+
+    /**
+     * Initialize general components.
+     */
+    private void initComponents () {
+        clHomeBtn = findViewById (R.id.cl_cfh_back_home_nav);
+
+        // Back button for Account page
+        clHomeBtn.setOnClickListener(new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent i = new Intent (CashflowHomeActivity.this, HomeActivity.class);
+                startActivity (i);
+                finish ();
+            }
+        });
     }
 
     /**
