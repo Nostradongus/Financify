@@ -27,13 +27,13 @@ public class SeeReminderActivity extends BaseActivity {
 
         Intent i = getIntent();
 
-        // TITLE
-        String sName = i.getStringExtra(Adapter.KEY_TITLE);
-        this.etTitle.setText(sName);
-
-        // DESCRIPTION
-        String desc = i.getStringExtra(Adapter.KEY_DESCRIPTION);
-        this.etDesc.setText(desc);
+//        // TITLE
+//        String sName = i.getStringExtra(Adapter.KEY_TITLE);
+//        this.etTitle.setText(sName);
+//
+//        // DESCRIPTION
+//        String desc = i.getStringExtra(Adapter.KEY_DESCRIPTION);
+//        this.etDesc.setText(desc);
 
     }
 }

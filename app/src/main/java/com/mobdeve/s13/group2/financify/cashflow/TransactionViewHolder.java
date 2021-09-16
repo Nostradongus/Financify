@@ -35,7 +35,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
         tvTransAmt = itemView.findViewById (R.id.tv_transaction_amount);
         tvTransType = itemView.findViewById (R.id.tv_transaction_type);
         tvTransDate = itemView.findViewById (R.id.tv_transaction_date);
-        clTile = itemView.findViewById (R.id.cl_transaction_entry);
+        clTile = itemView.findViewById (R.id.cl_reminder_entry);
     }
 
     /**

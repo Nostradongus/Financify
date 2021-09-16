@@ -59,6 +59,12 @@
         <item>Digital Wallet</item>
     </string-array>
 
+    <!-- types of reminders -->
+    <string-array name="reminder_types">
+        <item>Urgent</item>
+        <item>Nonurgent</item>
+    </string-array>
+
     <string-array name="transaction_types">
         <item>Select type…</item>
         <item>Income</item>

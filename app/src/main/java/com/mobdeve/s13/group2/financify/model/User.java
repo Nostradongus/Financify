@@ -27,8 +27,12 @@ public class User {
      * User's list of accounts
      */
     private ArrayList<Account> accounts;
+    /**
+     * User's list of reminders
+     */
+    private ArrayList<Reminder> reminders;
 
-    // TODO: add more fields (reminder list entries and budget sheet entries)
+
 
     /**
      * Constructor. Instantiates all required attributes of the user
