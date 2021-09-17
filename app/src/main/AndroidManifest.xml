@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
 
     <application
         android:allowBackup="true"
@@ -28,11 +29,7 @@
         <activity android:name=".reminders.SeeReminderActivity" />
         <activity android:name=".reminders.AddRemindersActivity" />
         <activity android:name=".reminders.RemindersActivity" />
-        <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                <action android:name="singh.ajit.action.DISPLAY_NOTIFICATION" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".reminders.ReminderBroadcast" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

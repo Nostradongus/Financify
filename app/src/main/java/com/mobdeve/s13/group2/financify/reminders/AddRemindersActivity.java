@@ -3,10 +3,13 @@ package com.mobdeve.s13.group2.financify.reminders;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -57,6 +60,8 @@ public class AddRemindersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // add reminders layout
         setContentView(R.layout.activity_add_reminders);
+
+        createNotificationChannel ();
 
         // Initialize the datepicker components
         initDatePicker();
@@ -125,21 +130,38 @@ public class AddRemindersActivity extends BaseActivity {
     }
 
     /**
+     * Creates a notification channel for devices with API greater than Oreo.
+     */
+    private void createNotificationChannel () {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = "Financify";
+            String description = "Financify Reminder!";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("financify_notify", name, importance);
+            channel.setDescription (description);
+            channel.enableVibration (true);
+            channel.enableLights (true);
+            NotificationManager notificationManager = getSystemService (NotificationManager.class);
+            notificationManager.createNotificationChannel (channel);
+        }
+    }
+
+    /**
      * Sets notification for the newly created Reminder on the device.
      *
      * @param date  the date of the new Reminder
      */
-    private void setNotification(String date) {
+    private void setNotification (String date) {
+        // initialize NotifyService intent
+        Intent intent = new Intent (AddRemindersActivity.this, ReminderBroadcast.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast (AddRemindersActivity.this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService (ALARM_SERVICE);
+
         // separate month, day, and year values and parse them
         String[] dateVals = date.split("/");
         int month = Integer.parseInt(dateVals[0]);
         int day = Integer.parseInt(dateVals[1]);
         int year = Integer.parseInt(dateVals[2]);
-
-        // initialize NotifyService intent
-        Intent intent = new Intent(this, NotifyService.class);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // set notification date
         Calendar calendar = Calendar.getInstance();
@@ -147,9 +169,12 @@ public class AddRemindersActivity extends BaseActivity {
         // set to receive at exactly 8:00 AM of the new Reminder's date
         calendar.set(year, month - 1, day, 8, 0, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.YEAR, year);
 
         // start notification
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        alarmManager.set (AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
     }
 
     /**
