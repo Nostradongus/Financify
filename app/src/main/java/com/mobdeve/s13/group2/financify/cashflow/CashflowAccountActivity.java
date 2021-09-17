@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -356,14 +357,19 @@ public class CashflowAccountActivity extends BaseActivity {
         btnMonth = findViewById (R.id.btn_rem_month_filter);
         btnYear = findViewById (R.id.btn_rem_year_filter);
 
-        System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
-
         // For retrieving date today
         Calendar cal = Calendar.getInstance ();
 
+        // DatePickerDialog theme depending on API level
+        int datePickerTheme = 0;
+        if (android.os.Build.VERSION.SDK_INT < 30)
+            datePickerTheme = android.R.style.Theme_Holo_Light_DialogWhenLarge;
+        else
+            datePickerTheme = R.style.MySpinnerDatePickerStyle;
+
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)
-        dpMonthDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
+        dpMonthDialog = new DatePickerDialog(this, datePickerTheme, new DatePickerDialog.OnDateSetListener() {
             // On selecting a month, trigger filter
             @Override
             public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
@@ -395,7 +401,7 @@ public class CashflowAccountActivity extends BaseActivity {
 
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
-        dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
+        dpYearDialog = new DatePickerDialog(this, datePickerTheme, new DatePickerDialog.OnDateSetListener() {
             // On selecting a year, trigger filter
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

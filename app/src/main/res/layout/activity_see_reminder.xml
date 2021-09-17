@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/financify_lightest_blue"
+    android:isScrollContainer="true"
     tools:context=".reminders.SeeReminderActivity">
 
   <androidx.constraintlayout.widget.Guideline
@@ -33,7 +34,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.96" />
+      app:layout_constraintGuide_percent="0.8" />
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="0dp"
@@ -41,10 +42,12 @@
       android:background="@drawable/cashflow_bg_form"
       android:paddingLeft="20dp"
       android:paddingRight="20dp"
+      app:layout_constraintBottom_toTopOf="@+id/guideline25"
       app:layout_constraintEnd_toStartOf="@+id/guideline23"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="@+id/guideline22"
-      app:layout_constraintTop_toTopOf="@+id/guideline24">
+      app:layout_constraintTop_toTopOf="@+id/guideline24"
+      app:layout_constraintVertical_bias="0.0">
 
     <Button
         android:id="@+id/btn_rem_cancel_update_entry"
@@ -66,7 +69,7 @@
         android:id="@+id/btn_rem_update_entry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/financify_pastel_green"
         android:fontFamily="@font/poppins_bold"
         android:text="update reminder"
@@ -95,7 +98,7 @@
         android:id="@+id/et_rem_update_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_border"
         android:ems="10"
         android:hint="ex: Paid bills"
@@ -136,7 +139,7 @@
         android:id="@+id/cl_cf_update_entry_type"
         android:layout_width="0dp"
         android:layout_height="33dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/search_border"
         app:layout_constraintEnd_toEndOf="@+id/tv_rem_update_entry_date_label"
         app:layout_constraintStart_toStartOf="@+id/tv_rem_update_entry_date_label"
@@ -161,7 +164,6 @@
         android:id="@+id/tv_rem_update_entry_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
         android:fontFamily="@font/poppins_bold"
         android:text="EDIT REMINDER"
         android:textAlignment="center"
@@ -175,7 +177,7 @@
         android:id="@+id/et_rem_update_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_border"
         android:ems="10"
         android:hint="ex: Payment Deadline"
@@ -217,7 +219,7 @@
         android:id="@+id/btn_rem_update_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/financify_light_blue"
         android:ems="10"
         android:fontFamily="@font/poppins_medium"
