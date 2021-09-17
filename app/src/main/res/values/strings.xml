@@ -50,7 +50,7 @@
         You have not yet made any accounts, create accounts at the Cash Flow page.
     </string>
     <string name="summary_date_empty">
-        No accounts were made at the given date.
+        No transactions were made at the given date.
     </string>
 
     <!-- types of summary -->

@@ -35,7 +35,11 @@ import org.w3c.dom.Text;
 
 import java.util.Objects;
 
-// TODO: add documentation
+/**
+ * For application's header and navigation bar. Parent activity for all activities in the
+ * application to show the header and navigation bar containing the application's features and
+ * functionalities.
+ */
 public class BaseActivity extends AppCompatActivity {
 
     // SharedPreferences to get logged in user's firstname and lastname
@@ -85,6 +89,9 @@ public class BaseActivity extends AppCompatActivity {
         initDrawer();
     }
 
+    /**
+     * Initializes the navigation bar.
+     */
     public void initDrawer() {
         // get header child layout from navigation view layout
         View navHeader = this.navigationView.getHeaderView(0);
@@ -157,6 +164,13 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Launches the activity of the chosen feature on the application's navigation bar.
+     *
+     * @param   layout      the activity's layout ID
+     * @param   activity    the activity's class
+     * @param   <T>         represents any activity class only
+     */
     private <T> void launchActivity (int layout, Class<T> activity) {
         // check if user is not currently on chosen activity from menu
         if (this.layoutResId != layout) {

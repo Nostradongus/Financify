@@ -33,7 +33,9 @@ import com.mobdeve.s13.group2.financify.model.Model;
 
 import org.jetbrains.annotations.NotNull;
 
-// TODO: add documentation
+/**
+ * For settings activity / page, viewing and editing of logged in user's account details.
+ */
 public class SettingsActivity extends BaseActivity {
 
     // SharedPreferences for stored user first name and last name
@@ -216,6 +218,10 @@ public class SettingsActivity extends BaseActivity {
      * Updates the account data and details of the user depending on what was changed.
      */
     private void updateUserAccount() {
+        // disable save button
+        btnSave.setEnabled(false);
+        btnSave.setClickable(false);
+
         // turn on progress bar
         this.pbSettings.setVisibility(View.VISIBLE);
 
@@ -277,6 +283,9 @@ public class SettingsActivity extends BaseActivity {
         else {
             // if some data has been updated
             if (updated) {
+                // enable button save
+                btnSave.setEnabled(true);
+                btnSave.setClickable(true);
                 // indicate user that data has been updated successfully
                 // and return back to home page afterwards
                 updateSuccessful();
@@ -445,6 +454,9 @@ public class SettingsActivity extends BaseActivity {
         finish ();
     }
 
+    /**
+     * Launches an activity leading to the Home and finishes this activity.
+     */
     private void goBackToHomePage() {
         // redirect back to home activity page
         Intent intent = new Intent(this, HomeActivity.class);

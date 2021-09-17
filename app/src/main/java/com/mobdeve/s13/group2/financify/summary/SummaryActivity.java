@@ -55,8 +55,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
-// comparator for accounts to be sorted according to their balance
-// in descending order
+/**
+ * Comparator for sorting accounts according to their balance in descending order.
+ */
 class BalanceComparator implements Comparator<Account> {
     @Override
     public int compare(Account o1, Account o2) {
@@ -69,7 +70,9 @@ class BalanceComparator implements Comparator<Account> {
     }
 }
 
-// for summary activity / page (summary statistics)
+/**
+ * For summary activity / page, shows the summary statistics of the user's data.
+ */
 public class SummaryActivity extends BaseActivity {
 
     // UI components
@@ -360,6 +363,9 @@ public class SummaryActivity extends BaseActivity {
         finish ();
     }
 
+    /**
+     * Initializes and sets up the required data for the summary statistics.
+     */
     private void setData() {
         /* TOP ACCOUNTS BY BALANCE DATA */
         // sort accounts by balance in descending order
@@ -405,7 +411,7 @@ public class SummaryActivity extends BaseActivity {
 
         // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
-        pieDataAccounts.setValueFormatter(new PercentFormatter());
+        pieDataAccounts.setValueFormatter(new PercentFormatter(pieChart));
 
         /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
         // get number of income, investment, and expense transactions from each account
@@ -448,8 +454,11 @@ public class SummaryActivity extends BaseActivity {
 
             // initialize pie data for ratios pie chart
             pieDataRatios = new PieData(pieDataSetRatios);
-            pieDataRatios.setValueFormatter(new PercentFormatter());
+            pieDataRatios.setValueFormatter(new PercentFormatter(pieChart));
         }
+
+        // set pie chart to use percent values
+        pieChart.setUsePercentValues(true);
 
         // initialize summary numerical texts
         String monthFilter = btnMonth.getText().toString().toLowerCase();
@@ -492,6 +501,9 @@ public class SummaryActivity extends BaseActivity {
         onSelectSummary();
     }
 
+    /**
+     * Initializes the Spinner component/s.
+     */
     private void initSpinners() {
         // initialize values for summary type spinner
         ArrayAdapter<CharSequence> spSummaryTypeAdapter = ArrayAdapter.createFromResource(
@@ -512,6 +524,9 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Initializes the DatePicker components.
+     */
     private void initDatePickers() {
         // initialize date picker components inside preferences / filter box
         btnMonth = findViewById (R.id.btn_summary_month_filter);
@@ -519,7 +534,6 @@ public class SummaryActivity extends BaseActivity {
         tvMonthLabel = findViewById(R.id.tv_summary_month_filter_label);
         tvYearLabel = findViewById(R.id.tv_summary_year_filter_label);
 
-        // TODO: Figure out how to work with deprecated stuffs!
         System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today
@@ -527,7 +541,7 @@ public class SummaryActivity extends BaseActivity {
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)
-        dpMonthDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpMonthDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a month, trigger filter
             @Override
             public void onDateSet (DatePicker view, int year, int month, int dayOfMonth) {
@@ -559,7 +573,7 @@ public class SummaryActivity extends BaseActivity {
 
         /* Year DatePickerDialog components */
         // Initialize Year DatePickerDialog (Filter for Year)
-        dpYearDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_DialogWhenLarge, new DatePickerDialog.OnDateSetListener() {
+        dpYearDialog = new DatePickerDialog(this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
             // On selecting a year, trigger filter
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -591,6 +605,10 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Clears the preferences / filter that the user chose and resets the summary statistics data
+     * to be displayed.
+     */
     private void clearPreferences() {
         // reset month and year buttons
         btnMonth.setText("NONE");
@@ -729,6 +747,9 @@ public class SummaryActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Filters the summary statistics data according to chosen month, year, or both.
+     */
     private void filterData() {
         // get month and year filter values
         String monthFilter = btnMonth.getText().toString().toLowerCase();
@@ -811,6 +832,9 @@ public class SummaryActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Launches an activity leading to the Home page and finishes this activity.
+     */
     private void goBackToHomePage() {
         // return back to home activity
         Intent intent = new Intent(this, HomeActivity.class);

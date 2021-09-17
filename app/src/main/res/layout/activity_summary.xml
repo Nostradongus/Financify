@@ -255,7 +255,7 @@
     <!-- message if no data available to create graph summary -->
     <TextView
         android:id="@+id/tv_summary_empty"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
@@ -273,7 +273,7 @@
     <!-- message if no data available to create graph summary -->
     <TextView
         android:id="@+id/tv_summary_date_empty"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
@@ -335,7 +335,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="MyBanko - 50%"
         android:textColor="@color/financify_light_blue"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/tv_summary_numerical_title"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -348,7 +348,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="BDO - 25%"
         android:textColor="@color/financify_light_blue"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/tv_summary_placeholder_1"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -361,7 +361,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Lincoln - 15%"
         android:textColor="@color/financify_light_blue"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/tv_summary_placeholder_2"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -374,7 +374,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:text="Others - 10%"
         android:textColor="@color/financify_light_blue"
-        android:textSize="@dimen/_11sdp"
+        android:textSize="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@id/tv_summary_placeholder_3"
         app:layout_constraintStart_toStartOf="parent" />
 
