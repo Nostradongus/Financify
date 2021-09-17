@@ -17,35 +17,27 @@ import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
 import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
-// TODO: add documentation
+/**
+ * For home activity / page, the application's home page after the user logs in.
+ */
 public class HomeActivity extends BaseActivity {
 
-    /**
-     * SharedPreferences for stored user firstname and lastname.
-     */
+    // SharedPreferences for stored first and last name of user.
     private SharedPreferences sharedPreferences;
 
-    /**
-     * User greeting text.
-     */
+    // user greeting text
     private TextView tvUserGreeting;
 
-    /**
-     * Summary layout button.
-     */
+    // summary card button
     private ConstraintLayout clSummary;
-    /**
-     * Cash flow layout button.
-     */
+
+    // cash flow card button
     private ConstraintLayout clCashFlow;
-    /**
-     * Reminder list layout button.
-     */
+
+    // reminder list card button
     private ConstraintLayout clReminderList;
 
-    /**
-     * Account settings layout button.
-     */
+    // account settings card button
     private ConstraintLayout clSettings;
 
     @Override
@@ -57,6 +49,9 @@ public class HomeActivity extends BaseActivity {
         initComponents();
     }
 
+    /**
+     * Initializes UI components.
+     */
     private void initComponents() {
         // initialize components
         this.tvUserGreeting = findViewById(R.id.tv_user_greeting);

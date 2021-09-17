@@ -28,7 +28,10 @@ import com.mobdeve.s13.group2.financify.model.Model;
 
 import org.jetbrains.annotations.NotNull;
 
-// TODO: add documentation
+/**
+ * For login activity / page, for user to login his or her account to access the application's
+ * features.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     // SharedPreferences for storing logged in user data (session-like)
@@ -66,6 +69,9 @@ public class LoginActivity extends AppCompatActivity {
         initComponents();
     }
 
+    /**
+     * Initializes Firebase components.
+     */
     private void initFirebase() {
         // get instance of Firebase Authentication
         this.mAuth = FirebaseAuth.getInstance();
@@ -74,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
         this.database = FirebaseDatabase.getInstance();
     }
 
+    /**
+     * Initializes UI components.
+     */
     private void initComponents() {
         // indicator if user is logged in
         isLoggedIn = false;
@@ -120,6 +129,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks if the required input fields are not empty.
+     *
+     * @param   email       user's email
+     * @param   password    user's password
+     *
+     * @return  true if all required input fields are not empty, false otherwise.
+     */
     private boolean checkEmpty(String email, String password) {
         boolean hasEmpty = false;
 
@@ -141,6 +158,14 @@ public class LoginActivity extends AppCompatActivity {
         return hasEmpty;
     }
 
+    /**
+     * Checks if the inputted email and password are of valid format.
+     *
+     * @param   email       the user's email
+     * @param   password    the user's password
+     *
+     * @return  true if both email and password are of valid format, false otherwise.
+     */
     private boolean validateEmailAndPassword(String email, String password) {
         boolean valid = true;
 
@@ -162,6 +187,12 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Logs in the user to the application with the given inputs.
+     *
+     * @param   email       the user's email
+     * @param   password    the user's password
+     */
     private void loginUser(String email, String password) {
         // show login progress bar during the accessing of user authentication data
         this.pbLogin.setVisibility(View.VISIBLE);
@@ -185,6 +216,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Indicates login success to the user and redirects to the home page of the application
+     * afterwards.
+     */
     private void loginSuccess() {
         // get logged in user's data
         String userId = mAuth.getCurrentUser().getUid();
@@ -231,6 +266,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Indicates login error or failure to the user.
+     */
     private void loginFailed() {
         // disable login progress bar as authentication process is complete
         this.pbLogin.setVisibility(View.GONE);

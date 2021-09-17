@@ -13,9 +13,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-// TODO: add documentation
+/**
+ * For splash screen activity / page, to show splash screen before moving to the application's
+ * login or home page.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    // specified duration period for application's duration screen
     private static final int SPLASH_SCREEN_DELAY = 3000;
 
     @Override
@@ -24,9 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /**
-         * This allows schedule a local notification
+         * This allows to schedule a local notification
          */
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, 5);
@@ -61,8 +64,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, SPLASH_SCREEN_DELAY);
-
-
-
     }
 }

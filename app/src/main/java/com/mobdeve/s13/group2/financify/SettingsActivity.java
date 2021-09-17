@@ -33,7 +33,9 @@ import com.mobdeve.s13.group2.financify.model.Model;
 
 import org.jetbrains.annotations.NotNull;
 
-// TODO: add documentation
+/**
+ * For settings activity / page, viewing and editing of logged in user's account details.
+ */
 public class SettingsActivity extends BaseActivity {
 
     // SharedPreferences for stored user first name and last name
@@ -452,6 +454,9 @@ public class SettingsActivity extends BaseActivity {
         finish ();
     }
 
+    /**
+     * Launches an activity leading to the Home and finishes this activity.
+     */
     private void goBackToHomePage() {
         // redirect back to home activity page
         Intent intent = new Intent(this, HomeActivity.class);
