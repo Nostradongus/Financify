@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -137,22 +138,18 @@ public class AddRemindersActivity extends BaseActivity {
 
         // initialize NotifyService intent
         Intent intent = new Intent(this, NotifyService.class);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        PendingIntent pIntent = PendingIntent.getService(this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // set notification date
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
         // set to receive at exactly 8:00 AM of the new Reminder's date
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR, 8);
+        calendar.set(year, month - 1, day, 8, 0, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.set(Calendar.MONTH, month-1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.YEAR, year);
 
         // start notification
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
     }
 
     /**
