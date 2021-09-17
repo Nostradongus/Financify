@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.93" />
+        app:layout_constraintGuide_percent="0.8" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -41,10 +41,12 @@
         android:background="@drawable/cashflow_bg_form"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline25"
         app:layout_constraintEnd_toStartOf="@+id/guideline23"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline22"
-        app:layout_constraintTop_toTopOf="@+id/guideline24">
+        app:layout_constraintTop_toTopOf="@+id/guideline24"
+        app:layout_constraintVertical_bias="0.0">
 
         <Button
             android:id="@+id/btn_rem_cancel_add_reminder"
@@ -66,7 +68,7 @@
             android:id="@+id/btn_rem_add_reminders"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@color/financify_pastel_green"
             android:fontFamily="@font/poppins_bold"
             android:text="add reminder"
@@ -81,7 +83,7 @@
             android:id="@+id/et_rem_reminder_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="ex: Deadline of Utility Bills"
@@ -125,7 +127,7 @@
             android:id="@+id/cl_rem_reminder_type"
             android:layout_width="0dp"
             android:layout_height="33dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/search_border"
             app:layout_constraintEnd_toEndOf="@+id/tv_cf_entry_date_label"
             app:layout_constraintStart_toStartOf="@+id/tv_cf_entry_date_label"
@@ -150,7 +152,7 @@
             android:id="@+id/tv_rem_add_reminder_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_bold"
             android:text="ADD A NEW REMINDER"
             android:textAlignment="center"
@@ -164,7 +166,7 @@
             android:id="@+id/et_rem_reminder_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_border"
             android:hint="ex: Expenses"
             android:inputType="textShortMessage"
@@ -207,7 +209,7 @@
             android:id="@+id/btn_rem_reminder_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/financify_light_blue"
             android:ems="10"
             android:fontFamily="@font/poppins_medium"
