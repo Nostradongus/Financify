@@ -9,9 +9,13 @@ import android.os.Handler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-// TODO: add documentation
+/**
+ * For splash screen activity / page, to show splash screen before moving to the application's
+ * login or home page.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    // specified duration period for application's duration screen
     private static final int SPLASH_SCREEN_DELAY = 3000;
 
     @Override

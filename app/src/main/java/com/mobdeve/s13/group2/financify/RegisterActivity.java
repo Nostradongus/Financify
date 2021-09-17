@@ -24,7 +24,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-// TODO: add documentation
+/**
+ * For register activity / page, for the user to create an account with the given required details.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     // first name input field
@@ -61,6 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         initComponents();
     }
 
+    /**
+     * Initializes Firebase components.
+     */
     private void initFirebase() {
         // get instance of Firebase Authentication
         this.mAuth = FirebaseAuth.getInstance();
@@ -69,6 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
         this.database = FirebaseDatabase.getInstance();
     }
 
+    /**
+     * Initializes UI components
+     */
     private void initComponents() {
         // initialize register view components
         this.etFirstName = findViewById(R.id.et_register_firstname);
@@ -113,6 +121,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Checks if the required input fields are not empty.
+     *
+     * @param   firstName   user's first name
+     * @param   lastName    user's last name
+     * @param   email       user's email address
+     * @param   password    user's desired password
+     *
+     * @return  true if input fields are not empty, false otherwise.
+     */
     private boolean checkEmpty(String firstName, String lastName, String email, String password) {
         boolean hasEmpty = false;
 
@@ -145,6 +163,14 @@ public class RegisterActivity extends AppCompatActivity {
         return hasEmpty;
     }
 
+    /**
+     * Checks if the inputted email and password values are of valid format.
+     *
+     * @param   email       the user's email
+     * @param   password    the user's desired password
+     *
+     * @return  true if the inputted email and password are of valid format, false otherwise.
+     */
     private boolean validateEmailAndPassword(String email, String password) {
         boolean valid = true;
 
@@ -168,6 +194,11 @@ public class RegisterActivity extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Creates and registers the user to the application's database.
+     *
+     * @param   user    the user's details
+     */
     private void registerUser(User user) {
         // show register progress bar as new user data is being added to database
         this.pbRegister.setVisibility(View.VISIBLE);
@@ -204,6 +235,10 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Indicates success of registration to the user and redirects back to the login page
+     * afterwards.
+     */
     private void registerSuccess() {
         // disable register progress bar as process is complete
         this.pbRegister.setVisibility(View.GONE);
@@ -226,6 +261,9 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Indicates error or failure of registration to the user.
+     */
     private void registerFailed() {
         // disable register progress bar as process is complete
         this.pbRegister.setVisibility(View.GONE);

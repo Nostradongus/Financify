@@ -55,8 +55,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
-// comparator for accounts to be sorted according to their balance
-// in descending order
+/**
+ * Comparator for sorting accounts according to their balance in descending order.
+ */
 class BalanceComparator implements Comparator<Account> {
     @Override
     public int compare(Account o1, Account o2) {
@@ -69,7 +70,9 @@ class BalanceComparator implements Comparator<Account> {
     }
 }
 
-// for summary activity / page (summary statistics)
+/**
+ * For summary activity / page, shows the summary statistics of the user's data.
+ */
 public class SummaryActivity extends BaseActivity {
 
     // UI components
@@ -360,6 +363,9 @@ public class SummaryActivity extends BaseActivity {
         finish ();
     }
 
+    /**
+     * Initializes and sets up the required data for the summary statistics.
+     */
     private void setData() {
         /* TOP ACCOUNTS BY BALANCE DATA */
         // sort accounts by balance in descending order
@@ -495,6 +501,9 @@ public class SummaryActivity extends BaseActivity {
         onSelectSummary();
     }
 
+    /**
+     * Initializes the Spinner component/s.
+     */
     private void initSpinners() {
         // initialize values for summary type spinner
         ArrayAdapter<CharSequence> spSummaryTypeAdapter = ArrayAdapter.createFromResource(
@@ -515,6 +524,9 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Initializes the DatePicker components.
+     */
     private void initDatePickers() {
         // initialize date picker components inside preferences / filter box
         btnMonth = findViewById (R.id.btn_summary_month_filter);
@@ -593,6 +605,10 @@ public class SummaryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Clears the preferences / filter that the user chose and resets the summary statistics data
+     * to be displayed.
+     */
     private void clearPreferences() {
         // reset month and year buttons
         btnMonth.setText("NONE");
@@ -731,6 +747,9 @@ public class SummaryActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Filters the summary statistics data according to chosen month, year, or both.
+     */
     private void filterData() {
         // get month and year filter values
         String monthFilter = btnMonth.getText().toString().toLowerCase();
@@ -813,6 +832,9 @@ public class SummaryActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Launches an activity leading to the Home page and finishes this activity.
+     */
     private void goBackToHomePage() {
         // return back to home activity
         Intent intent = new Intent(this, HomeActivity.class);
