@@ -41,6 +41,6 @@ public class NotifyService extends Service {
                 .build();
 
         // set notification
-        notificationManager.notify(1, notification);
+        notificationManager.notify(0, notification);
     }
 }
