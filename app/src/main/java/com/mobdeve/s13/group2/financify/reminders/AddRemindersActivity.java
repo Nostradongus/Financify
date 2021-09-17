@@ -169,9 +169,6 @@ public class AddRemindersActivity extends BaseActivity {
         // set to receive at exactly 8:00 AM of the new Reminder's date
         calendar.set(year, month - 1, day, 8, 0, 0);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.set(Calendar.MONTH, month - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.YEAR, year);
 
         // start notification
         alarmManager.set (AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
