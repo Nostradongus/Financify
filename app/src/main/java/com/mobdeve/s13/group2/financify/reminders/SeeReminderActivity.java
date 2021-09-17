@@ -26,6 +26,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * See reminder activity / page, views a specific reminder as chosen by the user.
+ */
 public class SeeReminderActivity extends BaseActivity {
 
     // UI Attributes

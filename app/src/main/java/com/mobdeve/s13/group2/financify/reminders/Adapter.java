@@ -16,14 +16,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-
+/**
+ * Adapter class for Reminder List RecyclerView
+ */
 public class Adapter extends RecyclerView.Adapter<ViewHolder>{
 
     // reference the data, as an arraylist
     private ArrayList<Reminder> reminderList;
 
     /**
-     * Construtor of this adapter for reminders
+     * Constructor of this adapter for reminders
      * @param data
      */
     public Adapter (ArrayList<Reminder> data) {

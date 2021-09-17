@@ -27,18 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * This allows to schedule a local notification
-         */
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, 5);
-
-        Intent intent = new Intent("singh.ajit.action.DISPLAY_NOTIFICATION");
-        PendingIntent broadcast = PendingIntent.getBroadcast(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
-
         // enable persistence for storing data in local cache for offline use
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 

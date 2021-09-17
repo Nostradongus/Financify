@@ -1,7 +1,9 @@
 package com.mobdeve.s13.group2.financify.reminders;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ import java.util.Calendar;
 
 import static android.R.layout.simple_spinner_item;
 
+/**
+ * Activity / page for adding new reminders to the user's reminder list.
+ */
 public class AddRemindersActivity extends BaseActivity {
 
     // UI Attributes
@@ -37,7 +42,7 @@ public class AddRemindersActivity extends BaseActivity {
     private Spinner sp_reminder_type;
     private Button btn_date, btn_cancel, btn_add;
 
-    // List of Accounts
+    // List of Reminders
     private ArrayList<Reminder> reminders;
 
     // Firebase Attributes
@@ -68,13 +73,13 @@ public class AddRemindersActivity extends BaseActivity {
     @Override
     public void onBackPressed () {
         // go back to home activity page
-        goBackToReminderspage ();
+        goBackToRemindersPage ();
     }
 
     /**
      * This allows the back button to go back to the main home of the reminder feature
      */
-    private void goBackToReminderspage() {
+    private void goBackToRemindersPage() {
         Intent i = new Intent (AddRemindersActivity.this, RemindersActivity.class);
         startActivity (i);
         finish ();
@@ -119,6 +124,38 @@ public class AddRemindersActivity extends BaseActivity {
     }
 
     /**
+     * Sets notification for the newly created Reminder on the device.
+     *
+     * @param date  the date of the new Reminder
+     */
+    private void setNotification(String date) {
+        // separate month, day, and year values and parse them
+        String[] dateVals = date.split("/");
+        int month = Integer.parseInt(dateVals[0]);
+        int day = Integer.parseInt(dateVals[1]);
+        int year = Integer.parseInt(dateVals[2]);
+
+        // initialize NotifyService intent
+        Intent intent = new Intent(this, NotifyService.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pIntent = PendingIntent.getService(this, 0, intent, 0);
+
+        // set notification date
+        Calendar calendar = Calendar.getInstance();
+        // set to receive at exactly 8:00 AM of the new Reminder's date
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 8);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.YEAR, year);
+
+        // start notification
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+    }
+
+    /**
      * Initialize Firebase components.
      */
     private void initFirebase () {
@@ -134,10 +171,9 @@ public class AddRemindersActivity extends BaseActivity {
                     .child ("users")
                     .child (userId)
                     .child ("reminders");
-            // If invalid session
         }
+        // If invalid session
         else {
-            // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }
     }
@@ -162,7 +198,7 @@ public class AddRemindersActivity extends BaseActivity {
         btn_cancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                goBackToReminderspage ();
+                goBackToRemindersPage ();
             }
         });
 
@@ -174,7 +210,7 @@ public class AddRemindersActivity extends BaseActivity {
             @Override
             public void onClick (View view) {
                 openDatePicker ();
-            };
+            }
         });
 
         // Add Button OnClickListener
@@ -193,8 +229,11 @@ public class AddRemindersActivity extends BaseActivity {
                     // Add to Firebase
                     addReminderInFirebase (title, desc, type, date);
 
+                    // set reminder notification on device
+                    setNotification(date);
+
                     // End activity
-                    goBackToReminderspage ();
+                    goBackToRemindersPage ();
                     // If there are invalid fields
                 } else {
                     Toast.makeText (AddRemindersActivity.this, "Please fill up all fields!", Toast.LENGTH_SHORT).show ();
@@ -270,7 +309,6 @@ public class AddRemindersActivity extends BaseActivity {
         }
 
         // REMINDER DESCRIPTION
-
         if (et_desc.getText ().toString ().trim ().isEmpty ()) {
             et_desc.setError ("Please input a short description!");
             isValid = false;

@@ -12,7 +12,15 @@ import androidx.core.app.NotificationCompat;
 
 import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 
+/**
+ * Temporary class for testing broadcast receiving of notification. Not used officially for the
+ * application.
+ */
 public class AlarmReceiver extends BroadcastReceiver {
+
+    // unique id for current notification being created on same instance
+    public static int notificationId = 1;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent notificationIntent = new Intent(context, RemindersActivity.class);
@@ -31,6 +39,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentIntent(pendingIntent).build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(notificationId++, notification);
     }
 }

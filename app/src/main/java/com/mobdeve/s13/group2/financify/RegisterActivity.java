@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -175,11 +176,9 @@ public class RegisterActivity extends AppCompatActivity {
         boolean valid = true;
 
         // check if email is in valid format
-        String[] atFormat = email.split("@");
-        String[] dotFormat = email.split("\\.");
-        if (atFormat.length < 2 || dotFormat.length < 2) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             // set error message
-            this.etEmail.setError("Please input a valid email");
+            this.etEmail.setError("Please input a valid email address");
             this.etEmail.requestFocus();
             valid = false;
         }

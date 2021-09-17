@@ -12,6 +12,9 @@ import com.mobdeve.s13.group2.financify.model.Reminder;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * ViewHolder class for Reminder List RecyclerView
+ */
 public class ViewHolder extends RecyclerView.ViewHolder {
 
     // textview for the template of reminder

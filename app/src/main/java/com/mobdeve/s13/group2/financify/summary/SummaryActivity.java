@@ -300,10 +300,6 @@ public class SummaryActivity extends BaseActivity {
 
                         // set error text
                         tvEmpty.setText("Error occurred during the process.");
-
-                        // set preference box to unclickable as error occurred
-                        ibPrefs.setClickable(false);
-                        ibPrefs.setEnabled(false);
                     }
                 }
 
@@ -335,6 +331,10 @@ public class SummaryActivity extends BaseActivity {
         for (int i = 0; i < tvSummaryTexts.length; i++) {
             tvSummaryTexts[i].setVisibility(View.GONE);
         }
+
+        // set preference box to unclickable
+        ibPrefs.setClickable(false);
+        ibPrefs.setEnabled(false);
     }
 
     /**
