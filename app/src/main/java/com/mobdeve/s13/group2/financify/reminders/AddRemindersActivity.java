@@ -147,7 +147,7 @@ public class AddRemindersActivity extends BaseActivity {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR, 8);
         calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.MONTH, month-1);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.YEAR, year);
 

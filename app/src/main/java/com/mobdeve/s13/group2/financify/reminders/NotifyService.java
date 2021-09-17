@@ -35,7 +35,6 @@ public class NotifyService extends Service {
                 .setContentTitle("You have a financial reminder today!")
                 .setContentText("Please check your reminder list.")
                 .setSmallIcon(R.drawable.financify_logo)
-                .setColor(getResources().getColor(R.color.financify_pastel_blue))
                 .setContentIntent(pIntent)
                 .addAction(0, "Open Application", pIntent)
                 .build();
