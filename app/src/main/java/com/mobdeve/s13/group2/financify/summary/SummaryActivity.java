@@ -529,8 +529,9 @@ public class SummaryActivity extends BaseActivity {
 
         textAccounts.clear();
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
-            float value = (float)(Math.round(pieAccounts.get(i).getValue() * 100.0) / 100.0);
-            textAccounts.add(pieAccounts.get(i).getLabel() + " - " + value + "%");
+            float initValue = (float)(accounts.get(i).getBalance() / totalBalance * 100.0);
+            float finalValue = (float)(Math.round(initValue * 100.0) / 100.0);
+            textAccounts.add(accounts.get(i).getName() + " - " + finalValue + "%");
         }
 
         if (accounts.size() > 3) {
