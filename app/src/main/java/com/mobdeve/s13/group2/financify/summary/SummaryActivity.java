@@ -93,7 +93,6 @@ class CustomPercentFormatter extends PercentFormatter {
 
     @Override
     public String getFormattedValue(float value) {
-//        return Math.round(Float.parseFloat(mFormat.format(value))) / 100.0 * 100 + " %";
         return (float)(Math.round (value * 100.0) / 100.0) + " %";
     }
 }
@@ -490,10 +489,10 @@ public class SummaryActivity extends BaseActivity {
                 pieRatios.add(new PieEntry(p1, "Income"));
             }
             if (p2 > 0.0f) {
-                pieRatios.add(new PieEntry(p2, "Investment"));
+                pieRatios.add(new PieEntry(p2, "Investments"));
             }
             if (p3 > 0.0f) {
-                pieRatios.add(new PieEntry(p3, "Expense"));
+                pieRatios.add(new PieEntry(p3, "Expenses"));
             }
 
             // initialize pie data set for ratios
@@ -542,8 +541,8 @@ public class SummaryActivity extends BaseActivity {
         textRatios.clear();
         if (totalTransactions > 0) {
             textRatios.add("Income - " + (float)(Math.round(pieRatios.get(0).getValue() * 100.0) / 100.0) + "%");
-            textRatios.add("Investment - " + (float)(Math.round(pieRatios.get(1).getValue() * 100.0) / 100.0) + "%");
-            textRatios.add("Expense - " + (float)(Math.round(pieRatios.get(2).getValue() * 100.0) / 100.0) + "%");
+            textRatios.add("Investments - " + (float)(Math.round(pieRatios.get(1).getValue() * 100.0) / 100.0) + "%");
+            textRatios.add("Expenses - " + (float)(Math.round(pieRatios.get(2).getValue() * 100.0) / 100.0) + "%");
         }
 
         // display data

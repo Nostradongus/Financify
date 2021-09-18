@@ -26,6 +26,7 @@
     <!-- style for DatePicker button -->
     <style name="DatePickerTheme.ButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:backgroundTint">@color/financify_dark_blue</item>
     </style>
 
