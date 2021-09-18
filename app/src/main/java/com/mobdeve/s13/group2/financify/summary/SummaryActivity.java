@@ -91,14 +91,10 @@ class CustomPercentFormatter extends PercentFormatter {
         mFormat = new DecimalFormat("###,###,##0.0");
     }
 
-    public CustomPercentFormatter(PieChart pieChart, DecimalFormat format) {
-        super(pieChart);
-        this.mFormat = format;
-    }
-
     @Override
     public String getFormattedValue(float value) {
-        return Math.round(value) / 100.0 * 100 + " %";
+//        return Math.round(Float.parseFloat(mFormat.format(value))) / 100.0 * 100 + " %";
+        return (float)(Math.round (value * 100.0) / 100.0) + " %";
     }
 }
 
@@ -404,35 +400,35 @@ public class SummaryActivity extends BaseActivity {
         Collections.sort(accounts, new BalanceComparator());
 
         // accumulate total balance from all accounts of user
-        double totalBalance = 0.0;
+        float totalBalance = (float) 0.0;
         for (Account account : accounts) {
-            totalBalance += account.getBalance();
+            totalBalance += (float)account.getBalance();
         }
 
         // for more than 3 accounts
-        double otherAccountsBalance = 0.0;
+        float otherAccountsBalance = (float) 0.0;
 
         // initialize pie chart data entries for "top accounts by balance"
         ArrayList<PieEntry> pieAccounts = new ArrayList<>();
         // get the top 3 accounts by balance
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
-            pieAccounts.add(new PieEntry(
-                    (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100)),
-                    accounts.get(i).getName()
-            ));
+            float value = (float)(accounts.get(i).getBalance() / totalBalance * 100.0);
+            if (value > 0.0f) {
+                pieAccounts.add(new PieEntry(value, accounts.get(i).getName()));
+            }
         }
         // if user has more than 3 accounts, create pie data for the "other accounts"
         if (accounts.size() > 3) {
             // accumulate total for the "other accounts"
             for (int i = 3; i < accounts.size(); i++) {
-                otherAccountsBalance += accounts.get(i).getBalance();
+                otherAccountsBalance += (float)accounts.get(i).getBalance();
             }
 
             // add as pie data
-            pieAccounts.add(new PieEntry(
-                    (float)(Math.round(otherAccountsBalance / totalBalance * 100)),
-                    "Others"
-            ));
+            float value = (float)(otherAccountsBalance / totalBalance * 100.0);
+            if (value > 0.0f) {
+                pieAccounts.add(new PieEntry(value, "Others"));
+            }
         }
 
         // Financify Pastel Colors for pie chart
@@ -457,7 +453,7 @@ public class SummaryActivity extends BaseActivity {
 
         // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
-        pieDataAccounts.setValueFormatter(new PercentFormatter(pieChart));
+        pieDataAccounts.setValueFormatter(new CustomPercentFormatter(pieChart));
         pieDataAccounts.setValueTypeface (ResourcesCompat.getFont(this, R.font.poppins_bold));
 
         /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
@@ -482,13 +478,14 @@ public class SummaryActivity extends BaseActivity {
         int totalTransactions = incomes + investments + expenses;
 
         // incomes, investments, and expenses ratio percentages
-        float p1 = (float)(Math.round(incomes * 1.0 / totalTransactions * 100));
-        float p2 = (float)(Math.round(investments * 1.0 / totalTransactions * 100));
-        float p3 = (float)(Math.round(expenses * 1.0 / totalTransactions * 100));
+        float p1 = (float)(incomes * 1.0 / totalTransactions * 100.0);
+        float p2 = (float)(investments * 1.0 / totalTransactions * 100.0);
+        float p3 = (float)(expenses * 1.0 / totalTransactions * 100.0);
 
         // initialize pie chart data entries for "income, investment, and expense ratios"
+        ArrayList<PieEntry> pieRatios = new ArrayList<>();
+
         if (totalTransactions > 0) {
-            ArrayList<PieEntry> pieRatios = new ArrayList<>();
             if (p1 > 0.0f) {
                 pieRatios.add(new PieEntry(p1, "Income"));
             }
@@ -531,19 +528,22 @@ public class SummaryActivity extends BaseActivity {
         titleRatios = date + " Income, Investments, & Expenses Ratio";
 
         textAccounts.clear();
-        for (int i = 0; i < Math.min(accounts.size(), 3); i++)
-            textAccounts.add (pieAccounts.get (i).getLabel () + " - " + pieAccounts.get (i).getValue () + "%");
+        for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
+            float value = (float)(Math.round(pieAccounts.get(i).getValue() * 100.0) / 100.0);
+            textAccounts.add(pieAccounts.get(i).getLabel() + " - " + value + "%");
+        }
 
         if (accounts.size() > 3) {
-            String percentage = (float)(Math.round(otherAccountsBalance / totalBalance * 100)) + "";
-            textAccounts.add("Others - " + percentage + "%");
+            float value = pieAccounts.get(pieAccounts.size() - 1).getValue();
+            String percentage = (float)(Math.round(value * 100.0) / 100.0) + "%";
+            textAccounts.add("Others - " + percentage);
         }
 
         textRatios.clear();
         if (totalTransactions > 0) {
-            textRatios.add("Income - " + p1 + " %");
-            textRatios.add("Investment - " + p2 + " %");
-            textRatios.add("Expense - " + p3 + " %");
+            textRatios.add("Income - " + (float)(Math.round(pieRatios.get(0).getValue() * 100.0) / 100.0) + "%");
+            textRatios.add("Investment - " + (float)(Math.round(pieRatios.get(1).getValue() * 100.0) / 100.0) + "%");
+            textRatios.add("Expense - " + (float)(Math.round(pieRatios.get(2).getValue() * 100.0) / 100.0) + "%");
         }
 
         // display data
