@@ -26,11 +26,16 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,13 +55,14 @@ import com.mobdeve.s13.group2.financify.model.Transaction;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Comparator for sorting accounts according to their balance in descending order.
+ * Comparator for sorting accounts according to their balance, in descending order.
  */
 class BalanceComparator implements Comparator<Account> {
     @Override
@@ -67,6 +73,29 @@ class BalanceComparator implements Comparator<Account> {
             return 1;
         }
         return 0;
+    }
+}
+
+/**
+ * Custom ValueFormatter for formatting the data values to be displayed in the pie chart.
+ */
+class CustomPercentFormatter extends PercentFormatter {
+
+    private DecimalFormat mFormat;
+
+    public CustomPercentFormatter(PieChart pieChart) {
+        super(pieChart);
+        mFormat = new DecimalFormat("###,###,##0.0");
+    }
+
+    public CustomPercentFormatter(PieChart pieChart, DecimalFormat format) {
+        super(pieChart);
+        this.mFormat = format;
+    }
+
+    @Override
+    public String getFormattedValue(float value) {
+        return Math.round(value) / 100.0 * 100 + " %";
     }
 }
 
@@ -411,7 +440,7 @@ public class SummaryActivity extends BaseActivity {
 
         // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
-        pieDataAccounts.setValueFormatter(new PercentFormatter(pieChart));
+        pieDataAccounts.setValueFormatter(new CustomPercentFormatter(pieChart));
 
         /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
         // get number of income, investment, and expense transactions from each account
@@ -442,9 +471,15 @@ public class SummaryActivity extends BaseActivity {
         // initialize pie chart data entries for "income, investment, and expense ratios"
         if (totalTransactions > 0) {
             ArrayList<PieEntry> pieRatios = new ArrayList<>();
-            pieRatios.add(new PieEntry(p1, "Income"));
-            pieRatios.add(new PieEntry(p2, "Investment"));
-            pieRatios.add(new PieEntry(p3, "Expense"));
+            if (p1 > 0.0f) {
+                pieRatios.add(new PieEntry(p1, "Income"));
+            }
+            if (p2 > 0.0f) {
+                pieRatios.add(new PieEntry(p2, "Investment"));
+            }
+            if (p3 > 0.0f) {
+                pieRatios.add(new PieEntry(p3, "Expense"));
+            }
 
             // initialize pie data set for ratios
             PieDataSet pieDataSetRatios = new PieDataSet(pieRatios, "Income, Investment, and Expense Ratio");
@@ -454,7 +489,7 @@ public class SummaryActivity extends BaseActivity {
 
             // initialize pie data for ratios pie chart
             pieDataRatios = new PieData(pieDataSetRatios);
-            pieDataRatios.setValueFormatter(new PercentFormatter(pieChart));
+            pieDataRatios.setValueFormatter(new CustomPercentFormatter(pieChart));
         }
 
         // set pie chart to use percent values
@@ -489,12 +524,9 @@ public class SummaryActivity extends BaseActivity {
 
         textRatios.clear();
         if (totalTransactions > 0) {
-            String incomePercentage = p1 + " ";
-            String investPercentage = p2 + " ";
-            String expensePercentage = p3 + " ";
-            textRatios.add("Income - " + incomePercentage + "%");
-            textRatios.add("Investment - " + investPercentage + "%");
-            textRatios.add("Expense - " + expensePercentage + "%");
+            textRatios.add("Income - " + p1 + " %");
+            textRatios.add("Investment - " + p2 + " %");
+            textRatios.add("Expense - " + p3 + " %");
         }
 
         // display data

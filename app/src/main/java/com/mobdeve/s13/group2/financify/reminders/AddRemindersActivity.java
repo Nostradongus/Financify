@@ -61,13 +61,14 @@ public class AddRemindersActivity extends BaseActivity {
         // add reminders layout
         setContentView(R.layout.activity_add_reminders);
 
+        // to create a notification channel for the set reminder notifications
         createNotificationChannel ();
 
         // Initialize the datepicker components
         initDatePicker();
         // Initialize components
         initComponents();
-        // Initialize Spinner componentes
+        // Initialize Spinner components
         initReminderTypeSpinner();
         // Initialize Firebase components
         initFirebase();
