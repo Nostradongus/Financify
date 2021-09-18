@@ -61,9 +61,8 @@ public class AddRemindersActivity extends BaseActivity {
         // add reminders layout
         setContentView(R.layout.activity_add_reminders);
 
-        // to create a notification channel for the set reminder notifications
+        // to create a notification channel for the set reminder notifications above Oreo
         createNotificationChannel ();
-
         // Initialize the datepicker components
         initDatePicker();
         // Initialize components
@@ -160,7 +159,7 @@ public class AddRemindersActivity extends BaseActivity {
 
         // separate month, day, and year values and parse them
         String[] dateVals = date.split("/");
-        int month = Integer.parseInt(dateVals[0]);
+        int month = Integer.parseInt(dateVals[0]) - 1;
         int day = Integer.parseInt(dateVals[1]);
         int year = Integer.parseInt(dateVals[2]);
 
@@ -168,8 +167,7 @@ public class AddRemindersActivity extends BaseActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         // set to receive at exactly 8:00 AM of the new Reminder's date
-        calendar.set(year, month - 1, day, 8, 0, 0);
-        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(year, month, day, 8, 0, 0);
 
         // start notification
         alarmManager.set (AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
@@ -299,7 +297,8 @@ public class AddRemindersActivity extends BaseActivity {
         int day = cal.get (Calendar.DAY_OF_MONTH);
 
         // Set default date for DatePickerDialog
-        datePickerDialog = new DatePickerDialog (this, R.style.datepicker, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog (this, R.style.DatePicker, dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker ().setMinDate (cal.getTimeInMillis ());
     }
 
     /**

@@ -165,18 +165,28 @@ public class RemindersActivity extends BaseActivity {
                     // clear reminders
                     reminders.clear();
 
+                    // list of old Reminder IDs
+                    ArrayList<String> oldRemindersIDs = new ArrayList<> ();
+
                     for (DataSnapshot reminder : snapshot.child("reminders").getChildren()) {
                         try {
-                            // id, title, description, type, time
-                            reminders.add(new Reminder(
-                                    reminder.getKey(),
-                                    reminder.child("title").getValue().toString(),
-                                    reminder.child("description").getValue().toString(),
-                                    reminder.child("type").getValue().toString(),
-                                    reminder.child("date").getValue().toString()
-                            ));
+                            // If date is NOT in past, add to reminders list
+                            if (!isDateInPast (reminder.child ("date").getValue ().toString ())) {
+                                // id, title, description, type, time
+                                reminders.add(new Reminder(
+                                        reminder.getKey(),
+                                        reminder.child("title").getValue().toString(),
+                                        reminder.child("description").getValue().toString(),
+                                        reminder.child("type").getValue().toString(),
+                                        reminder.child("date").getValue().toString()
+                                ));
+                            // else, add to to-be-deleted reminders list
+                            } else {
+                                oldRemindersIDs.add (reminder.getKey ().toString ());
+                            }
                         } catch (Exception e) {
                             System.out.println(e.toString());
+                            e.printStackTrace();
                         }
                     }
 
@@ -184,6 +194,10 @@ public class RemindersActivity extends BaseActivity {
                     pbHome.setVisibility (View.GONE);
                     myAdapter.notifyDataSetChanged ();
                     displayEmptyMessage ();
+
+                    // If there are old Reminders, delete them from Firebase
+                    if (!oldRemindersIDs.isEmpty ())
+                        deleteRemindersInFirebase (oldRemindersIDs);
                 }
 
                 @Override
@@ -195,6 +209,47 @@ public class RemindersActivity extends BaseActivity {
             // relogin
             Toast.makeText (RemindersActivity.this, "Invalid session.", Toast.LENGTH_SHORT).show ();
         }
+    }
+
+    /**
+     * Checks if a given date in format MM/DD/YYYY is in the past.
+     *
+     * @param date the date to be checked
+     * @return  true if the date is the past; otherwise false
+     */
+    private boolean isDateInPast (String date) {
+        // separate month, day, and year values and parse them
+        String[] dateVals = date.split ("/");
+        int month = Integer.parseInt (dateVals[0]) - 1;
+        int day = Integer.parseInt (dateVals[1]);
+        int year = Integer.parseInt (dateVals[2]);
+
+        // Retrieve date & time today
+        Calendar cal = Calendar.getInstance ();
+
+        // Check if date is in past
+        if (year < cal.get (Calendar.YEAR))
+            return true;
+        else if (year == cal.get (Calendar.YEAR) &&
+                 month < cal.get (Calendar.MONTH))
+            return true;
+        else if (year == cal.get (Calendar.YEAR) &&
+                 month == cal.get (Calendar.MONTH) &&
+                 day < cal.get (Calendar.DAY_OF_MONTH))
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * This removes a set of Reminders from Firebase.
+     *
+     * @param reminders the list of IDs of the Reminders to be removed
+     */
+    private void deleteRemindersInFirebase (ArrayList<String> reminders) {
+        // Loop through list and delete each from Firebase
+        for (String id : reminders)
+            dbRef.child ("reminders").child (id).removeValue ();
     }
 
     /**
@@ -330,7 +385,7 @@ public class RemindersActivity extends BaseActivity {
         if (android.os.Build.VERSION.SDK_INT < 30)
             datePickerTheme = android.R.style.Theme_Holo_Light_DialogWhenLarge;
         else
-            datePickerTheme = R.style.MySpinnerDatePickerStyle;
+            datePickerTheme = R.style.DatePickerSpinner;
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)

@@ -242,7 +242,9 @@ public class SeeReminderActivity extends BaseActivity {
         int day = cal.get (Calendar.DAY_OF_MONTH);
 
         // Set default date for DatePickerDialog
-        datePickerDialog = new DatePickerDialog (this, R.style.datepicker, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog (this, R.style.DatePicker, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog (this, R.style.DatePicker, dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker ().setMinDate (cal.getTimeInMillis ());
     }
 
     /**
