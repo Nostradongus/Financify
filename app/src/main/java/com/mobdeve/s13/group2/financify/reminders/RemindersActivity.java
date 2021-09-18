@@ -330,7 +330,7 @@ public class RemindersActivity extends BaseActivity {
         if (android.os.Build.VERSION.SDK_INT < 30)
             datePickerTheme = android.R.style.Theme_Holo_Light_DialogWhenLarge;
         else
-            datePickerTheme = R.style.MySpinnerDatePickerStyle;
+            datePickerTheme = R.style.DatePickerSpinner;
 
         /* Month DatePickerDialog components */
         // Initialize Month DatePickerDialog (Filter for Month)

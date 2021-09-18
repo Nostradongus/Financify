@@ -29,7 +29,7 @@
         <activity android:name=".reminders.SeeReminderActivity" />
         <activity android:name=".reminders.AddRemindersActivity" />
         <activity android:name=".reminders.RemindersActivity" />
-        <receiver android:name=".reminders.ReminderBroadcast" />
+        <receiver android:exported="true" android:name=".reminders.ReminderBroadcast" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
