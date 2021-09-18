@@ -84,7 +84,6 @@
         android:text="YOUR TRANSACTIONS"
         android:textColor="@color/financify_dark_blue"
         android:textSize="16sp"
-        android:textStyle="italic"
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_specific_account_balance" />

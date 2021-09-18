@@ -3,6 +3,8 @@ package com.mobdeve.s13.group2.financify.summary;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -56,6 +58,7 @@ import com.mobdeve.s13.group2.financify.model.Transaction;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -414,7 +417,7 @@ public class SummaryActivity extends BaseActivity {
         // get the top 3 accounts by balance
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
             pieAccounts.add(new PieEntry(
-                    (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100) / 100.0 * 100),
+                    (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100)),
                     accounts.get(i).getName()
             ));
         }
@@ -427,20 +430,35 @@ public class SummaryActivity extends BaseActivity {
 
             // add as pie data
             pieAccounts.add(new PieEntry(
-                    (float)(Math.round(otherAccountsBalance / totalBalance * 100) / 100.0 * 100),
+                    (float)(Math.round(otherAccountsBalance / totalBalance * 100)),
                     "Others"
             ));
         }
 
+        // Financify Pastel Colors for pie chart
+        ArrayList<Integer> financifyColors = new ArrayList<> ();
+        financifyColors.add (ContextCompat.getColor (this, R.color.financify_pastel_green));
+        financifyColors.add (ContextCompat.getColor (this, R.color.financify_pastel_yellow));
+        financifyColors.add (ContextCompat.getColor (this, R.color.financify_pastel_red));
+        financifyColors.add (ContextCompat.getColor (this, R.color.financify_pastel_blue));
+        financifyColors.add (ContextCompat.getColor (this, R.color.financify_gray));
+
+        // Styling for pie chart
+        pieChart.setEntryLabelColor (ContextCompat.getColor (this, R.color.financify_dark_blue));
+        pieChart.setEntryLabelTypeface (ResourcesCompat.getFont(this, R.font.poppins_medium));
+        pieChart.setCenterTextTypeface (ResourcesCompat.getFont(this, R.font.poppins_semibold));
+        pieChart.setCenterTextColor (ContextCompat.getColor (this, R.color.financify_dark_blue));
+
         // initialize accounts pie data set
-        PieDataSet pieDataSetAccounts = new PieDataSet(pieAccounts, "Top Accounts By Balance");
-        pieDataSetAccounts.setColors(ColorTemplate.PASTEL_COLORS);
+        PieDataSet pieDataSetAccounts = new PieDataSet(pieAccounts, "");
+        pieDataSetAccounts.setColors(financifyColors);
         pieDataSetAccounts.setValueTextColor(Color.BLACK);
         pieDataSetAccounts.setValueTextSize(14f);
 
         // initialize accounts pie data for pie chart
         pieDataAccounts = new PieData(pieDataSetAccounts);
-        pieDataAccounts.setValueFormatter(new CustomPercentFormatter(pieChart));
+        pieDataAccounts.setValueFormatter(new PercentFormatter(pieChart));
+        pieDataAccounts.setValueTypeface (ResourcesCompat.getFont(this, R.font.poppins_bold));
 
         /* INCOME, INVESTMENT, AND EXPENSE RATIO DATA */
         // get number of income, investment, and expense transactions from each account
@@ -482,14 +500,15 @@ public class SummaryActivity extends BaseActivity {
             }
 
             // initialize pie data set for ratios
-            PieDataSet pieDataSetRatios = new PieDataSet(pieRatios, "Income, Investment, and Expense Ratio");
-            pieDataSetRatios.setColors(ColorTemplate.PASTEL_COLORS);
+            PieDataSet pieDataSetRatios = new PieDataSet(pieRatios, "");
+            pieDataSetRatios.setColors(financifyColors);
             pieDataSetRatios.setValueTextColor(Color.BLACK);
             pieDataSetRatios.setValueTextSize(14f);
 
             // initialize pie data for ratios pie chart
             pieDataRatios = new PieData(pieDataSetRatios);
             pieDataRatios.setValueFormatter(new CustomPercentFormatter(pieChart));
+            pieDataRatios.setValueTypeface (ResourcesCompat.getFont(this, R.font.poppins_bold));
         }
 
         // set pie chart to use percent values
@@ -508,15 +527,13 @@ public class SummaryActivity extends BaseActivity {
             date = DateHelper.getMonthFormat(Integer.parseInt(transactions.get(0).getMonth()))
                     .substring(0, 3) + " " + date;
         }
-        titleAccounts = "Top accounts by balance in " + date;
-        titleRatios = "Income, Investment, and Expense Ratio in " + date;
+        titleAccounts = "Top Accounts by Balance";
+        titleRatios = date + " Income, Investments, & Expenses Ratio";
 
         textAccounts.clear();
-        for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
-            String accountName = accounts.get(i).getName();
-            String percentage = (float)(Math.round(accounts.get(i).getBalance() / totalBalance * 100)) + "";
-            textAccounts.add(accountName + " - " + percentage + "%");
-        }
+        for (int i = 0; i < Math.min(accounts.size(), 3); i++)
+            textAccounts.add (pieAccounts.get (i).getLabel () + " - " + pieAccounts.get (i).getValue () + "%");
+
         if (accounts.size() > 3) {
             String percentage = (float)(Math.round(otherAccountsBalance / totalBalance * 100)) + "";
             textAccounts.add("Others - " + percentage + "%");
@@ -756,7 +773,7 @@ public class SummaryActivity extends BaseActivity {
 
                 // update pie chart with chosen data (income, investment, and expense ratio)
                 pieChart.setData(pieDataRatios);
-                pieChart.setCenterText("Income, Investment, and Expense Ratio");
+                pieChart.setCenterText("Income, Investments, and Expenses Ratio");
             } else {
                 verified = false;
             }

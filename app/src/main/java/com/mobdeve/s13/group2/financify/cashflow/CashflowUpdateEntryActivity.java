@@ -274,7 +274,6 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
 
         // Set default date for DatePickerDialog
         datePickerDialog = new DatePickerDialog (this, R.style.DatePicker, dateSetListener, year, month, day);
-        datePickerDialog.getDatePicker ().setMinDate (cal.getTimeInMillis ());
     }
 
     /**
