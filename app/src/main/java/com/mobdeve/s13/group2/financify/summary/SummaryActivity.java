@@ -93,7 +93,6 @@ class CustomPercentFormatter extends PercentFormatter {
 
     @Override
     public String getFormattedValue(float value) {
-//        return Math.round(Float.parseFloat(mFormat.format(value))) / 100.0 * 100 + " %";
         return (float)(Math.round (value * 100.0) / 100.0) + " %";
     }
 }
@@ -535,7 +534,7 @@ public class SummaryActivity extends BaseActivity {
         }
 
         if (accounts.size() > 3) {
-            float value = pieAccounts.get(pieAccounts.size() - 1).getValue();
+            float value = (float)(otherAccountsBalance / totalBalance * 100.0);
             String percentage = (float)(Math.round(value * 100.0) / 100.0) + "%";
             textAccounts.add("Others - " + percentage);
         }
