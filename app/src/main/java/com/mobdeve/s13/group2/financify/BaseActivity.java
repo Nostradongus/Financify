@@ -11,8 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +30,6 @@ import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -264,7 +262,7 @@ public class BaseActivity extends AppCompatActivity {
             finishAndRemoveTask();
 
             // kill application process when activity is finished completely
-            new Handler().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     android.os.Process.killProcess(android.os.Process.myPid());

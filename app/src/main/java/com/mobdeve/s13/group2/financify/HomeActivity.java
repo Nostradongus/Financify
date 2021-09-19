@@ -7,12 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
 import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
