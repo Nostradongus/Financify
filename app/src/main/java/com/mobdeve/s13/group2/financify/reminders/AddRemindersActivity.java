@@ -1,13 +1,11 @@
 package com.mobdeve.s13.group2.financify.reminders;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
@@ -23,8 +21,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.core.net.UriCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -280,9 +276,6 @@ public class AddRemindersActivity extends BaseActivity {
 
                     // End activity
                     goBackToRemindersPage ();
-                    // If there are invalid fields
-                } else {
-                    Toast.makeText (AddRemindersActivity.this, "Please fill up all fields!", Toast.LENGTH_SHORT).show ();
                 }
             }
         });
@@ -369,7 +362,45 @@ public class AddRemindersActivity extends BaseActivity {
             isValid = false;
         }
 
+        // REMINDER DATE
+        if (isDateInPast (btn_date.getText ().toString ().trim ())) {
+            Toast.makeText (this, "Date cannot be in the past!", Toast.LENGTH_SHORT).show ();
+            isValid = false;
+        } else if (!isValid) {
+            Toast.makeText (this, "Please fill up all fields!", Toast.LENGTH_SHORT).show ();
+        }
+
         return isValid;
+    }
+
+    /**
+     * Checks if a given date in format MM/DD/YYYY is in the past.
+     *
+     * @param date the date to be checked
+     * @return  true if the date is the past; otherwise false
+     */
+    private boolean isDateInPast (String date) {
+        // separate month, day, and year values and parse them
+        String[] dateVals = date.split ("/");
+        int month = Integer.parseInt (dateVals[0]) - 1;
+        int day = Integer.parseInt (dateVals[1]);
+        int year = Integer.parseInt (dateVals[2]);
+
+        // Retrieve date & time today
+        Calendar cal = Calendar.getInstance ();
+
+        // Check if date is in past
+        if (year < cal.get (Calendar.YEAR))
+            return true;
+        else if (year == cal.get (Calendar.YEAR) &&
+                month < cal.get (Calendar.MONTH))
+            return true;
+        else if (year == cal.get (Calendar.YEAR) &&
+                month == cal.get (Calendar.MONTH) &&
+                day < cal.get (Calendar.DAY_OF_MONTH))
+            return true;
+        else
+            return false;
     }
 
     /**
