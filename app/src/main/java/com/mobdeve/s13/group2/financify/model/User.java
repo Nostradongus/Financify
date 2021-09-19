@@ -99,6 +99,4 @@ public class User {
     public ArrayList<Reminder> getReminders() {
         return new ArrayList<> (reminders);
     }
-
-    // TODO: add more getter methods (reminder list entries and budget sheets)
 }

@@ -117,7 +117,6 @@ public class BaseActivity extends AppCompatActivity {
             drawerMenu.getItem(j).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    // TODO: complete code here
                     // intent for redirecting to other activities according to menu item pressed
                     Intent intent;
                     switch (item.getItemId()) {

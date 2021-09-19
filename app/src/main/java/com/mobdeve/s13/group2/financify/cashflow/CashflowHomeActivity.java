@@ -432,7 +432,6 @@ public class CashflowHomeActivity extends BaseActivity {
         displayEmptyMessage ();
     }
 
-    // TODO: update searchAccounts method (accountsBackup must have the original data)
     /**
      * Update the contents of the accounts ArrayList based on SearchView query.
      *
