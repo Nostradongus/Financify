@@ -92,7 +92,7 @@ class CustomPercentFormatter extends PercentFormatter {
 
     @Override
     public String getFormattedValue(float value) {
-        return (float)(Math.round (value * 100.0) / 100.0) + " %";
+        return mFormat.format(value) + " %";
     }
 }
 
@@ -393,6 +393,9 @@ public class SummaryActivity extends BaseActivity {
      * Initializes and sets up the required data for the summary statistics.
      */
     private void setData() {
+        // to format float values properly
+        DecimalFormat mFormat = new DecimalFormat("###,###,##0.0");
+
         /* TOP ACCOUNTS BY BALANCE DATA */
         // sort accounts by balance in descending order
         Collections.sort(accounts, new BalanceComparator());
@@ -525,23 +528,20 @@ public class SummaryActivity extends BaseActivity {
 
         textAccounts.clear();
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
-            float initValue = (float)(accounts.get(i).getBalance() / totalBalance * 100.0);
-            float finalValue = (float)(Math.round(initValue * 100.0) / 100.0);
-            textAccounts.add(accounts.get(i).getName() + " - " + finalValue + "%");
+            float value = (float)(accounts.get(i).getBalance() / totalBalance * 100.0);
+            textAccounts.add(accounts.get(i).getName() + " - " + mFormat.format(value) + "%");
         }
 
         if (accounts.size() > 3) {
             float value = (float)(otherAccountsBalance / totalBalance * 100.0);
-            String percentage = (float)(Math.round(value * 100.0) / 100.0) + "%";
-            textAccounts.add("Others - " + percentage);
+            textAccounts.add("Others - " + mFormat.format(value));
         }
 
         textRatios.clear();
         if (totalTransactions > 0) {
-            textRatios.add("Income - " + (float)(Math.round(p1 * 100.0) / 100.0) + "%");
-            textRatios.add("Investments - " + (float)(Math.round(p2 * 100.0) / 100.0) + "%");
-            textRatios.add("Expenses - " + (float)(Math.round(p3 * 100.0) / 100.0) + "%");
-
+            textRatios.add("Income - " + mFormat.format(p1) + "%");
+            textRatios.add("Investments - " + mFormat.format(p2) + "%");
+            textRatios.add("Expenses - " + mFormat.format(p3) + "%");
         }
 
         // display data
@@ -809,7 +809,7 @@ public class SummaryActivity extends BaseActivity {
 
         // if no filter specified
         if (monthFilter.equalsIgnoreCase("none") &&
-            yearFilter.equalsIgnoreCase("none")) {
+                yearFilter.equalsIgnoreCase("none")) {
             // reset transactions list data if needed
             if (transactions.size() != transactionsBackup.size()) {
                 transactions.clear();
