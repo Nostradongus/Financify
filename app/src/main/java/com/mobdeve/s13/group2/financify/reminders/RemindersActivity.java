@@ -169,7 +169,7 @@ public class RemindersActivity extends BaseActivity {
                     for (DataSnapshot reminder : snapshot.child("reminders").getChildren()) {
                         try {
                             // If date is NOT in past, add to reminders list
-                            if (!isDateInPast (reminder.child ("date").getValue ().toString ())) {
+                            if (!DateHelper.isDateInPast (reminder.child ("date").getValue ().toString ())) {
                                 // id, title, description, type, time
                                 reminders.add(new Reminder(
                                         reminder.getKey(),
@@ -206,36 +206,6 @@ public class RemindersActivity extends BaseActivity {
             // relogin
             Toast.makeText (RemindersActivity.this, "Invalid session.", Toast.LENGTH_SHORT).show ();
         }
-    }
-
-    /**
-     * Checks if a given date in format MM/DD/YYYY is in the past.
-     *
-     * @param date the date to be checked
-     * @return  true if the date is the past; otherwise false
-     */
-    private boolean isDateInPast (String date) {
-        // separate month, day, and year values and parse them
-        String[] dateVals = date.split ("/");
-        int month = Integer.parseInt (dateVals[0]) - 1;
-        int day = Integer.parseInt (dateVals[1]);
-        int year = Integer.parseInt (dateVals[2]);
-
-        // Retrieve date & time today
-        Calendar cal = Calendar.getInstance ();
-
-        // Check if date is in past
-        if (year < cal.get (Calendar.YEAR))
-            return true;
-        else if (year == cal.get (Calendar.YEAR) &&
-                 month < cal.get (Calendar.MONTH))
-            return true;
-        else if (year == cal.get (Calendar.YEAR) &&
-                 month == cal.get (Calendar.MONTH) &&
-                 day < cal.get (Calendar.DAY_OF_MONTH))
-            return true;
-        else
-            return false;
     }
 
     /**
