@@ -41,22 +41,23 @@ public class MainActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                // if there is a user logged in the application
+                // setup intent to redirect based on user session
+                Intent intent;
+
+                // if there is a user currently logged in the application
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    // redirect to application's home page
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-                    // end splash screen activity
-                    finish();
+                    // redirect to application's home activity page
+                    intent = new Intent(MainActivity.this, HomeActivity.class);
                 } else {
-                    // redirect to login page for user to log in the application
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-
-                    // end splash screen activity
-                    finish();
+                    // redirect to login activity page for user to log in the application
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
                 }
+
+                // redirect to appropriate activity page
+                startActivity(intent);
+
+                // end splash screen activity
+                finish();
             }
         }, SPLASH_SCREEN_DELAY);
     }
