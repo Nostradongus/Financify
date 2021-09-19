@@ -21,7 +21,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     // specified duration period for application's duration screen
-    private static final int SPLASH_SCREEN_DELAY = 3000;
+    private static final int SPLASH_SCREEN_DELAY = 1500;
 
     // indicator when FirebaseDatabase persistence is already enabled
     private static boolean isPersistenceEnabled = false;
