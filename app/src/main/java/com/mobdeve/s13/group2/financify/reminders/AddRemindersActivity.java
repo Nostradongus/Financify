@@ -3,12 +3,16 @@ package com.mobdeve.s13.group2.financify.reminders;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +23,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.net.UriCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -105,28 +111,33 @@ public class AddRemindersActivity extends BaseActivity {
      * Adds the newly created Reminder to the Firebase database
      *
      * @param title      the name of the new Reminder
-     * @param description   the balance of the new Reminder
+     * @param description   the description of the new Reminder
      * @param type      the type of the new Reminder
      * @param date      the date of the new Reminder
+     *
+     * @return the id of the newly created reminder
      */
-    private void addReminderInFirebase (String title, String description, String type, String date) {
+    private int addReminderInFirebase (String title, String description, String type, String date) {
         // New Reminder ID
-        String newId;
+        int newId;
 
         // If there are reminders, generate latest ID
         if (!reminders.isEmpty ())
-            newId = String.valueOf (Integer.parseInt (reminders.get (reminders.size () - 1).getId ()) + 1);
+            newId = Integer.parseInt (reminders.get (reminders.size () - 1).getId ()) + 1;
         else
-            newId = "0";
+            newId = 0;
 
         // New DB reference to the new Reminder
-        DatabaseReference newRef = dbRef.child (newId);
+        DatabaseReference newRef = dbRef.child (String.valueOf(newId));
 
         // Set Reminder values in DB
         newRef.child ("title").setValue (title);
         newRef.child ("description").setValue (description);
         newRef.child ("type").setValue (type);
         newRef.child ("date").setValue (date);
+
+        // return new reminder id to be used for notification setup
+        return newId;
     }
 
     /**
@@ -134,13 +145,25 @@ public class AddRemindersActivity extends BaseActivity {
      */
     private void createNotificationChannel () {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name = "Financify";
-            String description = "Financify Reminder!";
+            // set notification components
+            String name = "financify";
+            String description = "financify Reminder!";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            // initialize and setup NotificationChannel
             NotificationChannel channel = new NotificationChannel("financify_notify", name, importance);
             channel.setDescription (description);
             channel.enableVibration (true);
             channel.enableLights (true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            channel.setSound(notificationSound, audioAttributes);
+
+            // create and establish NotificationChannel
             NotificationManager notificationManager = getSystemService (NotificationManager.class);
             notificationManager.createNotificationChannel (channel);
         }
@@ -149,11 +172,16 @@ public class AddRemindersActivity extends BaseActivity {
     /**
      * Sets notification for the newly created Reminder on the device.
      *
+     * @param id    the id of the new Reminder
+     * @param title the title of the new Reminder
      * @param date  the date of the new Reminder
      */
-    private void setNotification (String date) {
-        // initialize NotifyService intent
+    private void setNotification (int id, String title, String date) {
+        // initialize and setup notification intent with new reminder's data
         Intent intent = new Intent (AddRemindersActivity.this, ReminderBroadcast.class);
+        intent.putExtra("NOTIFICATION_ID", id);
+        intent.putExtra("NOTIFICATION_TITLE", title);
+
         PendingIntent pIntent = PendingIntent.getBroadcast (AddRemindersActivity.this, 0, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService (ALARM_SERVICE);
 
@@ -245,10 +273,10 @@ public class AddRemindersActivity extends BaseActivity {
                     String date = btn_date.getText().toString();
 
                     // Add to Firebase
-                    addReminderInFirebase (title, desc, type, date);
+                    int id = addReminderInFirebase (title, desc, type, date);
 
                     // set reminder notification on device
-                    setNotification(date);
+                    setNotification(id, title, date);
 
                     // End activity
                     goBackToRemindersPage ();

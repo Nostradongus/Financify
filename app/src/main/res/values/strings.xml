@@ -1,6 +1,6 @@
 <resources>
     <!-- base application and common component strings -->
-    <string name="app_name">Financify</string>
+    <string name="app_name">financify</string>
     <string name="app_header">financify</string>
     <string name="back_home">Back to Home</string>
     <string name="back_accounts">Back to Accounts</string>

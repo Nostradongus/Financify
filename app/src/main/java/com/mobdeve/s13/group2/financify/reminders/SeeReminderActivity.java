@@ -1,8 +1,17 @@
 package com.mobdeve.s13.group2.financify.reminders;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,7 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * See reminder activity / page, views a specific reminder as chosen by the user.
+ * See reminder activity / page, views a specific reminder entry pressed by the user.
  */
 public class SeeReminderActivity extends BaseActivity {
 
@@ -46,17 +55,14 @@ public class SeeReminderActivity extends BaseActivity {
     private String userId;
     private DatabaseReference dbRef;
 
-
-    /**
-     * This function is run once.
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Edit reminder layout
         setContentView(R.layout.activity_see_reminder);
 
+        // to create a notification channel for the updated reminder notifications above Oreo
+        createNotificationChannel ();
         // Initialize General Components
         initComponents();
         // Initialize DatePicket for the date
@@ -96,7 +102,75 @@ public class SeeReminderActivity extends BaseActivity {
     }
 
     /**
+     * Creates a notification channel for devices with API greater than Oreo.
+     */
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // set notification components
+            String name = "financify";
+            String description = "financify Reminder!";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            // initialize and setup NotificationChannel
+            NotificationChannel channel = new NotificationChannel("financify_notify", name, importance);
+            channel.setDescription (description);
+            channel.enableVibration (true);
+            channel.enableLights (true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+            channel.setSound(notificationSound, audioAttributes);
+
+            // create and establish NotificationChannel
+            NotificationManager notificationManager = getSystemService (NotificationManager.class);
+            notificationManager.createNotificationChannel (channel);
+        }
+    }
+
+    /**
+     * Updates notification for the existing updated Reminder on the device.
+     *
+     * @param id    the id of the updated Reminder
+     * @param title the title of the updated Reminder
+     * @param date  the date of the updated Reminder
+     */
+    private void updateNotification (int id, String title, String date) {
+        // initialize and setup notification intent with new reminder's data
+        Intent intent = new Intent (SeeReminderActivity.this, ReminderBroadcast.class);
+        intent.putExtra("NOTIFICATION_ID", id);
+        intent.putExtra("NOTIFICATION_TITLE", title);
+
+        PendingIntent pIntent = PendingIntent.getBroadcast (
+                SeeReminderActivity.this, 0, intent, 0
+        );
+        AlarmManager alarmManager = (AlarmManager) getSystemService (ALARM_SERVICE);
+
+        // separate month, day, and year values and parse them
+        String[] dateVals = date.split("/");
+        int month = Integer.parseInt(dateVals[0]) - 1;
+        int day = Integer.parseInt(dateVals[1]);
+        int year = Integer.parseInt(dateVals[2]);
+
+        // set notification date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        // set to receive at exactly 8:00 AM of the new Reminder's date
+        calendar.set(year, month, day, 8, 0, 0);
+
+        // start notification
+        alarmManager.set (AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pIntent);
+    }
+
+    /**
      * Updates the Reminder in the Firebase database.
+     *
+     * @param   title   the updated name of the Reminder
+     * @param   desc    the updated description of the Reminder
+     * @param   type    the updated type of the Reminder
+     * @param   date    the updated date of the Reminder
      */
     private void updateReminderInFirebase (String title, String desc, String type, String date) {
         // Create new reference
@@ -133,7 +207,6 @@ public class SeeReminderActivity extends BaseActivity {
                     .child ("reminders");
             // If invalid session
         } else {
-            // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }
     }
@@ -173,6 +246,12 @@ public class SeeReminderActivity extends BaseActivity {
 
                     // Update in Firebase
                     updateReminderInFirebase (title, desc, type, date);
+
+                    // update reminder notification if date was changed
+                    if (!reminder.getDate().equalsIgnoreCase(date)) {
+                        int id = Integer.parseInt(reminder.getId());
+                        updateNotification(id, title, date);
+                    }
 
                     // Update local Account
                     reminder.setTitle (title);
@@ -228,8 +307,6 @@ public class SeeReminderActivity extends BaseActivity {
             @Override
             public void onDateSet (DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                // TODO: Try to implement this version of dates
-                // String date = DateHelper.makeDateString (day, month, year);
                 String date = month + "/" + day + "/" + year;
                 btnDate.setText (date);
             }

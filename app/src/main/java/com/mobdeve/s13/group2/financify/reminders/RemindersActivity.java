@@ -114,8 +114,6 @@ public class RemindersActivity extends BaseActivity {
 
     }
 
-
-
     /**
      * Show/hide empty message on activity resumption, if applicable
      */

@@ -22,13 +22,19 @@ public class MainActivity extends AppCompatActivity {
     // specified duration period for application's duration screen
     private static final int SPLASH_SCREEN_DELAY = 3000;
 
+    // indicator when FirebaseDatabase persistence is already enabled
+    private static boolean isPersistenceEnabled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // enable persistence for storing data in local cache for offline use
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!isPersistenceEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            isPersistenceEnabled = true;
+        }
 
         // splash (intro) screen for 3 seconds then redirect to login activity
         new Handler().postDelayed(new Runnable() {
