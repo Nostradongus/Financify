@@ -152,7 +152,6 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
                     .child (transaction.getId ());
         // If invalid session
         } else {
-            // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }
     }
@@ -259,8 +258,6 @@ public class CashflowUpdateEntryActivity extends BaseActivity {
             @Override
             public void onDateSet (DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                // TODO: Try to implement this version of dates
-                // String date = DateHelper.makeDateString (day, month, year);
                 String date = month + "/" + day + "/" + year;
                 btnDate.setText (date);
             }

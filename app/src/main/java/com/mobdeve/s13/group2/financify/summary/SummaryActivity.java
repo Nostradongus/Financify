@@ -32,7 +32,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
@@ -412,7 +411,7 @@ public class SummaryActivity extends BaseActivity {
         // get the top 3 accounts by balance
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
             float value = (float)(accounts.get(i).getBalance() / totalBalance * 100.0);
-            if (value > 0.0f) {
+            if (Math.round(value) > 0) {
                 pieAccounts.add(new PieEntry(value, accounts.get(i).getName()));
             }
         }
@@ -425,7 +424,7 @@ public class SummaryActivity extends BaseActivity {
 
             // add as pie data
             float value = (float)(otherAccountsBalance / totalBalance * 100.0);
-            if (value > 0.0f) {
+            if (Math.round(value) > 0) {
                 pieAccounts.add(new PieEntry(value, "Others"));
             }
         }
@@ -485,14 +484,14 @@ public class SummaryActivity extends BaseActivity {
         ArrayList<PieEntry> pieRatios = new ArrayList<>();
 
         if (totalTransactions > 0) {
-            if (p1 > 0.0f) {
+            if (Math.round(p1) > 0) {
                 pieRatios.add(new PieEntry(p1, "Income"));
             }
-            if (p2 > 0.0f) {
-                pieRatios.add(new PieEntry(p2, "Investments"));
+            if (Math.round(p2) > 0) {
+                pieRatios.add(new PieEntry(p2, "Investment"));
             }
-            if (p3 > 0.0f) {
-                pieRatios.add(new PieEntry(p3, "Expenses"));
+            if (Math.round(p3) > 0) {
+                pieRatios.add(new PieEntry(p3, "Expense"));
             }
 
             // initialize pie data set for ratios
@@ -513,18 +512,16 @@ public class SummaryActivity extends BaseActivity {
         // initialize summary numerical texts
         String monthFilter = btnMonth.getText().toString().toLowerCase();
         String yearFilter = btnYear.getText().toString().toLowerCase();
-        String date;
-        if (!yearFilter.equalsIgnoreCase("none")) {
-            date = yearFilter;
-        } else {
-            date = Calendar.getInstance().get(Calendar.YEAR) + "";
-        }
+        String date = "";
         if (!monthFilter.equalsIgnoreCase("none")) {
-            date = DateHelper.getMonthFormat(Integer.parseInt(transactions.get(0).getMonth()))
-                    .substring(0, 3) + " " + date;
+            date += DateHelper.getMonthFormat(Integer.parseInt(transactions.get(0).getMonth()))
+                    .substring(0, 3) + " ";
+        }
+        if (!yearFilter.equalsIgnoreCase("none")) {
+            date += yearFilter + " ";
         }
         titleAccounts = "Top Accounts by Balance";
-        titleRatios = date + " Income, Investments, & Expenses Ratio";
+        titleRatios = date + "Income, Investments, & Expenses Ratio";
 
         textAccounts.clear();
         for (int i = 0; i < Math.min(accounts.size(), 3); i++) {
@@ -534,16 +531,17 @@ public class SummaryActivity extends BaseActivity {
         }
 
         if (accounts.size() > 3) {
-            float value = pieAccounts.get(pieAccounts.size() - 1).getValue();
+            float value = (float)(otherAccountsBalance / totalBalance * 100.0);
             String percentage = (float)(Math.round(value * 100.0) / 100.0) + "%";
             textAccounts.add("Others - " + percentage);
         }
 
         textRatios.clear();
         if (totalTransactions > 0) {
-            textRatios.add("Income - " + (float)(Math.round(pieRatios.get(0).getValue() * 100.0) / 100.0) + "%");
-            textRatios.add("Investments - " + (float)(Math.round(pieRatios.get(1).getValue() * 100.0) / 100.0) + "%");
-            textRatios.add("Expenses - " + (float)(Math.round(pieRatios.get(2).getValue() * 100.0) / 100.0) + "%");
+            textRatios.add("Income - " + (float)(Math.round(p1 * 100.0) / 100.0) + "%");
+            textRatios.add("Investments - " + (float)(Math.round(p2 * 100.0) / 100.0) + "%");
+            textRatios.add("Expenses - " + (float)(Math.round(p3 * 100.0) / 100.0) + "%");
+
         }
 
         // display data

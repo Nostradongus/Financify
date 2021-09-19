@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,34 +23,41 @@ public class MainActivity extends AppCompatActivity {
     // specified duration period for application's duration screen
     private static final int SPLASH_SCREEN_DELAY = 3000;
 
+    // indicator when FirebaseDatabase persistence is already enabled
+    private static boolean isPersistenceEnabled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // enable persistence for storing data in local cache for offline use
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        if (!isPersistenceEnabled) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+            isPersistenceEnabled = true;
+        }
 
         // splash (intro) screen for 3 seconds then redirect to login activity
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                // if there is a user logged in the application
+                // setup intent to redirect based on user session
+                Intent intent;
+
+                // if there is a user currently logged in the application
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    // redirect to application's home page
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-                    // end splash screen activity
-                    finish();
+                    // redirect to application's home activity page
+                    intent = new Intent(MainActivity.this, HomeActivity.class);
                 } else {
-                    // redirect to login page for user to log in the application
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-
-                    // end splash screen activity
-                    finish();
+                    // redirect to login activity page for user to log in the application
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
                 }
+
+                // redirect to appropriate activity page
+                startActivity(intent);
+
+                // end splash screen activity
+                finish();
             }
         }, SPLASH_SCREEN_DELAY);
     }

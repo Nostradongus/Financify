@@ -5,7 +5,6 @@ package com.mobdeve.s13.group2.financify.cashflow;
  */
 public class Keys {
 
-    // TODO: rename to cashflow keys
     // Key for multiple Accounts
     public static final String KEY_CF_ACCS = "KEY_CF_ACCS";
     // Key for a single Account

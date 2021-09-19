@@ -133,7 +133,6 @@ public class CashflowUpdateAccountActivity extends BaseActivity {
                     .child ("accounts");
         // If invalid session
         } else {
-            // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }
     }

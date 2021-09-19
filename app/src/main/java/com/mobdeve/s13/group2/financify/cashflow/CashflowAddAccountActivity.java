@@ -129,7 +129,6 @@ public class CashflowAddAccountActivity extends BaseActivity {
             // If invalid session
         }
         else {
-            // TODO: Verify if redirect to login is working
             goBackToLogin ();
         }
     }
