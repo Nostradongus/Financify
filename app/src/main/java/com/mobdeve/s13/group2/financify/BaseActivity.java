@@ -214,6 +214,12 @@ public class BaseActivity extends AppCompatActivity {
 
     // override setContentView to put current activity layout as child layout
     // inside FrameLayout of base layout (activity_base.xml)
+
+    /**
+     * Override setContentView to put current activity layout as child layout inside FrameLayout
+     *
+     * @param layoutResID the resource ID of the layout to be put inside the FrameLayout
+     */
     @Override
     public void setContentView(int layoutResID) {
         if (flActivity != null) {
