@@ -183,7 +183,6 @@ public class RemindersActivity extends BaseActivity {
                                 oldRemindersIDs.add (reminder.getKey ().toString ());
                             }
                         } catch (Exception e) {
-                            System.out.println(e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -372,8 +371,6 @@ public class RemindersActivity extends BaseActivity {
         // Retrieve element IDs
         btnMonth = findViewById (R.id.btn_rem_month_filter);
         btnYear = findViewById (R.id.btn_rem_year_filter);
-
-        System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
 
         // For retrieving date today
         Calendar cal = Calendar.getInstance ();

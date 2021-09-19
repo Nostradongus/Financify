@@ -1,7 +1,9 @@
 package com.mobdeve.s13.group2.financify;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -25,12 +27,20 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.cashflow.CashflowHomeActivity;
+import com.mobdeve.s13.group2.financify.model.Model;
 import com.mobdeve.s13.group2.financify.reminders.RemindersActivity;
 import com.mobdeve.s13.group2.financify.summary.SummaryActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 /**
@@ -144,6 +154,9 @@ public class BaseActivity extends AppCompatActivity {
                             return true;
 
                         case R.id.nav_logout:
+                            // clear shown reminder notifications of user before logging out
+                            NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+
                             // sign out current user of the application
                             FirebaseAuth.getInstance().signOut();
 

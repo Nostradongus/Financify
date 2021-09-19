@@ -581,8 +581,6 @@ public class SummaryActivity extends BaseActivity {
         tvMonthLabel = findViewById(R.id.tv_summary_month_filter_label);
         tvYearLabel = findViewById(R.id.tv_summary_year_filter_label);
 
-        System.out.println ("VERSION: " + android.os.Build.VERSION.SDK_INT);
-
         // For retrieving date today
         Calendar cal = Calendar.getInstance ();
 
