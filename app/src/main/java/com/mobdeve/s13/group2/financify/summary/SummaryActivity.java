@@ -534,7 +534,7 @@ public class SummaryActivity extends BaseActivity {
 
         if (accounts.size() > 3) {
             float value = (float)(otherAccountsBalance / totalBalance * 100.0);
-            textAccounts.add("Others - " + mFormat.format(value));
+            textAccounts.add("Others - " + mFormat.format(value) + "%");
         }
 
         textRatios.clear();
