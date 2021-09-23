@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.model.Model;
+import com.mobdeve.s13.group2.financify.pin.PinActivity;
+import com.mobdeve.s13.group2.financify.pin.RegisterPINActivity;
+import com.mobdeve.s13.group2.financify.reminders.Keys;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -251,8 +254,21 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT
                             ).show();
 
-                            // redirect to home page
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            // prepare Intent
+                            Intent intent;
+
+                            // if user has no PIN just yet
+                            if (snapshot.child (Model.pin.name ()).getValue () == null) {
+                                // redirect to PIN creation page
+                                intent = new Intent (LoginActivity.this, RegisterPINActivity.class);
+                                intent.putExtra (Keys.KEY_PIN_NEW, false);
+                            // if user has PIN already
+                            } else {
+                                // redirect to PIN input page
+                                intent = new Intent(LoginActivity.this, PinActivity.class);
+                            }
+
+                            // start activity
                             startActivity(intent);
 
                             // end login activity

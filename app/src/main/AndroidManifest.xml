@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -14,39 +14,61 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Financify">
-        <activity android:name=".summary.SummaryActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".SettingsActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".BaseActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".HomeActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".RegisterActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowUpdateEntryActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowAddEntryActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowUpdateAccountActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowAddAccountActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowAccountActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".cashflow.CashflowHomeActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".reminders.SeeReminderActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".reminders.AddRemindersActivity"
-                  android:screenOrientation="portrait" />
-        <activity android:name=".reminders.RemindersActivity"
-                  android:screenOrientation="portrait" />
-        <receiver android:exported="true" android:name=".reminders.ReminderBroadcast" />
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait">
+        <activity android:name=".pin.RegisterPINActivity" />
+        <activity android:name=".pin.PinActivity" />
+        <activity
+            android:name=".summary.SummaryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowUpdateEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowAddEntryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowUpdateAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowAddAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".cashflow.CashflowHomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reminders.SeeReminderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reminders.AddRemindersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".reminders.RemindersActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".reminders.ReminderBroadcast"
+            android:exported="true" />
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

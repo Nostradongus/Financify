@@ -1,6 +1,5 @@
 package com.mobdeve.s13.group2.financify;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,20 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.mobdeve.s13.group2.financify.model.Model;
 import com.mobdeve.s13.group2.financify.model.User;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
+import com.mobdeve.s13.group2.financify.pin.RegisterPINActivity;
+import com.mobdeve.s13.group2.financify.reminders.Keys;
 
 /**
  * For register activity / page, for the user to create an account with the given required details.
@@ -48,31 +37,13 @@ public class RegisterActivity extends AppCompatActivity {
     // register button
     private Button registerBtn;
 
-    // Firebase components
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // initialize Firebase components
-        initFirebase();
-
         // initialize view components
         initComponents();
-    }
-
-    /**
-     * Initializes Firebase components.
-     */
-    private void initFirebase() {
-        // get instance of Firebase Authentication
-        this.mAuth = FirebaseAuth.getInstance();
-
-        // get instance of Firebase Realtime Database
-        this.database = FirebaseDatabase.getInstance();
     }
 
     /**
@@ -102,8 +73,14 @@ public class RegisterActivity extends AppCompatActivity {
                     registerBtn.setEnabled (false);
                     registerBtn.setVisibility (View.INVISIBLE);
 
-                    // register new user to the database
-                    registerUser(new User(firstName, lastName, email, password));
+                    // proceed to PIN creation page
+                    Intent i = new Intent (RegisterActivity.this, RegisterPINActivity.class);
+                    i.putExtra (Keys.KEY_PIN_USER, new User (firstName, lastName, email, password));
+                    i.putExtra (Keys.KEY_PIN_NEW, true);
+                    // launch activity
+                    startActivity (i);
+                    // finish activity
+                    finish ();
                 }
             }
         });
@@ -191,87 +168,5 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         return valid;
-    }
-
-    /**
-     * Creates and registers the user to the application's database.
-     *
-     * @param   user    the user's details
-     */
-    private void registerUser(User user) {
-        // show register progress bar as new user data is being added to database
-        this.pbRegister.setVisibility(View.VISIBLE);
-
-        // register the user with Firebase
-        this.mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        // if new user authentication data was added successfully to the database
-                        if (task.isSuccessful()) {
-                            // add user account data to users database collection
-                            database.getReference(Model.users.name())
-                                    .child(mAuth.getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                    // if new user account data was added successfully to the database
-                                    if (task.isSuccessful()) {
-                                        registerSuccess();
-                                    } else {
-                                        registerFailed();
-                                    }
-
-                                    // re-enable register button
-                                    registerBtn.setEnabled (true);
-                                    registerBtn.setVisibility (View.VISIBLE);
-                                }
-                            });
-                        } else {
-                            registerFailed();
-                        }
-                    }
-                });
-    }
-
-    /**
-     * Indicates success of registration to the user and redirects back to the login page
-     * afterwards.
-     */
-    private void registerSuccess() {
-        // disable register progress bar as process is complete
-        this.pbRegister.setVisibility(View.GONE);
-
-        // log out temporarily logged in user
-        this.mAuth.signOut();
-
-        // alert user that registration was successful
-        Toast.makeText(
-                this,
-                R.string.register_success,
-                Toast.LENGTH_SHORT
-        ).show();
-
-        // redirect back to login page afterwards
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-
-        // end register activity
-        finish();
-    }
-
-    /**
-     * Indicates error or failure of registration to the user.
-     */
-    private void registerFailed() {
-        // disable register progress bar as process is complete
-        this.pbRegister.setVisibility(View.GONE);
-
-        // alert user that error has occurred during registration process
-        Toast.makeText(
-                this,
-                R.string.register_failed,
-                Toast.LENGTH_SHORT
-        ).show();
     }
 }

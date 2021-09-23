@@ -22,4 +22,9 @@ public class Keys {
     public static final String KEY_REMINDER_TYPE = "KEY_REMINDER_TYPE";
     // Key for Reminder Date
     public static final String KEY_REMINDER_DATE = "KEY_REMINDER_DATE";
+
+    // Key for PIN creation page intended for new Users
+    public static final String KEY_PIN_USER = "KEY_PIN_USER";
+    // Key for PIN creation page to discern if new or old User
+    public static final String KEY_PIN_NEW = "KEY_PIN_NEW";
 }

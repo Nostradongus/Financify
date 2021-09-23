@@ -4,5 +4,6 @@ public enum Model {
     users,
     accounts,
     transactions,
-    reminders
+    reminders,
+    pin
 }
