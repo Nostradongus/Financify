@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Financify">
-        <activity android:name=".pin.RegisterPINActivity" />
-        <activity android:name=".pin.PinActivity" />
+        <activity android:name=".pin.RegisterPINActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".pin.PinActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".summary.SummaryActivity"
             android:screenOrientation="portrait" />
