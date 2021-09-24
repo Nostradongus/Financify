@@ -1,7 +1,6 @@
 package com.mobdeve.s13.group2.financify;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
@@ -22,13 +21,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mobdeve.s13.group2.financify.cashflow.CashflowUpdateAccountActivity;
 import com.mobdeve.s13.group2.financify.model.Model;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +47,7 @@ public class SettingsActivity extends BaseActivity {
     private EditText etLastName;
     private EditText etEmail;
     private EditText etPassword;
+    private EditText etConfirmPassword;
 
     // progress bar
     private ProgressBar pbSettings;
@@ -112,7 +110,8 @@ public class SettingsActivity extends BaseActivity {
         this.etFirstName = findViewById(R.id.et_settings_first_name);
         this.etLastName = findViewById(R.id.et_settings_last_name);
         this.etEmail = findViewById(R.id.et_settings_email);
-        this.etPassword = findViewById(R.id.et_settings_password);
+        this.etPassword = findViewById(R.id.et_settings_new_password);
+        this.etConfirmPassword = findViewById (R.id.et_settings_confirm_password);
         this.btnSave = findViewById(R.id.btn_settings_save);
         this.pbSettings = findViewById(R.id.pb_settings);
 
@@ -130,6 +129,7 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
                 // if input fields are valid
                 if (isValidForm()) {
+                    // TODO: handle case where user wants to change to an existing email
                     updateUserAccount();
                 }
             }
@@ -151,13 +151,14 @@ public class SettingsActivity extends BaseActivity {
                 firstName = snapshot.child("firstName").getValue(String.class);
                 lastName = snapshot.child("lastName").getValue(String.class);
                 email = snapshot.child("email").getValue(String.class);
-                password = snapshot.child("password").getValue(String.class);
+                // password = snapshot.child("password").getValue(String.class);
 
                 // update input fields with acquired data
                 etFirstName.setText(firstName);
                 etLastName.setText(lastName);
                 etEmail.setText(email);
-                etPassword.setText(password);
+                etPassword.setText("");
+                etConfirmPassword.setText("");
             }
 
             @Override
@@ -197,17 +198,27 @@ public class SettingsActivity extends BaseActivity {
             this.etEmail.requestFocus();
             return false;
         }
-        // if password field is empty
-        else if (this.etPassword.getText().toString().trim().isEmpty()) {
-            this.etPassword.setError("Please input your password.");
-            this.etPassword.requestFocus();
-            return false;
-        }
-        // if password is less than 6 characters
-        else if (this.etPassword.getText().toString().trim().length() < 6) {
-            this.etPassword.setError("Password should be greater than 6 characters.");
-            this.etPassword.requestFocus();
-            return false;
+        // if password field is not empty (i.e., user wants to change password)
+        else if (!this.etPassword.getText().toString().trim().isEmpty()) {
+            // if password is less than 6 characters
+            if (this.etPassword.getText().toString().trim().length() < 6) {
+                this.etPassword.setError("Password should be greater than 6 characters.");
+                this.etPassword.requestFocus();
+                return false;
+            }
+            // if there is no password confirmation
+            else if (this.etConfirmPassword.getText().toString().trim().isEmpty()) {
+                this.etConfirmPassword.setError("Please confirm your password.");
+                this.etConfirmPassword.requestFocus();
+                return false;
+            }
+            // if passwords do not match
+            else if (!this.etPassword.getText().toString().trim().equals (this.etConfirmPassword.getText().toString().trim())) {
+                this.etPassword.setError("Passwords do not match!");
+                this.etConfirmPassword.setError("Passwords do not match!");
+                this.etPassword.requestFocus();
+                return false;
+            }
         }
 
         // input fields are valid
@@ -263,7 +274,7 @@ public class SettingsActivity extends BaseActivity {
             spEditor.apply();
         }
 
-        if (!email.equalsIgnoreCase(newEmail) || !password.equalsIgnoreCase(newPassword)) {
+        if (!email.equalsIgnoreCase(newEmail) || (!newPassword.isEmpty() && !password.equalsIgnoreCase(newPassword))) {
             // change and update user's email first in the database
             if (!email.equalsIgnoreCase(newEmail)) {
                 dbRef.child("email").setValue(newEmail);
@@ -273,7 +284,8 @@ public class SettingsActivity extends BaseActivity {
             }
             // change and update user's password instead in the database
             else {
-                dbRef.child("password").setValue(newPassword);
+                // Password no longer stored in Realtime DB
+                dbRef.child("password").setValue(null);
 
                 // update password in Firebase Authentication database
                 updateUserPasswordAuthentication(newPassword);
@@ -325,9 +337,9 @@ public class SettingsActivity extends BaseActivity {
                                         email = newEmail;
 
                                         // if password has been changed on input
-                                        if (!password.equalsIgnoreCase(newPassword)) {
-                                            // update password in realtime database first
-                                            dbRef.child("password").setValue(newPassword);
+                                        if (!newPassword.isEmpty() && !password.equalsIgnoreCase(newPassword)) {
+                                            // Password no longer stored in Realtime DB
+                                            dbRef.child("password").setValue(null);
 
                                             // proceed to updating password in Firebase Authentication
                                             // database

@@ -3,30 +3,22 @@ package com.mobdeve.s13.group2.financify;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.mobdeve.s13.group2.financify.helpers.Keys;
 import com.mobdeve.s13.group2.financify.model.Model;
 import com.mobdeve.s13.group2.financify.pin.PinActivity;
 import com.mobdeve.s13.group2.financify.pin.RegisterPINActivity;
-import com.mobdeve.s13.group2.financify.reminders.Keys;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Calendar;
 
 /**
  * For splash screen activity / page, to show splash screen before moving to the application's

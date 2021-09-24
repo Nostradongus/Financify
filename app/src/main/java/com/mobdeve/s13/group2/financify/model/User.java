@@ -23,10 +23,6 @@ public class User implements Parcelable {
      */
     private String email;
     /**
-     * User's password
-     */
-    private String password;
-    /**
      * User's list of accounts
      */
     private ArrayList<Account> accounts;
@@ -34,12 +30,10 @@ public class User implements Parcelable {
      * User's list of reminders
      */
     private ArrayList<Reminder> reminders;
-
     /**
      * User's PIN
      */
     private String PIN;
-
     /**
      * User preference. If user prefers to use device biometrics.
      */
@@ -51,13 +45,11 @@ public class User implements Parcelable {
      * @param   firstName   the user's first name
      * @param   lastName    the user's last name
      * @param   email       the user's email address
-     * @param   password    the user's password
      */
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
         this.accounts = new ArrayList<Account>();
         this.reminders = new ArrayList<Reminder>();
         this.useBiometrics = false;
@@ -70,7 +62,6 @@ public class User implements Parcelable {
         firstName = in.readString();
         lastName = in.readString();
         email = in.readString();
-        password = in.readString();
         accounts = in.createTypedArrayList(Account.CREATOR);
         reminders = in.createTypedArrayList(Reminder.CREATOR);
     }
@@ -115,15 +106,6 @@ public class User implements Parcelable {
      */
     public String getEmail() {
         return this.email;
-    }
-
-    /**
-     * Retrieves the password of this user.
-     *
-     * @return  the user's password.
-     */
-    public String getPassword() {
-        return this.password;
     }
 
     /**
@@ -192,7 +174,6 @@ public class User implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(email);
-        dest.writeString(password);
         dest.writeTypedList(accounts);
         dest.writeTypedList(reminders);
     }

@@ -7,15 +7,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.HomeActivity;
 import com.mobdeve.s13.group2.financify.R;
+import com.mobdeve.s13.group2.financify.helpers.BCryptHelper;
+import com.mobdeve.s13.group2.financify.helpers.BiometricHelper;
 import com.mobdeve.s13.group2.financify.model.Model;
-import com.mobdeve.s13.group2.financify.reminders.Keys;
 
 import android.content.Intent;
+
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
@@ -57,6 +57,12 @@ public class PinActivity extends AppCompatActivity {
         initFirebase ();
         // initialize UI components
         initComponents ();
+
+        // if device can use biometric authentication
+        if (BiometricHelper.canUseBiometricAuth (this)) {
+            // show biometric prompt
+            biometricPrompt.authenticate (promptInfo);
+        }
     }
 
     /**
@@ -101,7 +107,7 @@ public class PinActivity extends AppCompatActivity {
                                     String etPinVal = etPin.getText ().toString ().trim ();
 
                                     // check if PIN is valid
-                                    if (etPinVal.equalsIgnoreCase (task.getResult ().getValue ().toString ())) {
+                                    if (BCryptHelper.isCorrectPIN (etPinVal, task.getResult ().getValue ().toString ())) {
                                         // show success message to user
                                         Toast.makeText (
                                                 PinActivity.this,
@@ -116,11 +122,7 @@ public class PinActivity extends AppCompatActivity {
                                         // finish activity
                                         finish ();
                                     } else {
-                                        Toast.makeText (
-                                                PinActivity.this,
-                                                "Wrong PIN!",
-                                                Toast.LENGTH_SHORT
-                                        ).show ();
+                                        // show error to user
                                         etPin.setError ("Wrong PIN!");
                                     }
 
@@ -139,37 +141,43 @@ public class PinActivity extends AppCompatActivity {
      * Initialize Biometrics components.
      */
     private void initBiometrics () {
+        // executor
         executor = ContextCompat.getMainExecutor (this);
+
+        // BiometricPrompt itself with its listener
         biometricPrompt = new BiometricPrompt(PinActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
-            public void onAuthenticationError(int errorCode, @NonNull @org.jetbrains.annotations.NotNull CharSequence errString) {
+            public void onAuthenticationError(int errorCode, @NonNull @NotNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-
-//                tvAuthStatus.setText ("Authentication error: " + errString);
-                Toast.makeText (PinActivity.this, "Authentication error: " + errString, Toast.LENGTH_SHORT).show ();
+                System.out.println ("Authentication Error: " + errString + " with code " + errorCode);
             }
 
             @Override
-            public void onAuthenticationSucceeded(@NonNull @org.jetbrains.annotations.NotNull BiometricPrompt.AuthenticationResult result) {
+            public void onAuthenticationSucceeded(@NonNull @NotNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-//                tvAuthStatus.setText ("Authentication successful!");
-                Toast.makeText (PinActivity.this, "Authentication successful!", Toast.LENGTH_SHORT).show ();
+                Toast.makeText (PinActivity.this, "Authenticated successfully!", Toast.LENGTH_SHORT).show ();
+
+                // create intent going to HomeActivity
+                Intent i = new Intent (PinActivity.this, HomeActivity.class);
+                // launch activity
+                startActivity (i);
+                // finish this activity
+                finish ();
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-
-//                tvAuthStatus.setText ("Authentication failed...");
-                Toast.makeText (PinActivity.this, "Authentication failed...", Toast.LENGTH_SHORT).show ();
+                System.out.println ("Authentication Failure!");
             }
         });
 
+        // biometric prompt properties
         promptInfo = new BiometricPrompt.PromptInfo.Builder ()
                 .setTitle ("Biometric Authentication")
-                .setSubtitle ("Login using fingerprint")
-                .setNegativeButtonText ("Enter PIN")
+                .setSubtitle ("Login using biometrics")
+                .setNegativeButtonText ("Enter PIN instead")
                 .build ();
     }
 }

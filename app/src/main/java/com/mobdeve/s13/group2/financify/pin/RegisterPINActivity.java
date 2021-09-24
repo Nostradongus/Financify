@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mobdeve.s13.group2.financify.HomeActivity;
+import com.mobdeve.s13.group2.financify.helpers.BCryptHelper;
+import com.mobdeve.s13.group2.financify.helpers.Keys;
 import com.mobdeve.s13.group2.financify.LoginActivity;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Model;
 import com.mobdeve.s13.group2.financify.model.User;
-import com.mobdeve.s13.group2.financify.reminders.Keys;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -84,7 +83,7 @@ public class RegisterPINActivity extends AppCompatActivity {
                 // validate fields
                 if (isValidPINFields ()) {
                     // retrieve PIN
-                    String etPinVal = etPin.getText ().toString ();
+                    String etPinVal = BCryptHelper.generateHash (etPin.getText ().toString ());
 
                     // if new user is creating an account
                     if (isNewUser) {
@@ -92,7 +91,7 @@ public class RegisterPINActivity extends AppCompatActivity {
                         user.setUserPIN (etPinVal);
 
                         // register user in Firebase
-                        registerUser (user);
+                        addUserInFirebaseDB (user);
                     // if existing user account has no PIN
                     } else {
                         // set user PIN in Firebase
@@ -165,7 +164,7 @@ public class RegisterPINActivity extends AppCompatActivity {
      *
      * @param   user    the user's details
      */
-    private void registerUser(User user) {
+    private void addUserInFirebaseDB (User user) {
         // disable register button
         btnCreate.setEnabled (false);
         btnCreate.setVisibility (View.INVISIBLE);
@@ -173,76 +172,33 @@ public class RegisterPINActivity extends AppCompatActivity {
         // show register progress bar as new user data is being added to database
         this.pbCreate.setVisibility(View.VISIBLE);
 
-        // register the user with Firebase
-        this.mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        // if new user authentication data was added successfully to the database
-                        if (task.isSuccessful()) {
-                            // add user account data to users database collection
-                            database.getReference(Model.users.name())
-                                    .child(mAuth.getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                    // if new user account data was added successfully to the database
-                                    if (task.isSuccessful()) {
-                                        registerSuccess();
-                                    } else {
-                                        registerFailed();
-                                    }
+        // add user account data to users database collection
+        database.getReference(Model.users.name())
+                .child(mAuth.getCurrentUser().getUid())
+                .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                // if new user account data was added successfully to the database
+                if (task.isSuccessful()) {
+                    // redirect back to login page afterwards
+                    Intent intent = new Intent(RegisterPINActivity.this, LoginActivity.class);
+                    startActivity(intent);
 
-                                    // re-enable register button
-                                    btnCreate.setEnabled (true);
-                                    btnCreate.setVisibility (View.VISIBLE);
-                                }
-                            });
-                        } else {
-                            registerFailed();
-                        }
-                    }
-                });
-    }
+                    // end register activity
+                    finish();
+                } else {
+                    // show error text
+                    Toast.makeText (
+                            RegisterPINActivity.this,
+                            "Unable to create PIN!",
+                            Toast.LENGTH_SHORT
+                    ).show ();
+                }
 
-    /**
-     * Indicates success of registration to the user and redirects back to the login page
-     * afterwards.
-     */
-    private void registerSuccess() {
-        // disable register progress bar as process is complete
-        this.pbCreate.setVisibility(View.GONE);
-
-        // log out temporarily logged in user
-        this.mAuth.signOut();
-
-        // alert user that registration was successful
-        Toast.makeText(
-                this,
-                R.string.register_success,
-                Toast.LENGTH_SHORT
-        ).show();
-
-        // redirect back to login page afterwards
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-
-        // end register activity
-        finish();
-    }
-
-    /**
-     * Indicates error or failure of registration to the user.
-     */
-    private void registerFailed() {
-        // disable register progress bar as process is complete
-        this.pbCreate.setVisibility(View.GONE);
-
-        // alert user that error has occurred during registration process
-        Toast.makeText(
-                this,
-                R.string.register_failed,
-                Toast.LENGTH_SHORT
-        ).show();
+                // re-enable register button
+                btnCreate.setEnabled (true);
+                btnCreate.setVisibility (View.VISIBLE);
+            }
+        });
     }
 }

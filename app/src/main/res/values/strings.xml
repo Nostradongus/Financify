@@ -20,6 +20,9 @@
     <string name="email_label">E-mail Address</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
+    <string name="change_password_label">Change Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
     <string name="login_failed">Invalid Email or Password!</string>
     <string name="login_success">Logged In Successfully!</string>
     <string name="register_success">User Registered Successfully!</string>

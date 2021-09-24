@@ -58,33 +58,33 @@
         android:id="@+id/tv_settings_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/settings_label"
-        android:textSize="@dimen/_27sdp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_bold"
+        android:text="@string/settings_label"
         android:textColor="@color/financify_dark_blue"
-        app:layout_constraintTop_toBottomOf="@id/cl_settings_back_home_nav"
+        android:textSize="@dimen/_27sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cl_settings_back_home_nav" />
 
     <!-- first name input field -->
     <EditText
         android:id="@+id/et_settings_first_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="9dp"
-        android:gravity="center_horizontal"
-        android:text="Zinnia"
-        android:textSize="@dimen/_16sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/financify_lightest_blue"
+        android:gravity="center_horizontal"
         android:inputType="textPersonName"
+        android:text="Zinnia"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
         app:backgroundTint="@color/financify_dark_blue"
-        app:layout_constraintTop_toBottomOf="@id/tv_settings_title"
+        app:layout_constraintEnd_toStartOf="@id/gl_mid_settings"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/gl_mid_settings" />
+        app:layout_constraintTop_toBottomOf="@id/tv_settings_title" />
 
     <!-- first name input field label -->
     <TextView
@@ -105,19 +105,19 @@
         android:id="@+id/et_settings_last_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_marginStart="9dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="15dp"
-        android:gravity="center_horizontal"
-        android:text="Launio"
-        android:textSize="@dimen/_16sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/financify_lightest_blue"
+        android:gravity="center_horizontal"
         android:inputType="textPersonName"
+        android:text="Launio"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
         app:backgroundTint="@color/financify_dark_blue"
-        app:layout_constraintTop_toBottomOf="@id/tv_settings_title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/gl_mid_settings"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_settings_title" />
 
     <!-- last name input field label -->
     <TextView
@@ -138,19 +138,19 @@
         android:id="@+id/et_settings_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
-        android:gravity="center_horizontal"
-        android:text="zinnia@gmail.com"
-        android:textSize="@dimen/_16sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/financify_lightest_blue"
+        android:gravity="center_horizontal"
         android:inputType="textEmailAddress"
+        android:text="zinnia@gmail.com"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
         app:backgroundTint="@color/financify_dark_blue"
-        app:layout_constraintTop_toBottomOf="@id/et_settings_last_name"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/et_settings_last_name" />
 
     <!-- email input field label -->
     <TextView
@@ -168,38 +168,72 @@
 
     <!-- password input field -->
     <EditText
-        android:id="@+id/et_settings_password"
+        android:id="@+id/et_settings_new_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="15dp"
-        android:gravity="center_horizontal"
-        android:text="zinnia123"
-        android:textSize="@dimen/_16sdp"
         android:fontFamily="@font/poppins_semibold"
-        android:textColor="@color/financify_lightest_blue"
+        android:gravity="center_horizontal"
         android:inputType="textPassword"
+        android:text="zinnia123"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
         app:backgroundTint="@color/financify_dark_blue"
-        app:layout_constraintTop_toBottomOf="@id/et_settings_email"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/et_settings_email" />
 
     <!-- password input field label -->
+
     <TextView
         android:id="@+id/tv_settings_password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
-        android:text="@string/password_label"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/change_password_label"
         android:textColor="@color/financify_dark_blue"
         android:textSize="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_semibold"
-        app:layout_constraintTop_toBottomOf="@id/et_settings_password"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/et_settings_new_password" />
+
+    <EditText
+        android:id="@+id/et_settings_confirm_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:text="zinnia123"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
+        app:backgroundTint="@color/financify_dark_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_settings_password_label" />
 
     <!-- progress bar for user account update process -->
+
+    <TextView
+        android:id="@+id/tv_settings_password_label2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/confirm_new_password_label"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_settings_confirm_password" />
+
     <ProgressBar
         android:id="@+id/pb_settings"
         android:elevation="5dp"
@@ -216,11 +250,11 @@
         android:id="@+id/btn_settings_save"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/poppins_bold"
         android:text="@string/settings_save"
         android:textSize="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_settings_password_label"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_password_label2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

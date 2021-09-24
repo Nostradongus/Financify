@@ -5,9 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -34,8 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobdeve.s13.group2.financify.BaseActivity;
-import com.mobdeve.s13.group2.financify.DateHelper;
+import com.mobdeve.s13.group2.financify.helpers.DateHelper;
 import com.mobdeve.s13.group2.financify.HomeActivity;
+import com.mobdeve.s13.group2.financify.helpers.Keys;
 import com.mobdeve.s13.group2.financify.R;
 import com.mobdeve.s13.group2.financify.model.Reminder;
 

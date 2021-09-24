@@ -1,5 +1,6 @@
 package com.mobdeve.s13.group2.financify;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,10 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mobdeve.s13.group2.financify.helpers.Keys;
 import com.mobdeve.s13.group2.financify.model.User;
 import com.mobdeve.s13.group2.financify.pin.RegisterPINActivity;
-import com.mobdeve.s13.group2.financify.reminders.Keys;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * For register activity / page, for the user to create an account with the given required details.
@@ -31,19 +40,39 @@ public class RegisterActivity extends AppCompatActivity {
     // password input field
     private EditText etPassword;
 
+    // confirm password field
+    private EditText etConfirmPassword;
+
     // progress bar when register button is clicked
     private ProgressBar pbRegister;
 
     // register button
     private Button registerBtn;
 
+    // Firebase components
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // initialize Firebase components
+        initFirebase ();
         // initialize view components
         initComponents();
+    }
+
+    /**
+     * Initializes Firebase components.
+     */
+    private void initFirebase() {
+        // get instance of Firebase Authentication
+        this.mAuth = FirebaseAuth.getInstance();
+
+        // get instance of Firebase Realtime Database
+        this.database = FirebaseDatabase.getInstance();
     }
 
     /**
@@ -55,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.etLastName = findViewById(R.id.et_register_lastname);
         this.etEmail = findViewById(R.id.et_register_email);
         this.etPassword = findViewById(R.id.et_register_password);
+        this.etConfirmPassword = findViewById (R.id.et_register_confirm_password);
         this.pbRegister = findViewById(R.id.pb_register);
 
         registerBtn = findViewById(R.id.btn_register);
@@ -65,22 +95,46 @@ public class RegisterActivity extends AppCompatActivity {
                 String lastName = etLastName.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
+                String confirmPassword = etConfirmPassword.getText().toString().trim();
 
                 // check if fields are empty and validate email and password fields as well
                 if (!checkEmpty(firstName, lastName, email, password) &&
-                    validateEmailAndPassword(email, password)) {
-                    // disable register button
+                    validateEmailAndPassword(email, password, confirmPassword)) {
+                    // hide Button and show ProgressBar
                     registerBtn.setEnabled (false);
                     registerBtn.setVisibility (View.INVISIBLE);
+                    pbRegister.setVisibility (View.VISIBLE);
 
-                    // proceed to PIN creation page
-                    Intent i = new Intent (RegisterActivity.this, RegisterPINActivity.class);
-                    i.putExtra (Keys.KEY_PIN_USER, new User (firstName, lastName, email, password));
-                    i.putExtra (Keys.KEY_PIN_NEW, true);
-                    // launch activity
-                    startActivity (i);
-                    // finish activity
-                    finish ();
+                    // create user account in Firebase Auth
+                    mAuth.createUserWithEmailAndPassword (email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult> () {
+                                @Override
+                                public void onComplete (@NonNull @NotNull Task<AuthResult> task) {
+                                    if (task.isSuccessful ()) {
+                                        registerSuccess();
+                                        // proceed to PIN creation page
+                                        Intent i = new Intent (RegisterActivity.this, RegisterPINActivity.class);
+                                        i.putExtra (Keys.KEY_PIN_USER, new User (firstName, lastName, email));
+                                        i.putExtra (Keys.KEY_PIN_NEW, true);
+                                        // launch activity
+                                        startActivity (i);
+                                        // finish activity
+                                        finish ();
+                                    } else {
+                                        try {
+                                            registerFailed (task.getException().getClass().getSimpleName());
+                                        } catch (NullPointerException npe) {
+                                            npe.printStackTrace ();
+                                            registerFailed ("");
+                                        }
+                                    }
+
+                                    // show Button
+                                    registerBtn.setEnabled (true);
+                                    registerBtn.setVisibility (View.VISIBLE);
+                                }
+                            });
+
                 }
             }
         });
@@ -149,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
      *
      * @return  true if the inputted email and password are of valid format, false otherwise.
      */
-    private boolean validateEmailAndPassword(String email, String password) {
+    private boolean validateEmailAndPassword(String email, String password, String confirmPassword) {
         boolean valid = true;
 
         // check if email is in valid format
@@ -166,7 +220,62 @@ public class RegisterActivity extends AppCompatActivity {
             this.etPassword.requestFocus();
             valid = false;
         }
+        // if there is no password confirmation
+        else if (confirmPassword.isEmpty()) {
+            this.etConfirmPassword.setError("Please confirm your password.");
+            this.etConfirmPassword.requestFocus();
+            valid = false;
+        }
+        // if passwords do not match
+        else if (!password.equals (confirmPassword)) {
+            this.etPassword.setError("Passwords do not match!");
+            this.etConfirmPassword.setError("Passwords do not match!");
+            this.etPassword.requestFocus();
+            valid = false;
+        }
 
         return valid;
+    }
+
+    /**
+     * Indicates success of registration to the user and redirects back to the login page
+     * afterwards.
+     */
+    private void registerSuccess() {
+        // disable register progress bar as process is complete
+        this.pbRegister.setVisibility(View.GONE);
+
+        // log out temporarily logged in user
+        this.mAuth.signOut();
+
+        // alert user that registration was successful
+        Toast.makeText(
+                this,
+                R.string.register_success,
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * Indicates error or failure of registration to the user.
+     */
+    private void registerFailed(String exceptionName) {
+        // disable register progress bar as process is complete
+        this.pbRegister.setVisibility(View.GONE);
+
+        // create error toast text
+        String errorToast = "Registration Failed!";
+
+        if (exceptionName.equalsIgnoreCase ("FirebaseAuthUserCollisionException")) {
+            errorToast += " Email already taken!";
+            etEmail.setError ("Email already taken!");
+        }
+
+        // alert user that error has occurred during registration process
+        Toast.makeText(
+                this,
+                errorToast,
+                Toast.LENGTH_SHORT
+        ).show();
     }
 }
