@@ -8,6 +8,7 @@
     tools:context=".SettingsActivity">
 
     <!-- guidelines -->
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_mid_settings"
         android:layout_width="wrap_content"
@@ -139,7 +140,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center_horizontal"
@@ -167,12 +168,29 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- password input field -->
+    <Button
+        android:id="@+id/btn_settings_change_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/change_password_label"
+        android:textAllCaps="false"
+        android:textColor="@color/financify_light_blue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_settings_save" />
+
     <EditText
-        android:id="@+id/et_settings_new_password"
+        android:id="@+id/et_settings_old_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center_horizontal"
@@ -185,27 +203,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_settings_email" />
 
+    <EditText
+        android:id="@+id/et_settings_new_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center_horizontal"
+        android:inputType="textPassword"
+        android:text="zinnia123"
+        android:textColor="@color/financify_lightest_blue"
+        android:textSize="@dimen/_16sdp"
+        app:backgroundTint="@color/financify_dark_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_settings_old_password" />
+
     <!-- password input field label -->
 
     <TextView
-        android:id="@+id/tv_settings_password_label"
+        android:id="@+id/tv_settings_new_password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="@string/change_password_label"
+        android:text="@string/new_password_label"
         android:textColor="@color/financify_dark_blue"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_settings_new_password" />
 
+    <TextView
+        android:id="@+id/tv_settings_old_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/old_password_label"
+        android:textColor="@color/financify_dark_blue"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_settings_old_password" />
+
     <EditText
         android:id="@+id/et_settings_confirm_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center_horizontal"
@@ -217,12 +266,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_settings_password_label" />
+        app:layout_constraintTop_toTopOf="@+id/tv_settings_new_password_label" />
 
     <!-- progress bar for user account update process -->
 
     <TextView
-        android:id="@+id/tv_settings_password_label2"
+        android:id="@+id/tv_settings_confirm_password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
@@ -236,25 +285,26 @@
 
     <ProgressBar
         android:id="@+id/pb_settings"
-        android:elevation="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:elevation="5dp"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/btn_settings_save"
-        app:layout_constraintBottom_toBottomOf="@id/btn_settings_save"
+        app:layout_constraintEnd_toEndOf="@id/btn_settings_save"
         app:layout_constraintStart_toStartOf="@id/btn_settings_save"
-        app:layout_constraintEnd_toEndOf="@id/btn_settings_save" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_confirm_password_label"
+        tools:visibility="gone" />
 
     <!-- save changes button -->
     <Button
         android:id="@+id/btn_settings_save"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="35dp"
         android:fontFamily="@font/poppins_bold"
         android:text="@string/settings_save"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_settings_password_label2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_confirm_password_label" />
 </androidx.constraintlayout.widget.ConstraintLayout>

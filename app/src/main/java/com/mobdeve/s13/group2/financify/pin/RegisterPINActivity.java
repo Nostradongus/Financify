@@ -111,12 +111,6 @@ public class RegisterPINActivity extends AppCompatActivity {
                                     }
                                 });
                     }
-                } else {
-                    Toast.makeText (
-                            RegisterPINActivity.this,
-                            "Please check all fields!",
-                            Toast.LENGTH_SHORT
-                    ).show ();
                 }
             }
         });
@@ -138,7 +132,7 @@ public class RegisterPINActivity extends AppCompatActivity {
         }
 
         // if PIN is not of length 6
-        if (etPinVal.length () < 6) {
+        if (etPinVal.length () != 6) {
             etPin.setError ("PIN must be 6 characters long!");
             return false;
         }
@@ -150,7 +144,8 @@ public class RegisterPINActivity extends AppCompatActivity {
         }
 
         // if PINs do not match
-        if (!etPinConfirmVal.equalsIgnoreCase (etPinVal)) {
+        if (!etPinConfirmVal.equals (etPinVal)) {
+            etPinConfirm.setError ("PINs do not match!");
             etPin.setError ("PINs do not match!");
             return false;
         }

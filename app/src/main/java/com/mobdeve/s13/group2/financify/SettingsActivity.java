@@ -12,14 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,8 +49,14 @@ public class SettingsActivity extends BaseActivity {
     private EditText etFirstName;
     private EditText etLastName;
     private EditText etEmail;
-    private EditText etPassword;
+    private EditText etNewPassword;
     private EditText etConfirmPassword;
+    private EditText etOldPassword;
+
+    // TextView for password fields
+    private TextView tvOldPassword;
+    private TextView tvNewPassword;
+    private TextView tvConfirmPassword;
 
     // progress bar
     private ProgressBar pbSettings;
@@ -56,10 +65,11 @@ public class SettingsActivity extends BaseActivity {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    private String currentPassword;
 
-    // save button
+    // buttons
     private Button btnSave;
+    private Button btnChangePassword;
 
     // Firebase components
     private FirebaseUser user;
@@ -110,10 +120,18 @@ public class SettingsActivity extends BaseActivity {
         this.etFirstName = findViewById(R.id.et_settings_first_name);
         this.etLastName = findViewById(R.id.et_settings_last_name);
         this.etEmail = findViewById(R.id.et_settings_email);
-        this.etPassword = findViewById(R.id.et_settings_new_password);
+        this.etNewPassword = findViewById(R.id.et_settings_new_password);
+        this.etOldPassword = findViewById(R.id.et_settings_old_password);
         this.etConfirmPassword = findViewById (R.id.et_settings_confirm_password);
         this.btnSave = findViewById(R.id.btn_settings_save);
+        this.btnChangePassword = findViewById (R.id.btn_settings_change_password);
         this.pbSettings = findViewById(R.id.pb_settings);
+        this.tvOldPassword = findViewById(R.id.tv_settings_old_password_label);
+        this.tvNewPassword = findViewById(R.id.tv_settings_new_password_label);
+        this.tvConfirmPassword = findViewById(R.id.tv_settings_confirm_password_label);
+
+        // hide password fields by default
+        showPasswordFields (false);
 
         // set listener for 'back to home' button
         this.clHomeBtn.setOnClickListener(new View.OnClickListener() {
@@ -129,9 +147,77 @@ public class SettingsActivity extends BaseActivity {
             public void onClick(View v) {
                 // if input fields are valid
                 if (isValidForm()) {
+
                     // TODO: handle case where user wants to change to an existing email
-                    updateUserAccount();
+
+                    // get input for current password
+                    currentPassword = etOldPassword.getText().toString().trim();
+
+                    // hide Buttons and show ProgressBar
+                    btnSave.setVisibility (View.GONE);
+                    btnChangePassword.setVisibility (View.GONE);
+                    pbSettings.setVisibility (View.VISIBLE);
+
+                    // get credentials of user
+                    AuthCredential credentials = EmailAuthProvider
+                            .getCredential(email, currentPassword);
+
+                    // re-authenticate user to update account settings
+                    user.reauthenticate(credentials)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        updateUserAccount();
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull @NotNull Exception e) {
+                                    String toastError;
+
+                                    // if too many requests are being sent
+                                    if (e instanceof FirebaseTooManyRequestsException) {
+                                        toastError = "Too many requests! Please try again later.";
+                                    // if credentials are invalid
+                                    } else if (e instanceof  FirebaseAuthInvalidCredentialsException) {
+                                        toastError = "Invalid password! Please try again.";
+                                        etOldPassword.setError("Invalid password.");
+                                        etOldPassword.requestFocus();
+                                    // if other errors occur
+                                    } else {
+                                        toastError = "[" + e.getClass().getSimpleName() + "] An error occurred!";
+                                    }
+
+                                    // show Toast
+                                    Toast.makeText (
+                                            SettingsActivity.this,
+                                            toastError,
+                                            Toast.LENGTH_SHORT
+                                    ).show ();
+
+                                    // show Buttons and hide ProgressBar
+                                    btnSave.setVisibility(View.VISIBLE);
+
+                                    if (etNewPassword.getVisibility() == View.VISIBLE)
+                                        btnChangePassword.setVisibility(View.INVISIBLE);
+                                    else
+                                        btnChangePassword.setVisibility(View.VISIBLE);
+
+                                    pbSettings.setVisibility(View.GONE);
+                                }
+                            });
                 }
+            }
+        });
+
+        // set listener for show change password fields button
+        this.btnChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show fields
+                showPasswordFields (true);
             }
         });
 
@@ -157,7 +243,8 @@ public class SettingsActivity extends BaseActivity {
                 etFirstName.setText(firstName);
                 etLastName.setText(lastName);
                 etEmail.setText(email);
-                etPassword.setText("");
+                etOldPassword.setText("");
+                etNewPassword.setText("");
                 etConfirmPassword.setText("");
             }
 
@@ -174,49 +261,62 @@ public class SettingsActivity extends BaseActivity {
      * @return  true if all fields are valid, otherwise false
      */
     private boolean isValidForm () {
+        String firstNameInput = this.etFirstName.getText().toString().trim();
+        String lastNameInput = this.etLastName.getText().toString().trim();
+        String emailInput = this.etEmail.getText().toString().trim();
+        String oldPasswordInput = this.etOldPassword.getText().toString().trim();
+        String newPasswordInput = this.etNewPassword.getText().toString().trim();
+        String confirmPasswordInput = this.etConfirmPassword.getText().toString().trim();
+
         // if first name field is empty
-        if (this.etFirstName.getText().toString().trim().isEmpty()) {
+        if (firstNameInput.isEmpty()) {
             this.etFirstName.setError("Please input your first name.");
             this.etFirstName.requestFocus();
             return false;
         }
         // if last name field is empty
-        else if (this.etLastName.getText().toString().trim().isEmpty()) {
+        else if (lastNameInput.isEmpty()) {
             this.etLastName.setError("Please input your last name.");
             this.etLastName.requestFocus();
             return false;
         }
         // if email field is empty
-        else if (this.etEmail.getText().toString().trim().isEmpty()) {
+        else if (emailInput.isEmpty()) {
             this.etEmail.setError("Please input your email.");
             this.etEmail.requestFocus();
             return false;
         }
         // if email input is not valid
-        else if (!Patterns.EMAIL_ADDRESS.matcher(this.etEmail.getText().toString().trim()).matches()) {
+        else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
             this.etEmail.setError("Please input a valid email address.");
             this.etEmail.requestFocus();
             return false;
         }
+        // if old password field is empty
+        else if (oldPasswordInput.isEmpty()) {
+            this.etOldPassword.setError("Please enter your current password.");
+            this.etOldPassword.requestFocus();
+            return false;
+        }
         // if password field is not empty (i.e., user wants to change password)
-        else if (!this.etPassword.getText().toString().trim().isEmpty()) {
+        else if (!newPasswordInput.isEmpty()) {
             // if password is less than 6 characters
-            if (this.etPassword.getText().toString().trim().length() < 6) {
-                this.etPassword.setError("Password should be greater than 6 characters.");
-                this.etPassword.requestFocus();
+            if (newPasswordInput.length() < 6) {
+                this.etNewPassword.setError("Password should be greater than 6 characters.");
+                this.etNewPassword.requestFocus();
                 return false;
             }
             // if there is no password confirmation
-            else if (this.etConfirmPassword.getText().toString().trim().isEmpty()) {
+            else if (confirmPasswordInput.isEmpty()) {
                 this.etConfirmPassword.setError("Please confirm your password.");
                 this.etConfirmPassword.requestFocus();
                 return false;
             }
             // if passwords do not match
-            else if (!this.etPassword.getText().toString().trim().equals (this.etConfirmPassword.getText().toString().trim())) {
-                this.etPassword.setError("Passwords do not match!");
-                this.etConfirmPassword.setError("Passwords do not match!");
-                this.etPassword.requestFocus();
+            else if (!newPasswordInput.equals (confirmPasswordInput)) {
+                this.etNewPassword.setError("Passwords do not match.");
+                this.etConfirmPassword.setError("Passwords do not match.");
+                this.etNewPassword.requestFocus();
                 return false;
             }
         }
@@ -229,13 +329,6 @@ public class SettingsActivity extends BaseActivity {
      * Updates the account data and details of the user depending on what was changed.
      */
     private void updateUserAccount() {
-        // disable save button
-        btnSave.setEnabled(false);
-        btnSave.setClickable(false);
-
-        // turn on progress bar
-        this.pbSettings.setVisibility(View.VISIBLE);
-
         // indicator if data has been updated
         boolean updated = false;
 
@@ -243,7 +336,7 @@ public class SettingsActivity extends BaseActivity {
         String newFirstName = etFirstName.getText().toString().trim();
         String newLastName = etLastName.getText().toString().trim();
         String newEmail = etEmail.getText().toString().trim();
-        String newPassword = etPassword.getText().toString().trim();
+        String newPassword = etNewPassword.getText().toString().trim();
 
         // if first name has been changed
         if (!firstName.equalsIgnoreCase(newFirstName)) {
@@ -274,7 +367,8 @@ public class SettingsActivity extends BaseActivity {
             spEditor.apply();
         }
 
-        if (!email.equalsIgnoreCase(newEmail) || (!newPassword.isEmpty() && !password.equalsIgnoreCase(newPassword))) {
+        // if email or password has been changed
+        if (!email.equalsIgnoreCase(newEmail) || !newPassword.isEmpty()) {
             // change and update user's email first in the database
             if (!email.equalsIgnoreCase(newEmail)) {
                 dbRef.child("email").setValue(newEmail);
@@ -303,6 +397,7 @@ public class SettingsActivity extends BaseActivity {
                 updateSuccessful();
             } else {
                 this.pbSettings.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
                 // indicate user that no data has been changed due to unchanged
                 // values from the input fields
                 Toast.makeText(
@@ -319,14 +414,14 @@ public class SettingsActivity extends BaseActivity {
      */
     private void updateUserEmailAuthentication(String newEmail, String newPassword) {
         // get credentials of user
-        AuthCredential credentials = EmailAuthProvider
-                .getCredential(email, password);
+//        AuthCredential credentials = EmailAuthProvider
+//                .getCredential(email, currentPassword);
 
         // re-authenticate user to update email
-        user.reauthenticate(credentials)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+//        user.reauthenticate(credentials)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull @NotNull Task<Void> task) {
                         // change and update user's email
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         user.updateEmail(newEmail)
@@ -337,7 +432,7 @@ public class SettingsActivity extends BaseActivity {
                                         email = newEmail;
 
                                         // if password has been changed on input
-                                        if (!newPassword.isEmpty() && !password.equalsIgnoreCase(newPassword)) {
+                                        if (!newPassword.isEmpty() && !currentPassword.equalsIgnoreCase(newPassword)) {
                                             // Password no longer stored in Realtime DB
                                             dbRef.child("password").setValue(null);
 
@@ -365,22 +460,22 @@ public class SettingsActivity extends BaseActivity {
                                         ).show();
                                     }
                                 });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
-                        // print error in console
-                        e.printStackTrace();
-
-                        // indicate user that something has gone in the process
-                        Toast.makeText(
-                                SettingsActivity.this,
-                                "An error has occurred, please try again.",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
-                });
+//                    }
+//                });
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull @NotNull Exception e) {
+//                        // print error in console
+//                        e.printStackTrace();
+//
+//                        // indicate user that something has gone in the process
+//                        Toast.makeText(
+//                                SettingsActivity.this,
+//                                "An error has occurred, please try again.",
+//                                Toast.LENGTH_SHORT
+//                        ).show();
+//                    }
+//                });
     }
 
     /**
@@ -388,14 +483,14 @@ public class SettingsActivity extends BaseActivity {
      */
     private void updateUserPasswordAuthentication(String newPassword) {
         // get credentials of user
-        AuthCredential credentials = EmailAuthProvider
-                .getCredential(email, password);
+//        AuthCredential credentials = EmailAuthProvider
+//                .getCredential(email, currentPassword);
 
         // re-authenticate user to update password
-        user.reauthenticate(credentials)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+//        user.reauthenticate(credentials)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull @NotNull Task<Void> task) {
                         // change and update user's password
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         user.updatePassword(newPassword)
@@ -420,22 +515,22 @@ public class SettingsActivity extends BaseActivity {
                                         ).show();
                                     }
                                 });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull @NotNull Exception e) {
-                        // print error in console
-                        e.printStackTrace();
-
-                        // indicate user that something has gone in the process
-                        Toast.makeText(
-                                SettingsActivity.this,
-                                "An error has occurred, please try again.",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
-                });
+//                    }
+//                });
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull @NotNull Exception e) {
+//                        // print error in console
+//                        e.printStackTrace();
+//
+//                        // indicate user that something has gone in the process
+//                        Toast.makeText(
+//                                SettingsActivity.this,
+//                                "An error has occurred, please try again.",
+//                                Toast.LENGTH_SHORT
+//                        ).show();
+//                    }
+//                });
     }
 
     /**
@@ -445,6 +540,7 @@ public class SettingsActivity extends BaseActivity {
     private void updateSuccessful() {
         // turn off progress bar
         this.pbSettings.setVisibility(View.GONE);
+        btnSave.setVisibility(View.VISIBLE);
 
         // indicate user that data has been updated successfully
         Toast.makeText(
@@ -456,6 +552,26 @@ public class SettingsActivity extends BaseActivity {
         // redirect back to home page
         goBackToHomePage();
     }
+
+    /**
+     * Shows the fields needed for changing the user's password.
+     */
+    private void showPasswordFields (boolean show) {
+        if (show) {
+            btnChangePassword.setVisibility (View.GONE);
+            etNewPassword.setVisibility (View.VISIBLE);
+            etConfirmPassword.setVisibility (View.VISIBLE);
+            tvNewPassword.setVisibility (View.VISIBLE);
+            tvConfirmPassword.setVisibility (View.VISIBLE);
+        } else {
+            btnChangePassword.setVisibility (View.VISIBLE);
+            etNewPassword.setVisibility (View.GONE);
+            etConfirmPassword.setVisibility (View.GONE);
+            tvNewPassword.setVisibility (View.GONE);
+            tvConfirmPassword.setVisibility (View.GONE);
+        }
+    }
+
 
     /**
      * Launches an activity leading to the Login page and finishes this activity.

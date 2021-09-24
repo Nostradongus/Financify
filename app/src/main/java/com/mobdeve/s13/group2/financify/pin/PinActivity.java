@@ -34,6 +34,7 @@ public class PinActivity extends AppCompatActivity {
 
     // UI components
     private Button btnConfirm;
+    private Button btnUseBiometrics;
     private EditText etPin;
     private ProgressBar pbConfirm;
 
@@ -57,12 +58,8 @@ public class PinActivity extends AppCompatActivity {
         initFirebase ();
         // initialize UI components
         initComponents ();
-
-        // if device can use biometric authentication
-        if (BiometricHelper.canUseBiometricAuth (this)) {
-            // show biometric prompt
-            biometricPrompt.authenticate (promptInfo);
-        }
+        // show biometric prompt, if device supports it
+        showBiometricPrompt();
     }
 
     /**
@@ -82,59 +79,103 @@ public class PinActivity extends AppCompatActivity {
     private void initComponents () {
         // retrieve IDs
         btnConfirm = findViewById (R.id.btn_pin_confirm);
+        btnUseBiometrics = findViewById (R.id.btn_pin_use_bio);
         etPin = findViewById (R.id.et_pin_input);
         pbConfirm = findViewById (R.id.pb_pin);
+
+        // if device supports biometric authentication
+        if (BiometricHelper.canUseBiometricAuth (this)) {
+            // OnClickListener for use biometrics button
+            btnUseBiometrics.setOnClickListener (new View.OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    // show biometric prompt
+                    showBiometricPrompt ();
+                }
+            });
+        // else
+        } else {
+            // hide and disable button
+            btnUseBiometrics.setVisibility (View.INVISIBLE);
+            btnUseBiometrics.setEnabled (false);
+        }
 
         // OnClickListener for confirm PIN button
         btnConfirm.setOnClickListener(new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                // show ProgressBar and hide Button
-                btnConfirm.setEnabled (false);
-                btnConfirm.setVisibility (View.INVISIBLE);
-                pbConfirm.setVisibility (View.VISIBLE);
+                // check first if PIN field is valid
+                if (isValidField ()) {
+                    // show ProgressBar and hide Button
+                    btnConfirm.setEnabled (false);
+                    btnConfirm.setVisibility (View.INVISIBLE);
+                    pbConfirm.setVisibility (View.VISIBLE);
 
-                // retrieve user PIN from Firebase
-                database.getReference (Model.users.name ())
-                        .child (mAuth.getCurrentUser ().getUid ())
-                        .child (Model.pin.name ())
-                        .get ()
-                        .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                if (task.isSuccessful ()) {
-                                    // retrieve PIN input
-                                    String etPinVal = etPin.getText ().toString ().trim ();
+                    // retrieve user PIN from Firebase
+                    database.getReference (Model.users.name ())
+                            .child (mAuth.getCurrentUser ().getUid ())
+                            .child (Model.pin.name ())
+                            .get ()
+                            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                    if (task.isSuccessful ()) {
+                                        // retrieve PIN input
+                                        String etPinVal = etPin.getText ().toString ().trim ();
 
-                                    // check if PIN is valid
-                                    if (BCryptHelper.isCorrectPIN (etPinVal, task.getResult ().getValue ().toString ())) {
-                                        // show success message to user
-                                        Toast.makeText (
-                                                PinActivity.this,
-                                                "Logged In Successfully!",
-                                                Toast.LENGTH_SHORT
-                                        ).show ();
+                                        // check if PIN is valid
+                                        if (BCryptHelper.isCorrectPIN (etPinVal, task.getResult ().getValue ().toString ())) {
+                                            // show success message to user
+                                            Toast.makeText (
+                                                    PinActivity.this,
+                                                    "Logged In Successfully!",
+                                                    Toast.LENGTH_SHORT
+                                            ).show ();
 
-                                        // Intent for Homepage
-                                        Intent i = new Intent(PinActivity.this, HomeActivity.class);
-                                        // launch activity
-                                        startActivity (i);
-                                        // finish activity
-                                        finish ();
-                                    } else {
-                                        // show error to user
-                                        etPin.setError ("Wrong PIN!");
+                                            // Intent for Homepage
+                                            Intent i = new Intent(PinActivity.this, HomeActivity.class);
+                                            // launch activity
+                                            startActivity (i);
+                                            // finish activity
+                                            finish ();
+                                        } else {
+                                            // show error to user
+                                            etPin.setError ("Wrong PIN!");
+                                        }
+
+                                        // hide ProgressBar and show Button
+                                        btnConfirm.setEnabled (true);
+                                        btnConfirm.setVisibility (View.VISIBLE);
+                                        pbConfirm.setVisibility (View.INVISIBLE);
                                     }
-
-                                    // hide ProgressBar and show Button
-                                    btnConfirm.setEnabled (true);
-                                    btnConfirm.setVisibility (View.VISIBLE);
-                                    pbConfirm.setVisibility (View.INVISIBLE);
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
+    }
+
+    /**
+     * Validation for PIN input field.
+     *
+     * @return true if field is valid; otherwise false
+     */
+    private boolean isValidField () {
+        String inputPIN = etPin.getText ().toString ().trim ();
+
+        // if field is empty
+        if (inputPIN.isEmpty ()) {
+            etPin.setError ("Please enter your PIN!");
+            return false;
+        }
+
+        // if PIN is not 6 characters long
+        if (inputPIN.length () != 6) {
+            etPin.setError ("Invalid PIN!");
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -179,5 +220,16 @@ public class PinActivity extends AppCompatActivity {
                 .setSubtitle ("Login using biometrics")
                 .setNegativeButtonText ("Enter PIN instead")
                 .build ();
+    }
+
+    /**
+     * Show biometric prompt if device supports it.
+     */
+    private void showBiometricPrompt () {
+        // if device can use biometric authentication
+        if (BiometricHelper.canUseBiometricAuth (this)) {
+            // show biometric prompt
+            biometricPrompt.authenticate (promptInfo);
+        }
     }
 }
