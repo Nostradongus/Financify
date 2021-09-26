@@ -226,59 +226,54 @@ public class LoginActivity extends AppCompatActivity {
         // get logged in user's data
         String userId = mAuth.getCurrentUser().getUid();
         DatabaseReference users = database.getReference().child(Model.users.name()).child(userId);
-        users.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        if (!isLoggedIn) {
-                            // user is logged in
-                            isLoggedIn = true;
+        users.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                // get retrieved data
+                DataSnapshot snapshot = task.getResult();
 
-                            // get first name and last name of user
-                            String firstName = snapshot.child("firstName").getValue().toString();
-                            String lastName = snapshot.child("lastName").getValue().toString();
+                // get first name and last name of user
+                String firstName = snapshot.child("firstName").getValue().toString();
+                String lastName = snapshot.child("lastName").getValue().toString();
 
-                            // store user's firstname and lastname in SharedPreferences
-                            sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
-                            spEditor = sharedPreferences.edit();
-                            spEditor.putString("FIRSTNAME", firstName);
-                            spEditor.putString("LASTNAME", lastName);
-                            spEditor.apply();
+                // store user's firstname and lastname in SharedPreferences
+                sharedPreferences = getSharedPreferences("financify", Context.MODE_PRIVATE);
+                spEditor = sharedPreferences.edit();
+                spEditor.putString("FIRSTNAME", firstName);
+                spEditor.putString("LASTNAME", lastName);
+                spEditor.apply();
 
-                            // disable login progress bar as authentication process is complete
-                            pbLogin.setVisibility(View.GONE);
+                // disable login progress bar as authentication process is complete
+                pbLogin.setVisibility(View.GONE);
 
-                            // show success message to user
-                            Toast.makeText(
-                                    LoginActivity.this,
-                                    R.string.login_success,
-                                    Toast.LENGTH_SHORT
-                            ).show();
+                // show success message to user
+                Toast.makeText(
+                        LoginActivity.this,
+                        R.string.login_success,
+                        Toast.LENGTH_SHORT
+                ).show();
 
-                            // prepare Intent
-                            Intent intent;
+                // prepare Intent
+                Intent intent;
 
-                            // if user has no PIN just yet
-                            if (snapshot.child (Model.pin.name ()).getValue () == null) {
-                                // redirect to PIN creation page
-                                intent = new Intent (LoginActivity.this, RegisterPINActivity.class);
-                                intent.putExtra (Keys.KEY_PIN_NEW, false);
-                            // if user has PIN already
-                            } else {
-                                // redirect to PIN input page
-                                intent = new Intent(LoginActivity.this, PinActivity.class);
-                            }
+                // if user has no PIN just yet
+                if (snapshot.child (Model.pin.name ()).getValue () == null) {
+                    // redirect to PIN creation page
+                    intent = new Intent (LoginActivity.this, RegisterPINActivity.class);
+                    intent.putExtra (Keys.KEY_PIN_NEW, false);
+                    // if user has PIN already
+                } else {
+                    // redirect to PIN input page
+                    intent = new Intent(LoginActivity.this, PinActivity.class);
+                }
 
-                            // start activity
-                            startActivity(intent);
+                // start activity
+                startActivity(intent);
 
-                            // end login activity
-                            finish();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {}
-                });
+                // end login activity
+                finish();
+            }
+        });
     }
 
     /**

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.ea.async.Async;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,20 +49,8 @@ public class MainActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 // if there is a user currently logged in the application
                 if (mAuth.getCurrentUser() != null) {
-                    // redirect to application's home activity page
-//                    Intent intent;
-//                    intent = new Intent(MainActivity.this, HomeActivity.class);
-//
-//                    // redirect to appropriate activity page
-//                    startActivity(intent);
-//
-//                    // end splash screen activity
-//                    finish();
-
-
                     // retrieve user PIN from Firebase
                     database.getReference (Model.users.name ())
                             .child (mAuth.getCurrentUser ().getUid ())
@@ -96,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
                 } else {
                     // Intent for authenticated user
                     Intent intent;
